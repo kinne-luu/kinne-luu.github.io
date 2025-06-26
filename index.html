@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kinne_luu.nyaa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: 'Quicksand', sans-serif;
+      background: url('https://raw.githubusercontent.com/kienmanhluu/kinne_luu.github.io/main/image/background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      color: white;
+    }
+
+    .blur-square {
+      position: absolute;
+      border-radius: 40px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    .blur-square.first {
+      top: 70%;
+      left: 25%;
+      width: 680px;
+      height: 380px;
+    }
+
+    .blur-square.second {
+      position: relative;
+      top: 70%;
+      left: 57%;
+      width: 110px;
+      height: 380px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 40px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: block;
+      transform: translate(-50%, -50%);
+    }
+
+    .blur-square.third {
+      position: absolute;
+      top: 55%;
+      left: 90%;
+      width: 280px;
+      height: 130px;
+      border-radius: 40px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.15);
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      overflow: hidden;
+    }
+    .blur-square.second a {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: white;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.25s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: visible;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    .blur-square.second a img {
+      width: 50%;
+      height: 50%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .blur-square.second a:hover {
+      transform: scale(1.15);
+    }
+
+    .blur-square.second a.FacebookLogo::after,
+    .blur-square.second a.InstagramLogo::after,
+    .blur-square.second a.XLogo::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 110%;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+
+    .blur-square.second a.LineLogo::after {
+      content: "";
+      position: absolute;
+      left: 110%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 120px;
+      height: 120px;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      background-image: url('https://raw.githubusercontent.com/kienmanhluu/kinne_luu.github.io/refs/heads/main/image/Line%20QR.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 95px 95px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+
+    .blur-square.second a:hover::after {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .pill-wrapper {
+      position: absolute;
+      top: 2%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 350px;
+      height: 130px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 70px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      padding: 0 30px;
+      gap: 30px;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      border-radius: 50%;
+      border: 2.5px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      background-color: white;
+      flex-shrink: 0;
+      margin-right: 20px;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 50%;
+    }
+
+    .pill-text {
+      color: white;
+      position: absolute;
+      top: 20%;
+      left: 40%;
+      font-size: 32px;
+      font-weight: 600;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .custom-text {
+      position: absolute;
+      top: 55%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: left;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+      max-width: 360px;
+      z-index: 4;
+    }
+
+    /* Hình tròn xoay bên trong .third */
+    .disc-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      animation: spin 8s linear infinite;
+      z-index: 2;
+    }
+
+    .disc-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Tên nhạc trong hình vuông thứ ba */
+.song-title {
+  position: absolute;
+  bottom: 35px;
+  right: 10px;          /* căn phần tử sát bên phải */
+  font-size: 17px;
+  font-weight: 600;
+  color: #ffbf00;
+  text-align: center;    /* căn text về phải */
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+  font-family: 'Quicksand', sans-serif;
+  z-index: 3; 
+  max-width: 160px;     /* giới hạn chiều rộng */
+  white-space: normal;  /* cho phép xuống dòng */
+  overflow-wrap: break-word;  /* xuống dòng đúng chỗ */
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="blur-square first">
+    <div class="custom-text">
+      <p>Nya~~~~</p>
+    </div>
+  </div>
+
+  <div class="blur-square second">
+    <a href="https://www.facebook.com/kienmanhluu" class="FacebookLogo" data-tooltip="My Facebook nya~~" target="_blank" rel="noopener noreferrer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" />
+    </a>
+    <a href="https://www.instagram.com/kinne_luu/" class="InstagramLogo" data-tooltip="My Instagram nya~~" target="_blank" rel="noopener noreferrer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" />
+    </a>
+    <a href="https://twitter.com/yourtwitterprofile" class="XLogo" data-tooltip="X nya~~" target="_blank" rel="noopener noreferrer">
+      <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/x-social-media-round-icon.svg" alt="X" />
+    </a>
+    <a href="https://line.me/ti/p/yourlineid" class="LineLogo" data-tooltip="Meow Line" target="_blank" rel="noopener noreferrer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" alt="Line" />
+    </a>
+  </div>
+
+  <div class="blur-square third">
+    <div class="disc-wrapper">
+      <img src="https://img.youtube.com/vi/YNaFdsEIvew/maxresdefault.jpg" alt="YouTube Thumbnail" />
+    </div>
+    <div class="song-title">もっと、見ていてください</div>
+  </div>
+
+  <div class="pill-wrapper">
+    <div class="avatar">
+      <img src="https://raw.githubusercontent.com/kienmanhluu/kinne_luu.github.io/refs/heads/main/image/avt.jpg" alt="Kinne Avatar" />
+    </div>
+    <div class="pill-text">Kinne_luu</div>
+  </div>
+<iframe
+  width="0" height="0"
+  src="https://www.youtube.com/embed/YNaFdsEIvew?autoplay=1&loop=1&playlist=YNaFdsEIvew"
+  frameborder="0"
+  allow="autoplay; encrypted-media"
+  allowfullscreen
+  style="display:none;">
+</iframe>
+
+</body>
+</html>
