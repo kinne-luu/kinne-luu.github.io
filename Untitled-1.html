@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>kinne_luu.nyaa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&family=Nunito:wght@300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* === CUSTOM SCROLLBAR === */
+        html {
+            width: 100%;
+            height: 100%;
+            overflow-y: overlay;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100%;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Định dạng thanh cuộn */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: transparent;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+            transition: background-color 0.3s;
+        }
+
+        /* Class này sẽ được JS thêm vào body khi cuộn */
+        body.is-scrolling ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* --- CÁC PHẦN CŨ --- */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .blur-box {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 280px;
+            z-index: 0;
+            perspective: 1000px;
+        }
+
+        .inner-3d-card {
+            width: 100%;
+            height: 100%;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+
+        .layer-cover {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            height: 150px;
+            border-radius: 30px;
+            transform: translateZ(20px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            -webkit-mask-image: radial-gradient(circle at 100px 100%, transparent 75px, black 76px);
+            mask-image: radial-gradient(circle at 100px 100%, transparent 75px, black 76px);
+        }
+
+        .layer-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .layer-avatar {
+            position: absolute;
+            top: 100px;
+            left: 50px;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            overflow: hidden;
+            transform: translateZ(60px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .layer-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .layer-avatar:hover {
+            transform: translateZ(90px) scale(1.1);
+            border-color: #5ec8ff;
+        }
+
+        .layer-info {
+            position: absolute;
+            top: 180px;
+            left: 200px;
+            transform: translateZ(40px);
+        }
+
+        .name-glitch {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 40px;
+            font-weight: 800;
+            color: white;
+            margin: 0;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .name-glitch:hover {
+            animation: glitch-anim 0.3s infinite;
+            color: #5ec8ff;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #06c755;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #06c755;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(6, 199, 85, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(6, 199, 85, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(6, 199, 85, 0);
+            }
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                transform: translate(2px, -2px);
+            }
+
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .blur-box {
+                width: 300px;
+                height: 350px;
+            }
+
+            .layer-cover {
+                -webkit-mask-image: radial-gradient(circle at 50% 100%, transparent 75px, black 76px);
+                mask-image: radial-gradient(circle at 50% 100%, transparent 75px, black 76px);
+            }
+
+            .layer-avatar {
+                left: 50%;
+                transform: translateX(-50%) translateZ(60px);
+                top: 100px;
+            }
+
+            .layer-avatar:hover {
+                transform: translateX(-50%) translateZ(90px) scale(1.1);
+            }
+
+            .layer-info {
+                top: 240px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                transform: translateZ(40px);
+            }
+        }
+
+        .blur-name-box-2 {
+            position: absolute;
+            top: 64%;
+            left: 43.5%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 170px;
+            border-radius: 40px;
+            background: transparent;
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .me {
+            color: rgb(255, 249, 162);
+            font-size: 30px;
+            position: absolute;
+            top: 5%;
+            left: 6%;
+            font-family: 'Bangers', cursive;
+            font-weight: 200;
+        }
+
+        .me-2 {
+            color: rgb(255, 255, 255);
+            font-size: 15px;
+            position: absolute;
+            top: 25%;
+            left: 5%;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+        }
+
+        .blur-social-box {
+            position: absolute;
+            top: 64%;
+            left: 63.4%;
+            transform: translate(-50%, -50%);
+            width: 185px;
+            height: 170px;
+            border-radius: 40px;
+            background: transparent;
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .my-social {
+            color: rgb(255, 255, 255);
+            font-size: 20px;
+            position: absolute;
+            top: 7%;
+            left: 24%;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        .social-btn {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-btn img {
+            width: 24px;
+            height: 24px;
+            filter: invert(1);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+            z-index: 100;
+        }
+
+        .fb-color:hover {
+            background: #1877F2;
+            box-shadow: 0 5px 20px rgba(24, 119, 242, 0.5);
+        }
+
+        .ig-color:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            box-shadow: 0 5px 20px rgba(220, 39, 67, 0.5);
+        }
+
+        .x-color:hover {
+            background: #000;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .ani-color:hover {
+            background: #02A9FF;
+            box-shadow: 0 5px 20px rgba(2, 169, 255, 0.5);
+        }
+
+        .line-color:hover {
+            background: #06C755;
+            box-shadow: 0 5px 20px rgba(6, 199, 85, 0.5);
+        }
+
+        .dc-color:hover {
+            background: #5865F2;
+            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5);
+        }
+
+        .fb-pos {
+            top: 28%;
+            left: 7%;
+        }
+
+        .ig-pos {
+            top: 28%;
+            left: 39%;
+        }
+
+        .x-pos {
+            top: 28%;
+            left: 70%;
+        }
+
+        .ani-pos {
+            top: 60%;
+            left: 7%;
+        }
+
+        .line-wrapper {
+            position: absolute;
+            top: 60%;
+            left: 39%;
+            width: 45px;
+            height: 45px;
+        }
+
+        .discord-wrapper {
+            position: absolute;
+            top: 60%;
+            left: 70%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+        }
+
+        .line-wrapper .social-btn,
+        .discord-wrapper .social-btn {
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        .qr-tooltip-dark {
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .qr-tooltip-dark img {
+            width: 100px;
+            height: 100px;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .line-wrapper:hover .qr-tooltip-dark {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .discord-tooltip {
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+        }
+
+        .discord-wrapper:hover .discord-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .blur-portfolio-box {
+            position: absolute;
+            top: 103.5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 350px;
+            border-radius: 40px;
+            background: transparent;
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            overflow: visible;
+        }
+
+        .what-can-i-do {
+            color: rgb(255, 249, 162);
+            font-size: 30px;
+            position: absolute;
+            top: 5%;
+            left: 6%;
+            font-family: 'Bangers', cursive;
+            font-weight: 200;
+        }
+
+        .what-can-i-do-2 {
+            color: rgb(255, 255, 255);
+            font-size: 15px;
+            position: absolute;
+            top: 15%;
+            left: 5%;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+        }
+
+        .portfolio-images {
+            margin-top: 95px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .pf-img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pf-img:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+        }
+
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 9999;
+        }
+
+        #lightbox-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease;
+            transform: scale(0.9);
+        }
+
+        #lightbox.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        #lightbox.active #lightbox-img {
+            transform: scale(1);
+        }
+
+        .blur-games-box {
+            position: absolute;
+            top: 161%;
+            left: 39.6%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: 420px;
+            border-radius: 40px;
+            background: transparent;
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .blur-inside-games-box {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 80px;
+            border-radius: 25px;
+            background: transparent;
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .box-1 {
+            top: 160%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .box-2 {
+            top: 270%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .box-3 {
+            top: 380%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .my-games {
+            color: rgb(255, 249, 162);
+            font-size: 30px;
+            position: absolute;
+            top: 5%;
+            left: 6%;
+            font-family: 'Bangers', cursive;
+            font-weight: 200;
+        }
+
+        .Wuwa_logo,
+        .A9_logo,
+        .Calabiyau_logo,
+        .Endfield_logo {
+            position: absolute;
+            top: 17%;
+            left: 5%;
+            width: 55px;
+            aspect-ratio: 1/1;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #eee;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .Wuwa_logo img,
+        .A9_logo img,
+        .Calabiyau_logo img,
+        .Endfield_logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .Username1,
+        .Username2,
+        .Username3,
+        .Username4 {
+            font-family: 'Quicksand', sans-serif;
+            position: absolute;
+            left: 36%;
+            font-weight: 1000;
+            font-size: 18px;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.401);
+            margin-bottom: 4px;
+        }
+
+        .UID1,
+        .UID2,
+        .UID3,
+        .UID4 {
+            font-family: 'Nunito', sans-serif;
+            position: absolute;
+            left: 36%;
+            font-weight: 300;
+            font-size: 14px;
+            color: #6a1aba;
+            text-shadow: 0 2px 5px rgba(255, 209, 224, 0.25);
+        }
+
+        .Username1 {
+            top: 20%;
+        }
+
+        .UID1 {
+            top: 26%;
+        }
+
+        .Username2 {
+            top: 40%;
+        }
+
+        .UID2 {
+            top: 46%;
+        }
+
+        .Username3 {
+            top: 61%;
+        }
+
+        .UID3 {
+            top: 67%;
+        }
+
+        .Username4 {
+            top: 82%;
+        }
+
+        .UID4 {
+            top: 88%;
+        }
+
+        .copy-icon1,
+        .copy-icon2,
+        .copy-icon3,
+        .copy-icon4 {
+            position: absolute;
+            top: 0%;
+            font-size: 14px;
+            color: #ffffffcc;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .copy-icon1 {
+            left: 134%;
+        }
+
+        .copy-icon2,
+        .copy-icon3 {
+            left: 150%;
+        }
+
+        .copy-icon4 {
+            left: 235%;
+        }
+
+        .copy-icon1:hover,
+        .copy-icon2:hover,
+        .copy-icon3:hover,
+        .copy-icon4:hover {
+            color: #b388ff;
+            transform: scale(1.2);
+        }
+
+        /* === MUSIC BOX MỚI (CHỮ NHẬT NHỎ GỌN) === */
+        .music-box-new {
+            position: absolute;
+            top: 138%;
+            left: 60.3%;
+            transform: translate(-50%, -50%);
+            /* Chỉnh kích thước thành hình chữ nhật ngang */
+            width: 300px;
+            height: 90px;
+
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            z-index: 20;
+            overflow: hidden;
+
+            /* Flex ngang */
+            display: flex;
+            flex-direction: row;
+            /* Xếp ngang */
+            align-items: center;
+            padding: 15px;
+            gap: 15px;
+        }
+
+        .player-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-grow: 1;
+            /* Chiếm phần lớn diện tích */
+        }
+
+        .album-art {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .album-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .track-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            max-width: 130px;
+            /* Giới hạn chiều rộng chữ */
+        }
+
+        .track-name {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+            margin: 0 0 2px 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .track-artist {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+        }
+
+        .control-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-btn-circle {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .play-btn-circle:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .play-btn-circle i {
+            color: #fff;
+            font-size: 16px;
+            margin-left: 3px;
+        }
+
+        .play-btn-circle:hover i {
+            color: #000;
+        }
+
+        .fa-pause {
+            margin-left: 0 !important;
+        }
+
+
+        /* === DRAWER BOX === */
+        #drawerBox {
+            position: fixed;
+            top: 40%;
+            left: -170px;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            z-index: 2000;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #drawerContent {
+            width: 170px;
+            height: 180px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            margin-left: 0;
+            opacity: 0.3;
+            transition: opacity 0.4s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #drawerBox[style*="left: 0px"] #drawerContent {
+            opacity: 1;
+        }
+
+        #drawerHandle {
+            width: 30px;
+            height: 80px;
+            border-radius: 0 12px 12px 0;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: none;
+            cursor: grab;
+            position: absolute;
+            right: 0;
+            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* === BÉ MAHIRU (TOP PRIORITY) === */
+        #draggableImg {
+            position: absolute;
+            width: 120px;
+            user-select: none;
+            cursor: grab;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: auto;
+            z-index: 99999 !important;
+        }
+
+        /* --- CHẶN COPY VÀ KÉO THẢ --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+            /* 1. Chặn bôi đen text toàn trang */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            /* 2. Chặn kéo ảnh (tránh việc người dùng kéo ảnh thả ra desktop) */
+            -webkit-user-drag: none;
+        }
+
+        /* Các ô input hoặc textarea (nếu có) thì vẫn cho nhập liệu */
+        input,
+        textarea {
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        /* =========================================
+   MOBILE RESPONSIVE (UPDATE: FIX TRÀN TEXT)
+========================================= */
+        @media (max-width: 768px) {
+
+            /* Cho phép cuộn trang dài */
+            body,
+            html {
+                height: auto;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            /* 1. BOX PROFILE (Tăng chiều cao để chứa đủ tên) */
+            .blur-box {
+                width: 90%;
+                height: 340px;
+                top: 190px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            /* Đẩy Avatar lên một chút */
+            .layer-avatar {
+                top: 100px;
+                transform: translateX(-50%) translateZ(60px);
+            }
+
+            /* Đẩy Info (Tên & Status) xuống dưới Avatar */
+            .layer-info {
+                top: 236px;
+                left: 0;
+                width: 100%;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                transform: translateZ(40px);
+            }
+
+            /* 2. BOX 'WHO AM I' (Tự động dài ra theo chữ) */
+            .blur-name-box-2 {
+                width: 90%;
+                height: auto;
+                min-height: 220px;
+                padding-bottom: 30px;
+
+                top: 500px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            /* Sửa tiêu đề .me */
+            .me {
+                position: relative;
+                top: 20px;
+                left: 20px;
+                font-size: 30px;
+                background: rgba(138, 100, 200, 0.5);
+                padding: 5px 20px;
+                border-radius: 30px;
+                margin-bottom: 10px;
+                display: inline-block;
+            }
+
+            /* Sửa nội dung .me-2 */
+            .me-2 {
+                position: relative;
+                top: 25px;
+                left: 25px;
+                width: 85%;
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            /* 3. BOX SOCIAL */
+            .blur-social-box {
+                width: 90%;
+                height: 100px;
+                top: 677px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+
+            .my-social {
+                display: none;
+            }
+
+            .fb-pos,
+            .ig-pos,
+            .x-pos,
+            .ani-pos,
+            .line-wrapper,
+            .discord-wrapper {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin: 0;
+            }
+
+            /* 4. BOX PORTFOLIO */
+            .blur-portfolio-box {
+                width: 90%;
+                height: auto;
+                padding-bottom: 20px;
+                top: 980px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .portfolio-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* 5. BOX GAMES */
+            /* --- 5. BOX GAMES (CHI TIẾT BÊN TRONG) --- */
+            .blur-games-box {
+                width: 90%;
+                height: 430px;
+                top: 1450px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            /* 5.1. Cấu hình lại các thanh chứa logo (Background mờ của từng game) */
+            .blur-inside-games-box {
+                position: absolute;
+                width: 95%;
+                height: 70px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 20px;
+
+                /* Reset lại vị trí Top cho box đầu tiên (Wuwa) */
+                top: 15%;
+            }
+
+            /* Định vị lại 3 box con nằm bên trong box Wuwa */
+            /* Vì HTML lồng nhau nên ta dùng top tương đối so với box cha */
+            .box-1 {
+                top: 140%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            /* A9 (Cách box 1 khoảng 140%) */
+            .box-2 {
+                top: 280%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            /* Calabiyau */
+            .box-3 {
+                top: 420%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            /* 5.2. Chỉnh Logo nhỏ lại và căn sang trái */
+            .Wuwa_logo,
+            .A9_logo,
+            .Calabiyau_logo,
+            .Endfield_logo {
+                width: 50px;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            /* 5.3. Chỉnh Text (Username & UID) thẳng hàng bên cạnh Logo */
+            /* Gom chung các class Username và UID để chỉnh 1 lần */
+            .Username1,
+            .Username2,
+            .Username3,
+            .Username4,
+            .UID1,
+            .UID2,
+            .UID3,
+            .UID4 {
+                top: 120px;
+                left: 90px;
+                text-align: left;
+                width: auto;
+            }
+
+            /* Tinh chỉnh chiều dọc (Top) cho khớp với từng hàng */
+            /* Hàng 1: Wuwa */
+            .Username1 {
+                top: 18%;
+                font-size: 16px;
+            }
+
+            .UID1 {
+                top: 23%;
+                font-size: 13px;
+            }
+
+            /* Hàng 2: A9 */
+            .Username2 {
+                top: 41%;
+                font-size: 16px;
+            }
+
+            .UID2 {
+                top: 46%;
+                font-size: 13px;
+            }
+
+            /* Hàng 3: Calabiyau */
+            .Username3 {
+                top: 65%;
+                font-size: 16px;
+            }
+
+            .UID3 {
+                top: 70%;
+                font-size: 13px;
+            }
+
+            /* Hàng 4: Endfield */
+            .Username4 {
+                top: 84%;
+                font-size: 16px;
+            }
+
+            .UID4 {
+                top: 89%;
+                font-size: 13px;
+            }
+
+            /* 5.4. Chỉnh nút Copy sang bên phải cùng */
+            .copy-icon1,
+            .copy-icon2,
+            .copy-icon3,
+            .copy-icon4 {
+                left: 120px;
+                right: 25px;
+                top: 0;
+                font-size: 16px;
+            }
+
+            /* 6. MUSIC BOX (Ghim đáy) */
+            .music-box-new {
+                position: fixed;
+                top: auto;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 95%;
+                height: 80px;
+                background: rgba(20, 20, 20, 0.9);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .track-artist {
+                display: none;
+            }
+
+            /* Ẩn tên ca sĩ nếu chật quá */
+            .track-name {
+                font-size: 14px;
+                max-width: 160px;
+            }
+
+            /* 7. Ẩn ngăn kéo Mahiru */
+            #drawerBox {
+                display: none;
+            }
+
+            /* Tạo khoảng trống cuối trang */
+            body::after {
+                content: "";
+                display: block;
+                height: 150px;
+                width: 100%;
+            }
+        }
+
+        /* ... Các code trong mobile giữ nguyên ... */
+
+        /* --- TẠO KHOẢNG TRỐNG CUỐI TRANG (ĐỂ KHÔNG BỊ MUSIC BOX CHE) --- */
+        body::after {
+            content: "";
+            display: block;
+            position: absolute;
+
+            /* Box Game đang ở top 1450px, cao 420px => Đáy của nó là 1450 + 210 = 1660px */
+            /* Mình đặt vùng đệm bắt đầu ngay dưới đáy box game */
+            top: 1660px;
+
+            left: 0;
+            width: 100%;
+
+            /* Chiều cao vùng đệm: 200px (đủ để cuộn qua khỏi Music Box 80px) */
+            height: 200px;
+
+            background: transparent;
+            z-index: -10;
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="bgm" autoplay loop>
+        <source
+            src="https://raw.githubusercontent.com/kienmanhluu/kinne/main/Music/%E3%82%82%E3%81%A3%E3%81%A8%E8%A6%8B%E3%81%A6%E3%81%84%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84.mp3"
+            type="audio/mp3">
+        </audio>
+
+    <video autoplay muted loop class="video-background">
+        <source src="https://raw.githubusercontent.com/kienmanhluu/kinne/main/background%20video/Comp%201_4.mp4"
+            type="video/mp4" />
+        Trình duyệt của bạn không hỗ trợ thẻ video.
+    </video>
+
+    <div class="blur-box" id="profileBox">
+        <div class="inner-3d-card">
+            <div class="layer-cover">
+                <img
+                    src="https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/image%20pack/Shiina.Mahiru.full.4311647.jpg"
+                    alt="Cover">
+                <div class="cover-overlay"></div>
+            </div>
+            <div class="layer-avatar">
+                <img
+                    src="https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/image%20pack/IMG_20250404_173058.jpg"
+                    alt="Avatar">
+            </div>
+            <div class="layer-info">
+                <h1 class="name-glitch" data-text="kinne_luu">kinne_luu</h1>
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span>Online</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="blur-name-box-2">
+        <p class="me">Who am i??</p>
+        <p class="me-2">Ya hallooo~~ , just call me Kinne, im a boi who fall in luv w/ anime, manga, light/visual novel and
+            gacha game :D ( ofc AAA game and other) - i like to use my imagination to create 3D scenery with Blender, or anime
+            composite in After Effect</p>
+    </div>
+
+    <div class="blur-social-box">
+        <p class="my-social">My social~</p>
+        <a href="https://www.facebook.com/kienmanhluu" target="_blank" class="social-btn fb-pos fb-color">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/kinne_luu/" target="_blank" class="social-btn ig-pos ig-color">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://x.com/kienmanhluu" target="_blank" class="social-btn x-pos x-color">
+            <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://anilist.co/user/kienmanhluu/" target="_blank" class="social-btn ani-pos ani-color">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/AniList_logo.svg" alt="AniList">
+        </a>
+        <div class="line-wrapper line-pos">
+            <div class="social-btn line-color" style="width:100%; height:100%; cursor: default;">
+                <i class="fa-brands fa-line"></i>
+            </div>
+            <div class="qr-tooltip-dark">
+                <img src="https://github.com/kienmanhluu/kienmanhluu.github.io/blob/main/img/Line%20QR.png?raw=true" alt="QR">
+            </div>
+        </div>
+        <div class="discord-wrapper dc-pos" onclick="copyDiscordUsername()">
+            <div class="social-btn dc-color" style="width:100%; height:100%">
+                <i class="fa-brands fa-discord"></i>
+            </div>
+            <div class="discord-tooltip" id="discord-tooltip">Click to Copy</div>
+        </div>
+    </div>
+
+    <div class="blur-portfolio-box">
+        <p class="what-can-i-do">What can i do</p>
+        <p class="what-can-i-do-2">Not too much, but here is some anime background scene I made :D</p>
+        <div class="portfolio-images">
+            <img
+                src="https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/20250709_004547.jpg"
+                class="pf-img">
+            <img
+                src="https://raw.githubusercontent.com/kienmanhluu/kinne/main/alime%20background%20file/IMG_20250617_190900.jpg"
+                class="pf-img">
+            <img
+                src="https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/IMG_20251107_111548.png"
+                class="pf-img">
+            <img
+                src="https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/New%20Project%2065%20%5B7F642B5%5D.png"
+                class="pf-img">
+            <img
+                src="https://raw.githubusercontent.com/kienmanhluu/kinne/main/alime%20background%20file/New%20Project%2043%20%5B4C9E502%5D.png"
+                class="pf-img">
+        </div>
+    </div>
+
+    <div class="blur-games-box">
+        <p class="my-games">My Games</p>
+        <h1 class="Username1">Kinne~Nya</h1>
+        <h2 class="UID1">UID : <span class="copy-text1">900577083</span><i class="fa-regular fa-copy copy-icon1"
+                onclick="copyText1(this)"></i></h2>
+        <h1 class="Username2">Kinne_luu</h1>
+        <h2 class="UID2">UID : <span class="copy-text2">3312645</span><i class="fa-regular fa-copy copy-icon2"
+                onclick="copyText2(this)"></i></h2>
+        <h1 class="Username3">キンネ</h1>
+        <h2 class="UID3">UID : <span class="copy-text3">3159454</span><i class="fa-regular fa-copy copy-icon3"
+                onclick="copyText3(this)"></i></h2>
+        <h1 class="Username4">NaN</h1>
+        <h2 class="UID4">UID : <span class="copy-text4">NaN</span><i class="fa-regular fa-copy copy-icon4"
+                onclick="copyText4(this)"></i></h2>
+        <div class="blur-inside-games-box">
+            <div class="Wuwa_logo"><img
+                    src="https://play-lh.googleusercontent.com/g-47eiWo7LYLBFOQrYNzjrsTf4HRzUT--lSGrqJ9BPJFV72FEdYo5rSMI6AXBDyzrA"
+                    alt="wuwa-logo"></div>
+            <div class="blur-inside-games-box box-1">
+                <div class="A9_logo"><img src="https://upload.wikimedia.org/wikipedia/vi/a/aa/Arknights_icon.png" alt="A9-logo">
+                </div>
+            </div>
+            <div class="blur-inside-games-box box-2">
+                <div class="Calabiyau_logo"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCdK8zE-YB-kkAMkFD-SNSYsU7N9Hx7aflJQ&s"
+                        alt="Calabiyau-logo"></div>
+            </div>
+            <div class="blur-inside-games-box box-3">
+                <div class="Endfield_logo"><img
+                        src="https://img.tapimg.net/market/images/963421fe5b2f8abd198cda0f74318399.png/appicon?t=1"
+                        alt="Endfield-logo"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="music-box-new">
+        <div class="player-header">
+            <div class="album-art">
+                <img
+                    src="https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/image%20pack/Shiina.Mahiru.full.4311647.jpg"
+                    alt="Album Art">
+            </div>
+            <div class="track-info">
+                <h3 class="track-name">Motto Miteite Kudasai</h3>
+                <p class="track-artist">Mahiru Shiina</p>
+            </div>
+        </div>
+
+        <div class="control-area">
+            <div class="play-btn-circle" onclick="toggleMusic()">
+                <i class="fa-solid fa-play" id="play-icon"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="drawerBox">
+        <div id="drawerContent">
+            <img id="draggableImg"
+                src="https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/image%20pack/mahihi.png">
+        </div>
+        <div id="drawerHandle"></div>
+    </div>
+
+    <div id="lightbox">
+        <img id="lightbox-img" src="">
+    </div>
+
+    <script>
+        const card = document.getElementById("profileCard");
+        const container = document.querySelector(".profile-card-wrapper");
+        if (container && card) {
+            container.addEventListener("mousemove", (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (centerY - y) / 15;
+                const rotateY = (x - centerX) / 15;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            container.addEventListener("mouseleave", () => {
+                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            });
+        }
+
+        function copyText1(icon) {
+            const text = document.querySelector('.copy-text1').innerText.trim();
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                icon.style.color = '#5ec8ff';
+                setTimeout(() => icon.style.color = '#ffffffcc', 800);
+            });
+        }
+        function copyText2(icon) {
+            const text = document.querySelector('.copy-text2').innerText.trim();
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                icon.style.color = '#5ec8ff';
+                setTimeout(() => icon.style.color = '#ffffffcc', 800);
+            });
+        }
+        function copyText3(icon) {
+            const text = document.querySelector('.copy-text3').innerText.trim();
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                icon.style.color = '#5ec8ff';
+                setTimeout(() => icon.style.color = '#ffffffcc', 800);
+            });
+        }
+        function copyText4(icon) {
+            const text = document.querySelector('.copy-text4').innerText.trim();
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                icon.style.color = '#5ec8ff';
+                setTimeout(() => icon.style.color = '#ffffffcc', 800);
+            });
+        }
+
+        function copyDiscordUsername() {
+            const username = "kienmanhluu";
+            navigator.clipboard.writeText(username).then(() => {
+                const tooltip = document.getElementById("discord-tooltip");
+                tooltip.textContent = "Copied!";
+                tooltip.style.backgroundColor = "#06c755";
+                setTimeout(() => {
+                    tooltip.textContent = "Click to Copy ID";
+                    tooltip.style.backgroundColor = "rgba(0, 0, 0, 0.85)";
+                }, 1500);
+            }).catch(err => console.error("Copy failed", err));
+        }
+
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightbox-img");
+        document.querySelectorAll(".pf-img").forEach(img => {
+            img.addEventListener("click", () => {
+                lightboxImg.src = img.src;
+                lightbox.classList.add("active");
+            });
+        });
+        lightbox.addEventListener("click", (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove("active");
+            }
+        });
+
+        const drawer = document.getElementById("drawerBox");
+        const content = document.getElementById("drawerContent");
+        const handle = document.getElementById("drawerHandle");
+        let draggingDrawer = false;
+
+        handle.addEventListener("mousedown", () => { draggingDrawer = true; });
+        document.addEventListener("mouseup", () => {
+            if (!draggingDrawer) return;
+            draggingDrawer = false;
+            const pos = parseFloat(getComputedStyle(drawer).left);
+            if (pos > -100) {
+                drawer.style.left = "0px";
+                content.style.opacity = "1";
+            } else {
+                drawer.style.left = "-170px";
+                content.style.opacity = "0.3";
+            }
+        });
+        document.addEventListener("mousemove", (e) => {
+            if (!draggingDrawer) return;
+            let newX = e.clientX;
+            if (newX < 0) newX = 0;
+            if (newX > 200) newX = 200;
+            drawer.style.left = (newX - 170) + "px";
+            const visible = 1 - Math.abs((newX - 200) / 200);
+            content.style.opacity = visible < 0.3 ? 0.3 : visible;
+        });
+
+        const img = document.getElementById("draggableImg");
+        const GRAVITY = 0.4;
+        const BOUNCE = 0.6;
+        const FRICTION = 0.99;
+        const WALL_DAMPER = 0.6;
+        const ROTATION_SPEED = 1.5;
+        let isDragging = false;
+        let isThrown = false;
+        let pos = { x: 0, y: 0 };
+        let vel = { x: 0, y: 0 };
+        let rot = 0;
+        let rotVel = 0;
+        let dragOffset = { x: 0, y: 0 };
+        let lastMouse = { x: 0, y: 0 };
+
+        img.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            isThrown = true;
+            e.preventDefault();
+            const rect = img.getBoundingClientRect();
+            pos.x = rect.left;
+            pos.y = rect.top;
+            if (img.parentElement !== document.body) { document.body.appendChild(img); }
+            img.style.position = "fixed";
+            img.style.left = pos.x + "px";
+            img.style.top = pos.y + "px";
+            img.style.cursor = "grabbing";
+            img.style.margin = "0";
+            rot = 0;
+            rotVel = 0;
+            img.style.transform = `rotate(${rot}deg)`;
+            dragOffset.x = e.clientX - rect.left;
+            dragOffset.y = e.clientY - rect.top;
+            vel = { x: 0, y: 0 };
+            lastMouse = { x: e.clientX, y: e.clientY };
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            pos.x = e.clientX - dragOffset.x;
+            pos.y = e.clientY - dragOffset.y;
+            vel.x = e.clientX - lastMouse.x;
+            vel.y = e.clientY - lastMouse.y;
+            img.style.left = pos.x + "px";
+            img.style.top = pos.y + "px";
+            img.style.transform = `rotate(0deg) scale(1.1)`;
+            lastMouse = { x: e.clientX, y: e.clientY };
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (isDragging) {
+                isDragging = false;
+                img.style.cursor = "grab";
+                img.style.transform = `rotate(0deg) scale(1)`;
+                rotVel = vel.x * ROTATION_SPEED;
+            }
+        });
+
+        function updatePhysics() {
+            if (!isDragging && isThrown) {
+                vel.y += GRAVITY;
+                pos.x += vel.x;
+                pos.y += vel.y;
+                const floor = window.innerHeight - img.offsetHeight;
+                let onGround = false;
+                if (pos.y > floor) {
+                    pos.y = floor;
+                    vel.y *= -BOUNCE;
+                    vel.x *= 0.9;
+                    onGround = true;
+                    if (Math.abs(vel.y) < GRAVITY) vel.y = 0;
+                }
+                const rightWall = window.innerWidth - img.offsetWidth;
+                if (pos.x < 0) {
+                    pos.x = 0;
+                    vel.x *= -WALL_DAMPER;
+                    rotVel *= -0.5;
+                } else if (pos.x > rightWall) {
+                    pos.x = rightWall;
+                    vel.x *= -WALL_DAMPER;
+                    rotVel *= -0.5;
+                }
+                vel.x *= FRICTION;
+                if (!onGround) {
+                    rot += rotVel;
+                    rotVel *= 0.99;
+                } else {
+                    if (Math.abs(vel.x) > 0.5) {
+                        rot += (vel.x * 2);
+                    } else {
+                        rot = rot * 0.8;
+                        if (Math.abs(rot) < 0.5) rot = 0;
+                    }
+                }
+                img.style.left = pos.x + "px";
+                img.style.top = pos.y + "px";
+                img.style.transform = `rotate(${rot}deg)`;
+            }
+            requestAnimationFrame(updatePhysics);
+        }
+        window.addEventListener('resize', () => {
+            if (isThrown) {
+                const floor = window.innerHeight - img.offsetHeight;
+                const rightWall = window.innerWidth - img.offsetWidth;
+                if (pos.y > floor) pos.y = floor;
+                if (pos.x > rightWall) pos.x = rightWall;
+                img.style.left = pos.x + "px";
+                img.style.top = pos.y + "px";
+            }
+        });
+        updatePhysics();
+
+        const audio = document.getElementById('bgm');
+        const playIcon = document.getElementById('play-icon');
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            } else {
+                audio.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            }
+        }
+
+        audio.volume = 0.5;
+
+        // --- LOGIC ẨN HIỆN THANH CUỘN ---
+        let isScrolling;
+        window.addEventListener('scroll', () => {
+            document.body.classList.add('is-scrolling');
+            window.clearTimeout(isScrolling);
+            isScrolling = setTimeout(() => {
+                document.body.classList.remove('is-scrolling');
+            }, 1000); // Sau 1 giây không cuộn thì ẩn
+        });
+    </script>
+
+    <script>
+        // --- BẢO MẬT: CHẶN CLICK CHUỘT PHẢI & PHÍM TẮT ---
+
+        // 1. Chặn menu chuột phải (Right Click)
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        // 2. Chặn kéo thả native của trình duyệt (Để tránh kéo ảnh lưu về)
+        document.addEventListener('dragstart', function (e) {
+            e.preventDefault();
+        });
+
+        // 3. Chặn các phím tắt F12, Ctrl+U, Ctrl+S, Ctrl+Shift+I...
+        document.onkeydown = function (e) {
+
+            // Chặn F12 (DevTools)
+            if (e.keyCode == 123) {
+                return false;
+            }
+
+            // Chặn Ctrl+I (DevTools)
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            // Chặn Ctrl+J (Console)
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            // Chặn Ctrl+U (View Source)
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+            // Chặn Ctrl+S (Save Page)
+            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) {
+                return false;
+            }
+        };
+    </script>
+
+
+</body>
+
+</html>
