@@ -19,49 +19,36 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* --- GLOBAL STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         html { width: 100%; height: 100%; overflow-y: auto; }
-        
         body { 
             width: 100%; min-height: 100%; 
             font-family: 'Nunito', sans-serif; 
             overflow-x: hidden; background-color: #000; 
         }
 
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background-color: transparent; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; transition: background-color 0.3s; }
         body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.6); }
 
+        /* Background Elements */
         .video-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -100; pointer-events: none; }
 
         .sakura {
-            position: fixed;
-            top: -10px;
-            background: #ffc0cb;
-            border-radius: 100% 0 100% 0;
-            opacity: 0.8;
-            z-index: 9999;
-            pointer-events: none;
-            animation: fall linear infinite;
+            position: fixed; top: -10px; background: #ffc0cb;
+            border-radius: 100% 0 100% 0; opacity: 0.8; z-index: 9999;
+            pointer-events: none; animation: fall linear infinite;
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-10vh) translateX(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(110vh) translateX(100px) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; }
         }
 
+        /* --- PROFILE CARD STYLES --- */
         .blur-box { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 280px; z-index: 0; perspective: 1000px; }
         .inner-3d-card { width: 100%; height: 100%; border-radius: 40px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); transform-style: preserve-3d; transition: transform 0.1s ease-out; }
         .layer-cover { position: absolute; top: 15px; left: 15px; right: 15px; height: 150px; border-radius: 30px; transform: translateZ(20px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); -webkit-mask-image: radial-gradient(circle at 100px 100%, transparent 75px, black 76px); mask-image: radial-gradient(circle at 100px 100%, transparent 75px, black 76px); }
@@ -71,15 +58,10 @@
         .layer-avatar:hover { transform: translateZ(90px) scale(1.1); border-color: #5ec8ff; }
         .layer-info { position: absolute; top: 180px; left: 200px; transform: translateZ(40px); }
         
-        .name-glitch { 
-            font-family: 'M PLUS Rounded 1c', sans-serif; 
-            font-size: 40px; font-weight: 800; color: white; margin: 0; 
-            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2); position: relative; 
-        }
+        .name-glitch { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 40px; font-weight: 800; color: white; margin: 0; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2); position: relative; }
         .name-glitch:hover { animation: glitch-anim 0.3s infinite; color: #5ec8ff; }
         
         .status-badge { display: flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-top: 5px; background: rgba(0, 0, 0, 0.2); padding: 4px 12px; border-radius: 20px; width: fit-content; }
-        
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #747f8d; transition: all 0.3s ease; }
         .status-dot.online { background: #06c755; box-shadow: 0 0 10px #06c755; animation: pulse 2s infinite; }
         .status-dot.idle { background: transparent; width: 14px; height: 14px; box-shadow: inset -3px -2px 0 0 #feffcf; filter: drop-shadow(0 0 2px rgba(255, 230, 0, 0.6)); animation: moon-pulse 2s infinite alternate; transform: rotate(-10deg); }
@@ -90,83 +72,61 @@
         @keyframes moon-pulse { from { filter: drop-shadow(0 0 1px rgba(255, 255, 200, 0.4)); } to { filter: drop-shadow(0 0 5px rgba(255, 255, 220, 1)); } }
         @keyframes glitch-anim { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
+        /* Other Boxes */
         .blur-name-box-2 { position: absolute; top: 64%; left: 43.5%; transform: translate(-50%, -50%); width: 400px; height: 170px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
-        
-        .me { 
-            font-family: 'M PLUS Rounded 1c', sans-serif; 
-            color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 12%; left: 6%; font-weight: 700; 
-        }
-        .me-2 { 
-            font-family: 'Nunito', sans-serif; 
-            color: rgb(255, 255, 255); font-size: 15px; position: absolute; top: 35%; left: 6%; width: 90%; font-weight: 600; line-height: 1.4; 
-        }
+        .me { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 12%; left: 6%; font-weight: 700; }
+        .me-2 { font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); font-size: 15px; position: absolute; top: 35%; left: 6%; width: 90%; font-weight: 600; line-height: 1.4; }
 
         .blur-social-box { position: absolute; top: 64%; left: 63.4%; transform: translate(-50%, -50%); width: 185px; height: 170px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
-        .my-social { 
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            color: rgb(255, 255, 255); font-size: 18px; position: absolute; top: 7%; left: 24%; font-weight: 700; pointer-events: none; 
-        }
+        .my-social { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 255, 255); font-size: 18px; position: absolute; top: 7%; left: 24%; font-weight: 700; pointer-events: none; }
         
         .social-btn { position: absolute; width: 45px; height: 45px; border-radius: 15px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; align-items: center; font-size: 25px; color: white; text-decoration: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        
+        /* QUAN TRỌNG: Đây là dòng CSS bị thiếu khiến icon bị vỡ to */
         .social-btn img { width: 24px; height: 24px; filter: invert(1); }
+        
         .social-btn:hover { transform: translateY(-5px) scale(1.1); border-color: rgba(255, 255, 255, 0.5); color: white; z-index: 100; }
+        
+        .fb-pos { top: 28%; left: 7%; } .ig-pos { top: 28%; left: 39%; } .x-pos { top: 28%; left: 70%; } .ani-pos { top: 60%; left: 7%; }
+        .line-wrapper { position: absolute; top: 60%; left: 39%; width: 45px; height: 45px; } .discord-wrapper { position: absolute; top: 60%; left: 70%; width: 45px; height: 45px; cursor: pointer; }
+        .line-wrapper .social-btn, .discord-wrapper .social-btn { position: relative; top: 0; left: 0; }
+        
         .fb-color:hover { background: #1877F2; box-shadow: 0 5px 20px rgba(24, 119, 242, 0.5); }
         .ig-color:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); box-shadow: 0 5px 20px rgba(220, 39, 67, 0.5); }
         .x-color:hover { background: #000; box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3); }
         .ani-color:hover { background: #02A9FF; box-shadow: 0 5px 20px rgba(2, 169, 255, 0.5); }
         .line-color:hover { background: #06C755; box-shadow: 0 5px 20px rgba(6, 199, 85, 0.5); }
         .dc-color:hover { background: #5865F2; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5); }
-        .fb-pos { top: 28%; left: 7%; } .ig-pos { top: 28%; left: 39%; } .x-pos { top: 28%; left: 70%; } .ani-pos { top: 60%; left: 7%; }
-        .line-wrapper { position: absolute; top: 60%; left: 39%; width: 45px; height: 45px; } .discord-wrapper { position: absolute; top: 60%; left: 70%; width: 45px; height: 45px; cursor: pointer; }
-        .line-wrapper .social-btn, .discord-wrapper .social-btn { position: relative; top: 0; left: 0; }
+
         .qr-tooltip-dark { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) scale(0.5); background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px; border-radius: 12px; opacity: 0; pointer-events: none; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 999; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); }
         .qr-tooltip-dark img { width: 100px; height: 100px; display: block; border-radius: 4px; }
         .line-wrapper:hover .qr-tooltip-dark { opacity: 1; transform: translateX(-50%) scale(1); }
         .discord-tooltip { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(10px); background: rgba(0, 0, 0, 0.85); color: white; padding: 5px 8px; border-radius: 6px; font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s ease; }
         .discord-wrapper:hover .discord-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
-        
+
+        /* Portfolio */
         .blur-portfolio-box { position: absolute; top: 103.5%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 350px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); overflow: visible; }
-        .what-can-i-do { 
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 5%; left: 6%; font-weight: 700; 
-        }
-        .what-can-i-do-2 { 
-            font-family: 'Nunito', sans-serif;
-            color: rgb(255, 255, 255); font-size: 15px; position: absolute; top: 15%; left: 5%; font-weight: 600; 
-        }
+        .what-can-i-do { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 5%; left: 6%; font-weight: 700; }
+        .what-can-i-do-2 { font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); font-size: 15px; position: absolute; top: 15%; left: 5%; font-weight: 600; }
         .portfolio-images { margin-top: 95px; padding: 0 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; justify-items: center; }
         .pf-img { width: 100%; height: 110px; object-fit: cover; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .pf-img:hover { transform: scale(1.08); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); z-index: 10; }
-        
-        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 9999; }
-        #lightbox-img { max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); transition: transform 0.3s ease; transform: scale(0.9); }
-        #lightbox.active { visibility: visible; opacity: 1; }
-        #lightbox.active #lightbox-img { transform: scale(1); }
-        
+
+        /* Games Box */
         .blur-games-box { position: absolute; top: 161%; left: 39.6%; transform: translate(-50%, -50%); width: 280px; height: 420px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
         .blur-inside-games-box { position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: 80px; border-radius: 25px; background: transparent; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
         .box-1 { top: 160%; left: 50%; transform: translate(-50%, -50%); } .box-2 { top: 270%; left: 50%; transform: translate(-50%, -50%); } .box-3 { top: 380%; left: 50%; transform: translate(-50%, -50%); }
-        .my-games { 
-            font-family: 'M PLUS Rounded 1c', sans-serif;
-            color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 5%; left: 6%; font-weight: 700; 
-        }
+        .my-games { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 5%; left: 6%; font-weight: 700; }
         .Wuwa_logo, .A9_logo, .Calabiyau_logo, .Endfield_logo { position: absolute; top: 17%; left: 5%; width: 55px; aspect-ratio: 1/1; border-radius: 16px; overflow: hidden; background: #eee; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
         .Wuwa_logo img, .A9_logo img, .Calabiyau_logo img, .Endfield_logo img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-        
-        .Username1, .Username2, .Username3, .Username4 { 
-            font-family: 'M PLUS Rounded 1c', sans-serif; 
-            position: absolute; left: 36%; font-weight: 800; font-size: 18px; color: #ffffff; letter-spacing: 1px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.401); margin-bottom: 4px; 
-        }
-        .UID1, .UID2, .UID3, .UID4 { 
-            font-family: 'Nunito', sans-serif; 
-            position: absolute; left: 36%; font-weight: 600; font-size: 14px; color: #6a1aba; text-shadow: 0 2px 5px rgba(255, 209, 224, 0.25); 
-        }
+        .Username1, .Username2, .Username3, .Username4 { font-family: 'M PLUS Rounded 1c', sans-serif; position: absolute; left: 36%; font-weight: 800; font-size: 18px; color: #ffffff; letter-spacing: 1px; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.401); margin-bottom: 4px; }
+        .UID1, .UID2, .UID3, .UID4 { font-family: 'Nunito', sans-serif; position: absolute; left: 36%; font-weight: 600; font-size: 14px; color: #6a1aba; text-shadow: 0 2px 5px rgba(255, 209, 224, 0.25); }
         .Username1 { top: 20%; } .UID1 { top: 26%; } .Username2 { top: 40%; } .UID2 { top: 46%; } .Username3 { top: 61%; } .UID3 { top: 67%; } .Username4 { top: 82%; } .UID4 { top: 88%; }
-        
         .copy-icon1, .copy-icon2, .copy-icon3, .copy-icon4 { position: absolute; top: 0%; font-size: 14px; color: #ffffffcc; cursor: pointer; transition: all 0.2s ease; z-index: 10; }
         .copy-icon1 { left: 134%; } .copy-icon2, .copy-icon3 { left: 150%; } .copy-icon4 { left: 235%; }
         .copy-icon1:hover, .copy-icon2:hover, .copy-icon3:hover, .copy-icon4:hover { color: #b388ff; transform: scale(1.2); }
-        
+
+        /* Music Player */
         .music-box-new { position: absolute; top: 138%; left: 60.3%; transform: translate(-50%, -50%); width: 300px; height: 90px; border-radius: 30px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); z-index: 20; overflow: hidden; display: flex; flex-direction: row; align-items: center; padding: 15px; gap: 15px; }
         .player-header { display: flex; align-items: center; gap: 12px; flex-grow: 1; }
         .album-art { width: 60px; height: 60px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-shrink: 0; }
@@ -180,15 +140,22 @@
         .play-btn-circle i { color: #fff; font-size: 16px; margin-left: 3px; }
         .play-btn-circle:hover i { color: #000; }
         .fa-pause { margin-left: 0 !important; }
-        
+
+        /* Drawer & Lightbox */
         #drawerBox { position: fixed; top: 40%; left: -170px; width: 200px; height: 200px; display: flex; align-items: center; z-index: 2000; transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         #drawerContent { width: 170px; height: 180px; border-radius: 20px; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); margin-left: 0; opacity: 0.3; transition: opacity 0.4s ease; overflow: hidden; position: relative; }
         #drawerBox[style*="left: 0px"] #drawerContent { opacity: 1; }
         #drawerHandle { width: 30px; height: 80px; border-radius: 0 12px 12px 0; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-left: none; cursor: grab; position: absolute; right: 0; box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1); }
         #draggableImg { position: absolute; width: 120px; user-select: none; cursor: grab; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: auto; z-index: 99999 !important; }
         
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 9999; }
+        #lightbox-img { max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); transition: transform 0.3s ease; transform: scale(0.9); }
+        #lightbox.active { visibility: visible; opacity: 1; }
+        #lightbox.active #lightbox-img { transform: scale(1); }
+
         body::after { content: ""; display: block; position: absolute; top: 1700px; left: 0; width: 100%; height: 80px; background: transparent; z-index: -10; }
 
+        /* Media Queries */
         @media (max-width: 1024px) {
             .blur-box { width: 90%; height: 340px; top: 190px; left: 50%; transform: translate(-50%, -50%); }
             .layer-avatar { left: 50%; transform: translateX(-50%) translateZ(60px); top: 100px; }
@@ -221,20 +188,16 @@
             body::after { content: ""; display: block; height: 100px; width: 100%; }
         }
 
-        /* --- CODE GIAO DIỆN LIBRARY & READER --- */
+        /* --- READER / LIBRARY CSS --- */
         .hidden { display: none !important; }
 
         .blur-books-box {
-            position: absolute;
-            top: 155%; left: 54%; transform: translate(-50%, -50%);
+            position: absolute; top: 155%; left: 54%; transform: translate(-50%, -50%);
             width: 110px; height: 110px; border-radius: 24px;
-            background: transparent; 
-            backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            background: transparent; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            z-index: 50;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 50;
         }
         .blur-books-box:hover { 
             transform: translate(-50%, -50%) translateY(-5px); 
@@ -245,8 +208,7 @@
         .blur-books-box:hover .book-icon { color: #5ec8ff; transform: scale(1.1); }
         .book-text { 
             font-family: 'M PLUS Rounded 1c', sans-serif; color: rgba(255, 255, 255, 0.9); 
-            font-weight: 700; font-size: 10px; text-align: center; line-height: 1.3; letter-spacing: 0.5px;
-            text-transform: uppercase; 
+            font-weight: 700; font-size: 10px; text-align: center; line-height: 1.3; letter-spacing: 0.5px; text-transform: uppercase; 
         }
 
         #ln-overlay {
@@ -276,40 +238,15 @@
         .close-btn { color: rgba(255, 255, 255, 0.5); transition: 0.3s; background: none; border: none; font-size: 24px; cursor: pointer; }
         .close-btn:hover { color: #f04747; transform: rotate(90deg); }
 
-        .ln-list-view { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; 
-            flex: 1; overflow-y: auto; min-height: 0; padding: 10px; 
-        }
-
-        .book-item { 
-            background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 15px; 
-            cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex; flex-direction: column; align-items: center;
-        }
-        .book-item:hover { 
-            background: rgba(255, 255, 255, 0.08); transform: translateY(-5px); 
-            border-color: rgba(94, 200, 255, 0.5); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        .book-cover { 
-            width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 8px; margin-bottom: 15px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .book-title { 
-            color: #e0e0e0; font-family: 'Nunito'; font-weight: 700; font-size: 16px; text-align: center; 
-        }
-
+        /* Khung đọc truyện - Đã chỉnh sửa đẹp hơn */
         .ln-reader-view { 
             flex: 1; min-height: 0; overflow-y: auto; padding-right: 20px; 
-            color: #e0e0e0; font-family: 'Nunito', sans-serif; line-height: 1.9; font-size: 18px; text-align: justify; 
+            color: #e0e0e0; font-family: 'Nunito', sans-serif; line-height: 1.8; font-size: 18px; text-align: justify; 
         }
-        .ln-reader-view p { margin-bottom: 20px; }
-
-        .back-btn { 
-            font-size: 15px; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; 
-            color: rgba(255,255,255,0.6); padding: 8px 16px; border-radius: 20px;
-            background: rgba(255,255,255,0.05); transition: 0.3s; width: fit-content; border: none; cursor: pointer;
-        }
-        .back-btn:hover { background: rgba(255,255,255,0.1); color: #fff; padding-right: 20px; }
+        /* CSS cho các đoạn văn từ file story.html */
+        .ln-reader-view p { margin-bottom: 20px; margin-top: 0; }
+        .ln-reader-view strong, .ln-reader-view b { color: #fff; }
+        .ln-reader-view em, .ln-reader-view i { color: #5ec8ff; }
 
         #reader-title { 
             font-family: 'M PLUS Rounded 1c'; color: #5ec8ff; margin-bottom: 30px; text-align: center; 
@@ -318,12 +255,11 @@
         }
         #reader-content { padding-bottom: 60px; }
 
-        .ln-list-view::-webkit-scrollbar, .ln-reader-view::-webkit-scrollbar { width: 8px; }
-        .ln-list-view::-webkit-scrollbar-track, .ln-reader-view::-webkit-scrollbar-track { background: transparent; }
-        .ln-list-view::-webkit-scrollbar-thumb, .ln-reader-view::-webkit-scrollbar-thumb { 
-            background: rgba(255, 255, 255, 0.2); border-radius: 10px; 
-        }
-        .ln-list-view::-webkit-scrollbar-thumb:hover, .ln-reader-view::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+        /* Scrollbar trong khung đọc */
+        .ln-reader-view::-webkit-scrollbar { width: 8px; }
+        .ln-reader-view::-webkit-scrollbar-track { background: transparent; }
+        .ln-reader-view::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        .ln-reader-view::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
 
         @media (max-width: 768px) {
             .ln-container { width: 100%; height: 100%; border-radius: 0; max-height: 100vh; padding: 20px; }
@@ -427,23 +363,22 @@
 
     <div class="blur-books-box" onclick="openLibrary()">
         <div class="book-icon"><i class="fa-solid fa-book-open"></i></div>
-        <p class="book-text">My Draft Novel<br>(Uncomplete)</p>
+        <p class="book-text">My Draft Novel<br>(Sora - Uncomplete)</p>
     </div>
 
     <div id="ln-overlay">
         <div class="ln-container">
             <div class="ln-header">
-                <h2 id="ln-modal-title">My Library</h2>
+                <h2 id="ln-modal-title">Reading</h2>
                 <button class="close-btn" onclick="closeLibrary()"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="ln-list" class="ln-list-view" data-lenis-prevent></div>
-            <div id="ln-reader" class="ln-reader-view hidden" data-lenis-prevent>
-                <button class="back-btn" onclick="backToList()"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                <h1 id="reader-title">Title</h1>
+            <div id="ln-reader" class="ln-reader-view" data-lenis-prevent>
+                <h1 id="reader-title">Sora-chan</h1>
                 <div id="reader-content">Loading...</div>
             </div>
         </div>
     </div>
+
     <script>
         function createPetal() {
             const petal = document.createElement('div');
@@ -770,11 +705,9 @@
     </script>
 
     <script>
-        const DATA_URL = 'novels.json';
-        let novelsData = [];
+        const STORY_FILE = 'story.html'; 
 
         const overlay = document.getElementById('ln-overlay');
-        const listView = document.getElementById('ln-list');
         const readerView = document.getElementById('ln-reader');
         const modalTitle = document.getElementById('ln-modal-title');
         const readerTitle = document.getElementById('reader-title');
@@ -783,70 +716,36 @@
         async function openLibrary() {
             overlay.classList.add('active');
             
-            // DỪNG CUỘN LENIS (Quan trọng để không cuộn web)
+            // Dừng cuộn trang chính
             if(window.lenis) window.lenis.stop();
-            
-            // Khóa cuộn mặc định
             document.body.style.overflow = 'hidden'; 
             document.documentElement.style.overflow = 'hidden';
+
+            // Hiện khung đọc luôn
+            readerView.classList.remove('hidden');
+
+            modalTitle.innerText = "Đang đọc";
             
-            if (novelsData.length === 0) {
-                try {
-                    const response = await fetch(DATA_URL);
-                    novelsData = await response.json();
-                    renderList();
-                } catch (error) {
-                    listView.innerHTML = '<p style="color:white; text-align:center;">Chưa tìm thấy file novels.json!</p>';
-                }
+            // Load nội dung file story.html
+            try {
+                const response = await fetch(STORY_FILE);
+                if (!response.ok) throw new Error("Không tìm thấy file");
+                const htmlContent = await response.text();
+                readerContent.innerHTML = htmlContent;
+            } catch (error) {
+                readerContent.innerHTML = `<p style="color:#f04747; text-align:center;">Lỗi: Không tìm thấy file story.html!<br>Hãy tạo file này cùng thư mục với index.html</p>`;
             }
         }
 
         function closeLibrary() {
             overlay.classList.remove('active');
             
-            // CHẠY LẠI LENIS
+            // Chạy lại cuộn trang chính
             if(window.lenis) window.lenis.start();
-            
-            // Mở lại cuộn
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
-            setTimeout(backToList, 300);
         }
 
-        function renderList() {
-            listView.innerHTML = '';
-            novelsData.forEach(novel => {
-                const item = document.createElement('div');
-                item.className = 'book-item';
-                item.onclick = () => openReader(novel.id);
-                item.innerHTML = `
-                    <img src="${novel.cover}" class="book-cover" onerror="this.src='https://via.placeholder.com/200x250?text=Cover'">
-                    <div class="book-info"><h3 class="book-title">${novel.title}</h3></div>
-                `;
-                listView.appendChild(item);
-            });
-        }
-
-        function openReader(id) {
-            const novel = novelsData.find(n => n.id === id);
-            if (!novel) return;
-            readerTitle.innerText = novel.title;
-            readerContent.innerHTML = novel.content; 
-            
-            // Thêm class hidden để ẩn danh sách đi
-            listView.classList.add('hidden');
-            
-            readerView.classList.remove('hidden');
-            modalTitle.innerText = "Reading";
-        }
-
-        function backToList() {
-            listView.classList.remove('hidden');
-            readerView.classList.add('hidden');
-            modalTitle.innerText = "My Library";
-        }
-
-        // Click ra ngoài thì đóng
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) closeLibrary();
         });
