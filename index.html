@@ -191,7 +191,7 @@
         /* --- READER / LIBRARY CSS --- */
         .hidden { display: none !important; }
 
-        .blur-books-box {
+        /* .blur-books-box {
             position: absolute; top: 155%; left: 54%; transform: translate(-50%, -50%);
             width: 110px; height: 110px; border-radius: 24px;
             background: transparent; backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
@@ -236,7 +236,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .close-btn { color: rgba(255, 255, 255, 0.5); transition: 0.3s; background: none; border: none; font-size: 24px; cursor: pointer; }
-        .close-btn:hover { color: #f04747; transform: rotate(90deg); }
+        .close-btn:hover { color: #f04747; transform: rotate(90deg); } */
 
         /* Khung đọc truyện - Đã chỉnh sửa đẹp hơn */
         .ln-reader-view { 
@@ -361,23 +361,6 @@
 
     <div id="lightbox"><img id="lightbox-img" src=""></div>
 
-    <div class="blur-books-box" onclick="openLibrary()">
-        <div class="book-icon"><i class="fa-solid fa-book-open"></i></div>
-        <p class="book-text">My Draft Novel<br>(Sora - Uncomplete)</p>
-    </div>
-
-    <div id="ln-overlay">
-        <div class="ln-container">
-            <div class="ln-header">
-                <h2 id="ln-modal-title">Reading</h2>
-                <button class="close-btn" onclick="closeLibrary()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="ln-reader" class="ln-reader-view" data-lenis-prevent>
-                <h1 id="reader-title">Sora-chan</h1>
-                <div id="reader-content">Loading...</div>
-            </div>
-        </div>
-    </div>
 
     <script>
         function createPetal() {
