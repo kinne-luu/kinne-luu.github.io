@@ -337,7 +337,7 @@
         <h1 class="Username1">Kinne~Nya</h1><h2 class="UID1">UID : <span class="copy-text1">900577083</span><i class="fa-regular fa-copy copy-icon1" onclick="copyText1(this)"></i></h2>
         <h1 class="Username2">Kinne_luu</h1><h2 class="UID2">UID : <span class="copy-text2">3312645</span><i class="fa-regular fa-copy copy-icon2" onclick="copyText2(this)"></i></h2>
         <h1 class="Username3">キンネ</h1><h2 class="UID3">UID : <span class="copy-text3">3159454</span><i class="fa-regular fa-copy copy-icon3" onclick="copyText3(this)"></i></h2>
-        <h1 class="Username4">NaN</h1><h2 class="UID4">UID : <span class="copy-text4">NaN</span><i class="fa-regular fa-copy copy-icon4" onclick="copyText4(this)"></i></h2>
+        <h1 class="Username4">kienmanhluu</h1><h2 class="UID4">UID : <span class="copy-text4">4294596844</span><i class="fa-regular fa-copy copy-icon4" onclick="copyText4(this)"></i></h2>
         <div class="blur-inside-games-box">
             <div class="Wuwa_logo"><img src="https://play-lh.googleusercontent.com/g-47eiWo7LYLBFOQrYNzjrsTf4HRzUT--lSGrqJ9BPJFV72FEdYo5rSMI6AXBDyzrA" alt="wuwa-logo"></div>
             <div class="blur-inside-games-box box-1"><div class="A9_logo"><img src="https://upload.wikimedia.org/wikipedia/vi/a/aa/Arknights_icon.png" alt="A9-logo"></div></div>
@@ -361,6 +361,23 @@
 
     <div id="lightbox"><img id="lightbox-img" src=""></div>
 
+    <div class="blur-books-box" onclick="openLibrary()">
+        <div class="book-icon"><i class="fa-solid fa-book-open"></i></div>
+        <p class="book-text">My Draft Novel<br>(Sora - Uncomplete)</p>
+    </div>
+
+    <div id="ln-overlay">
+        <div class="ln-container">
+            <div class="ln-header">
+                <h2 id="ln-modal-title">Reading</h2>
+                <button class="close-btn" onclick="closeLibrary()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="ln-reader" class="ln-reader-view" data-lenis-prevent>
+                <h1 id="reader-title">Sora-chan</h1>
+                <div id="reader-content">Loading...</div>
+            </div>
+        </div>
+    </div> 
 
     <script>
         function createPetal() {
