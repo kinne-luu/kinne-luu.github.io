@@ -39,15 +39,9 @@ function copyDiscordUsername() {
     }).catch(err => console.error("Copy failed", err));
 }
 
-// --- LIGHTBOX PORTFOLIO ---
+// --- LIGHTBOX PORTFOLIO (ZOOM CẬN CẢNH) ---
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
-document.querySelectorAll(".pf-img").forEach(img => {
-    img.addEventListener("click", () => {
-        lightboxImg.src = img.src;
-        lightbox.classList.add("active");
-    });
-});
 if (lightbox) {
     lightbox.addEventListener("click", (e) => {
         if (e.target === lightbox) { lightbox.classList.remove("active"); }
@@ -121,18 +115,13 @@ function raf(time) {
 }
 requestAnimationFrame(raf);
 
-// =======================================================
-// --- PHYSICS DRAWER (Chỉ cần NHẤN để đóng/mở) ---
-// =======================================================
+// --- PHYSICS DRAWER ---
 const drawer = document.getElementById("drawerBox");
 const content = document.getElementById("drawerContent");
 const handle = document.getElementById("drawerHandle");
-
 let isDrawerOpen = false;
-
 if (handle && drawer && content) {
     drawer.classList.add("drawer-smooth");
-
     handle.addEventListener("click", () => {
         isDrawerOpen = !isDrawerOpen;
         if (isDrawerOpen) {
@@ -145,42 +134,28 @@ if (handle && drawer && content) {
     });
 }
 
-// =======================================================
-// --- nhạc tự chạy trên mobile ---
-// =======================================================
-// Hàm kích hoạt nhạc khi có tương tác đầu tiên (chạm hoặc cuộn)
+// --- AUDIO AUTOPLAY ---
 function enableAutoplay() {
-    const audio = document.getElementById('bgm');
-    const playIcon = document.getElementById('play-icon');
-
-    if (audio.paused) {
+    if (audio && audio.paused) {
         audio.play().then(() => {
-            // Cập nhật icon sang nút Pause nếu phát thành công
             if (playIcon) {
                 playIcon.classList.remove('fa-play');
                 playIcon.classList.add('fa-pause');
             }
-            // Sau khi nhạc đã chạy, gỡ bỏ các sự kiện lắng nghe để tránh chạy lại
             window.removeEventListener('touchstart', enableAutoplay);
             window.removeEventListener('scroll', enableAutoplay);
             window.removeEventListener('mousedown', enableAutoplay);
-        }).catch(error => {
-            console.log("Chưa thể phát nhạc: ", error);
-        });
+        }).catch(error => console.log("Chưa thể phát nhạc: ", error));
     }
 }
-
-// Lắng nghe các hành động chạm, cuộn hoặc click chuột đầu tiên
 window.addEventListener('touchstart', enableAutoplay, { passive: false });
 window.addEventListener('scroll', enableAutoplay);
 window.addEventListener('mousedown', enableAutoplay);
+window.addEventListener('wheel', enableAutoplay); 
+window.addEventListener('keydown', enableAutoplay);
 
-
-// =======================================================
-// --- PHYSICS FOR MAHIRU (Bóng nảy vật lý, rơi rớt tung tẩy) ---
-// =======================================================
+// --- MAHIRU PHYSICS (FULL) ---
 const mahiruImg = document.getElementById("draggableImg");
-
 const GRAVITY = 0.6;       
 const BOUNCE = 0.7;        
 const FRICTION = 0.96;     
@@ -205,18 +180,13 @@ if (mahiruImg) {
         if (e.target !== mahiruImg) return;
         isDragging = true;
         isThrown = false; 
-        
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
-
         const clientX = getX(e);
         const clientY = getY(e);
         const rect = mahiruImg.getBoundingClientRect();
         
-        if (mahiruImg.parentElement !== document.body) {
-            document.body.appendChild(mahiruImg);
-        }
-
+        if (mahiruImg.parentElement !== document.body) { document.body.appendChild(mahiruImg); }
         mahiruImg.style.position = "fixed";
         mahiruImg.style.transform = `rotate(${rot}deg)`; 
         mahiruImg.style.transition = "none";
@@ -226,32 +196,25 @@ if (mahiruImg) {
         pos.y = rect.top;
         mahiruImg.style.left = pos.x + "px";
         mahiruImg.style.top = pos.y + "px";
-
         dragOffset.x = clientX - rect.left;
         dragOffset.y = clientY - rect.top;
         
         vel = { x: 0, y: 0 };
         lastMouse = { x: clientX, y: clientY };
-        
         cancelAnimationFrame(physicsFrame); 
     }
 
     function drag(e) {
         if (!isDragging) return;
         if (e.cancelable) e.preventDefault(); 
-
         const clientX = getX(e);
         const clientY = getY(e);
-
         pos.x = clientX - dragOffset.x;
         pos.y = clientY - dragOffset.y;
-        
         vel.x = clientX - lastMouse.x;
         vel.y = clientY - lastMouse.y;
-        
         mahiruImg.style.left = pos.x + "px";
         mahiruImg.style.top = pos.y + "px";
-        
         lastMouse = { x: clientX, y: clientY };
     }
 
@@ -259,17 +222,14 @@ if (mahiruImg) {
         if (!isDragging) return;
         isDragging = false;
         isThrown = true;
-        
         rotVel = vel.x * ROTATION_SPEED;
         updatePhysics(); 
     }
 
     mahiruImg.addEventListener("mousedown", startDrag);
     mahiruImg.addEventListener("touchstart", startDrag, { passive: false });
-
     document.addEventListener("mousemove", drag);
     document.addEventListener("touchmove", drag, { passive: false });
-
     document.addEventListener("mouseup", endDrag);
     document.addEventListener("touchend", endDrag);
     document.addEventListener("touchcancel", endDrag);
@@ -279,63 +239,114 @@ if (mahiruImg) {
             vel.y += GRAVITY;
             pos.x += vel.x;
             pos.y += vel.y;
-
             const floor = window.innerHeight - mahiruImg.offsetHeight;
             const rightWall = window.innerWidth - mahiruImg.offsetWidth;
             let onGround = false;
 
             if (pos.y >= floor) {
-                pos.y = floor;
-                vel.y *= -BOUNCE;
-                onGround = true;
-                
-                if (Math.abs(vel.y) < GRAVITY * 2) {
-                    vel.y = 0;
-                }
+                pos.y = floor; vel.y *= -BOUNCE; onGround = true;
+                if (Math.abs(vel.y) < GRAVITY * 2) { vel.y = 0; }
             }
-            
             if (pos.x <= 0) {
-                pos.x = 0;
-                vel.x *= -WALL_DAMPER;
-                rotVel *= -0.5;
+                pos.x = 0; vel.x *= -WALL_DAMPER; rotVel *= -0.5;
             } else if (pos.x >= rightWall) {
-                pos.x = rightWall;
-                vel.x *= -WALL_DAMPER;
-                rotVel *= -0.5;
+                pos.x = rightWall; vel.x *= -WALL_DAMPER; rotVel *= -0.5;
             }
 
             if (!onGround) {
-                vel.x *= 0.99; 
-                rot += rotVel;
-                rotVel *= 0.99;
+                vel.x *= 0.99; rot += rotVel; rotVel *= 0.99;
             } else {
                 vel.x *= FRICTION; 
-                if (Math.abs(vel.x) > 0.1) {
-                    rot += (vel.x * 2.5); 
-                } else {
-                    vel.x = 0;
-                    rotVel = 0; 
-                }
+                if (Math.abs(vel.x) > 0.1) { rot += (vel.x * 2.5); } else { vel.x = 0; rotVel = 0; }
             }
 
             mahiruImg.style.left = pos.x + "px";
             mahiruImg.style.top = pos.y + "px";
             mahiruImg.style.transform = `rotate(${rot}deg)`;
-
             if (Math.abs(vel.x) > 0.1 || Math.abs(vel.y) > 0.1 || pos.y < floor) {
                 physicsFrame = requestAnimationFrame(updatePhysics);
             }
         }
     }
-
-    window.addEventListener('resize', () => {
-        if (isThrown && !isDragging) {
-            const floor = window.innerHeight - mahiruImg.offsetHeight;
-            const rightWall = window.innerWidth - mahiruImg.offsetWidth;
-            if (pos.y > floor) pos.y = floor;
-            if (pos.x > rightWall) pos.x = rightWall;
-            mahiruImg.style.left = pos.x + "px";
-            mahiruImg.style.top = pos.y + "px";
-        }
-    });
 }
+
+// --- PORTFOLIO MODAL LOGIC (FULL SCREEN) ---
+const pfFullData = {
+    '3d': [
+        "https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/20250709_004547.jpg",
+        "https://raw.githubusercontent.com/kienmanhluu/kinne/main/alime%20background%20file/IMG_20250617_190900.jpg",
+        "https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/IMG_20251107_111548.png",
+        "https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/New%20Project%2065%20%5B7F642B5%5D.png",
+        "https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/New%20Project%2065%20%5B7F642B5%5D.png",
+        "https://raw.githubusercontent.com/kienmanhluu/kinne/main/alime%20background%20file/New%20Project%2043%20%5B4C9E502%5D.png"
+    ],
+    'drawing': [
+        "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/Drawing/Untitled71_0009-26-14_20260309210516.png",
+        "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/Drawing/Untitled68_0002-46-51_20260302173559.jpg"
+
+    ]
+};
+
+function toggleSection(type) {
+    const modal = document.getElementById("portfolioModal");
+    const grid = document.getElementById("modal-grid");
+    const title = document.getElementById("modal-pf-title");
+
+    title.innerText = type === '3d' ? "3D Backgrounds" : "Drawings";
+    
+    grid.innerHTML = ''; 
+    pfFullData[type].forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = "pf-img-full";
+        img.onclick = (e) => {
+            e.stopPropagation();
+            const lb = document.getElementById("lightbox");
+            const lbImg = document.getElementById("lightbox-img");
+            lbImg.src = img.src;
+            lb.classList.add("active");
+        };
+        grid.appendChild(img);
+    });
+
+    modal.classList.add("active");
+    document.body.style.overflow = 'hidden'; // Khóa cuộn màn hình dưới
+}
+
+function closePortfolio() {
+    document.getElementById("portfolioModal").classList.remove("active");
+    document.body.style.overflow = 'auto'; // Mở lại cuộn màn hình dưới
+}
+
+// Đóng khi click ngoài khung modal
+document.getElementById("portfolioModal").addEventListener("click", function(e) {
+    if (e.target === this) {
+        closePortfolio();
+    }
+});
+
+// --- ANTI F12 & RIGHT CLICK ---
+// Chặn chuột phải
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// Chặn các phím tắt mở DevTools và View Source
+document.addEventListener('keydown', function(e) {
+    // Chặn F12
+    if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+    }
+    // Chặn Ctrl+Shift+I (Mở DevTools)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+        e.preventDefault();
+    }
+    // Chặn Ctrl+Shift+J (Mở Console)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+        e.preventDefault();
+    }
+    // Chặn Ctrl+U (View Source)
+    if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+        e.preventDefault();
+    }
+});
