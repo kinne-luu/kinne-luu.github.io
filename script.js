@@ -146,6 +146,37 @@ if (handle && drawer && content) {
 }
 
 // =======================================================
+// --- nhạc tự chạy trên mobile ---
+// =======================================================
+// Hàm kích hoạt nhạc khi có tương tác đầu tiên (chạm hoặc cuộn)
+function enableAutoplay() {
+    const audio = document.getElementById('bgm');
+    const playIcon = document.getElementById('play-icon');
+
+    if (audio.paused) {
+        audio.play().then(() => {
+            // Cập nhật icon sang nút Pause nếu phát thành công
+            if (playIcon) {
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            }
+            // Sau khi nhạc đã chạy, gỡ bỏ các sự kiện lắng nghe để tránh chạy lại
+            window.removeEventListener('touchstart', enableAutoplay);
+            window.removeEventListener('scroll', enableAutoplay);
+            window.removeEventListener('mousedown', enableAutoplay);
+        }).catch(error => {
+            console.log("Chưa thể phát nhạc: ", error);
+        });
+    }
+}
+
+// Lắng nghe các hành động chạm, cuộn hoặc click chuột đầu tiên
+window.addEventListener('touchstart', enableAutoplay, { passive: false });
+window.addEventListener('scroll', enableAutoplay);
+window.addEventListener('mousedown', enableAutoplay);
+
+
+// =======================================================
 // --- PHYSICS FOR MAHIRU (Bóng nảy vật lý, rơi rớt tung tẩy) ---
 // =======================================================
 const mahiruImg = document.getElementById("draggableImg");

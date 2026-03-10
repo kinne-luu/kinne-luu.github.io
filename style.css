@@ -239,7 +239,23 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     .blur-games-box { width: 90%; height: auto; padding-bottom: 20px; top: 1450px; left: 50%; transform: translate(-50%, -50%); }
     .game-card { width: 90%; }
 
-    .music-box-new { position: fixed; top: auto; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; height: 80px; background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px); }
+    .music-box-new { 
+    position: fixed; 
+    top: auto; 
+    bottom: 20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 95%; 
+    height: 80px; 
+    /* Giảm 0.9 xuống 0.3 hoặc 0.4 để thấy được hiệu ứng blur */
+    background: rgba(255, 255, 255, 0.1); 
+    /* Thêm tiền tố -webkit để hỗ trợ tốt trên Safari/iPhone */
+    -webkit-backdrop-filter: blur(20px) saturate(100%);
+    backdrop-filter: blur(20px) saturate(180%); 
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Thêm viền nhẹ để box nổi bật hơn */
+    border-radius: 33px;
+    z-index: 9999;
+}
     .track-artist { display: none; }
     .track-name { font-size: 14px; max-width: 160px; }
     #drawerBox { display: none; }
