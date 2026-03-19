@@ -103,17 +103,21 @@ fetchDiscordStatus();
 setInterval(fetchDiscordStatus, 5000);
 
 // --- LENIS SMOOTH SCROLL ---
-window.lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-    direction: 'vertical',
-    smooth: true,
-});
-function raf(time) {
-    window.lenis.raf(time);
+if (typeof Lenis !== 'undefined') {
+    window.lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+        smoothWheel: true,     // Bật cuộn mượt cho con lăn chuột (PC)
+        smoothTouch: false,    // Tắt cuộn mượt trên màn hình cảm ứng (Mobile)
+        syncTouch: false       // Tắt đồng bộ vuốt cảm ứng
+    });
+
+    function raf(time) {
+        window.lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
 }
-requestAnimationFrame(raf);
 
 // --- PHYSICS DRAWER ---
 const drawer = document.getElementById("drawerBox");

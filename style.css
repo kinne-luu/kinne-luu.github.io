@@ -15,27 +15,35 @@ body {
 ::-webkit-scrollbar-thumb { background-color: transparent; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; transition: background-color 0.3s; }
 body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.6); }
 
-/* Background Elements */
-.video-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -100; pointer-events: none; }
-.sakura { position: fixed; top: -10px; background: #ffc0cb; border-radius: 100% 0 100% 0; opacity: 0.8; z-index: 9999; pointer-events: none; animation: fall linear infinite; }
-@keyframes fall {
-    0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; }
-}
 
+.video-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -100; pointer-events: none; }
+
+@media (max-width: 768px) {
+  .video-background { top: -10vh; left: -10vw; width: 120vw; height: 120vh; }
+}
 .main-wrapper { position: relative; width: 100%; max-width: 850px; height: 1900px; margin: 0 auto; }
 
 /* --- PROFILE CARD STYLES --- */
 .blur-box { position: absolute; top: 10%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 280px; z-index: 0; }
-.inner-3d-card { width: 100%; height: 100%; border-radius: 40px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); }
-.layer-cover { position: absolute; top: 15px; left: 15px; right: 15px; height: 150px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); -webkit-mask-image: radial-gradient(circle at 16.6% 110%, transparent 72px, black 73px); mask-image: radial-gradient(circle at 16.6% 110%, transparent 72px, black 73px); }
+.inner-3d-card { width: 100%; height: 100%; border-radius: 40px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); overflow: hidden; }
+.layer-cover { position: absolute; top: 15px; left: 15px; right: 15px; height: 150px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); overflow: hidden; }
 .layer-cover img { width: 100%; height: 100%; object-fit: cover; }
-.layer-avatar { position: absolute; top: 115px; left: 45px; width: 130px; height: 130px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.9); overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: 0.3s; z-index: 10; }
+
+/* Bỏ khoảng trống, thêm viền hồng nhạt và đổ bóng nhẹ nhàng */
+.layer-avatar { position: absolute; top: 115px; left: 45px; width: 130px; height: 130px; border-radius: 50%; border: 4px solid rgba(255, 182, 193, 0.9); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); z-index: 10; overflow: hidden; transition: 0.3s; }
 .layer-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.layer-avatar:hover { border-color: #5ec8ff; }
+.layer-avatar:hover { transform: scale(1.05); border-color: #ff9ebd; }
+
 .layer-info { position: absolute; top: 180px; left: 200px; }
 .name-glitch { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 40px; font-weight: 800; color: white; margin: 0; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2); position: relative; }
-.name-glitch:hover { animation: glitch-anim 0.3s infinite; color: #5ec8ff; }
+
+/* Responsive cho Mobile */
+@media (max-width: 50px) {
+  .blur-box { width: 95vw; height: auto; min-height: 450px; }
+  .layer-avatar { left: 50%; transform: translateX(-50%); top: 100px; }
+  .layer-avatar:hover { transform: translateX(-50%) scale(1.05); }
+  .layer-info { position: relative; top: 240px; left: 0; text-align: center; width: 100%; }
+}
 
 /* Status */
 .status-badge { display: flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-top: 5px; background: rgba(0, 0, 0, 0.2); padding: 4px 12px; border-radius: 20px; width: fit-content; }
@@ -167,9 +175,9 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     .layer-avatar { left: 32.5%; transform: translateX(-50%); top: 100px; }
     .layer-avatar:hover { transform: translateX(-50%); }
     .layer-info { top: 240px; left: 0; width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .blur-name-box-2 { width: 90%; height: auto; min-height: 220px; padding-bottom: 30px; top: 500px; left: 50%; transform: translate(-50%, -50%); }
+    .blur-name-box-2 { width: 90%; height: auto; min-height: 230px; padding-bottom: 30px; top: 500px; left: 50%; transform: translate(-50%, -50%); }
     .me { font-size: 26px; top: 10px; left: 20px; padding: 5px 20px; border-radius: 30px; margin-bottom: 10px; display: inline-block; background: rgba(255, 67, 155, 0.5); }
-    .me-2 { top: 70px; left: 25px; width: 85%; font-size: 15px; line-height: 1.5; }
+    .me-2 { top: 69px; left: 25px; width: 85%; font-size: 15px; line-height: 1.5; }
     .blur-social-box { width: 90%; height: 100px; top: 677px; left: 50%; transform: translate(-50%, -50%); display: flex; justify-content: space-evenly; align-items: center; }
     .my-social { display: none; }
     .fb-pos, .ig-pos, .x-pos, .ani-pos, .line-wrapper, .discord-wrapper { position: relative; top: auto; left: auto; margin: 0; }
