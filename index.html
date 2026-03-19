@@ -7,8 +7,7 @@
     <meta name="description" content="Meow Meow Meow">
     <meta property="og:image" content="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/image%20pack/thumbnail.jpg">
     <meta property="og:description" content="Meow Meow Meow">
-<link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/image%20pack/Philia.webp">
-
+    <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/image%20pack/Philia.webp">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,9 +18,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <audio id="bgm" loop>
-        <source src="https://raw.githubusercontent.com/kienmanhluu/kinne/main/Music/%E3%82%82%E3%81%A3%E3%81%A8%E8%A6%8B%E3%81%A6%E3%81%84%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84.mp3" type="audio/mp3">
-    </audio>
+
+<div id="welcome-overlay">
+    <div class="welcome-card">
+        <h2>Welcome!</h2>
+        <p>Chúc cậu một ngày tốt lành!</p>
+        <button class="welcome-btn" onclick="closeWelcome()">Close :Đ</button>
+    </div>
+</div>
+
+
+    <div id="youtube-audio-player" style="display: none;"></div>
 
     <video autoplay muted loop class="video-background">
         <source src="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/main/background%20video/Comp%201_4.webm" type="video/webm" />
@@ -145,9 +152,16 @@
         <div class="music-box-new">
             <div class="player-header">
                 <div class="album-art"><img src="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/image%20pack/MahiruMusicCover.png" alt="Album Art"></div>
-                <div class="track-info"><h3 class="track-name">Motto Miteite Kudasai</h3><p class="track-artist">Mahiru Shiina</p></div>
+                <div class="track-info">
+                    <h3 class="track-name">Motto Miteite Kudasai</h3>
+                    <p class="track-artist">Mahiru Shiina</p>
+                </div>
             </div>
-            <div class="control-area"><div class="play-btn-circle" onclick="toggleMusic()"><i class="fa-solid fa-play" id="play-icon"></i></div></div>
+            <div class="control-area">
+                <div class="play-btn-circle" onclick="toggleMusic()">
+                    <i class="fa-solid fa-play" id="play-icon"></i>
+                </div>
+            </div>
         </div>
     </div> 
 
@@ -158,7 +172,7 @@
 
     <div class="portfolio-modal-overlay" id="portfolioModal">
         <div class="portfolio-modal-content">
-            <span class="close-pf-modal" onclick="closePortfolio()">&times;</span>
+            <span class="close-pf-modal" onclick="closePortfolio()">×</span>
             <h2 id="modal-pf-title">Portfolio</h2>
             <div class="modal-pf-grid" id="modal-grid"></div>
         </div>
