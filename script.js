@@ -273,12 +273,12 @@ if (mahiruImg) {
 // --- PORTFOLIO MODAL LOGIC (FULL SCREEN) ---
 const pfFullData = {
     '3d': [
-        "https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/20250709_004547.jpg",
-        "https://raw.githubusercontent.com/kienmanhluu/kinne/main/alime%20background%20file/IMG_20250617_190900.jpg",
-        "https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/IMG_20251107_111548.png",
-        "https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/New%20Project%2065%20%5B7F642B5%5D.png",
-        "https://raw.githubusercontent.com/kienmanhluu/kinne/refs/heads/main/alime%20background%20file/New%20Project%2065%20%5B7F642B5%5D.png",
-        "https://raw.githubusercontent.com/kienmanhluu/kinne/main/alime%20background%20file/New%20Project%2043%20%5B4C9E502%5D.png"
+        "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/20250709_004547.jpg",
+        "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/20250709_004559.jpg",
+        "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/IMG_20250617_190900.jpg",
+        "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/New%20Project%2065%20%5B7F642B5%5D.png",
+        "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/New%20Project%2065%20%5B7F642B5%5D.png",
+        "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/New%20Project%2043%20%5B4C9E502%5D.png"
     ],
     'drawing': [
         "https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/Drawing/Untitled71_0009-26-14_20260309210516.png",
