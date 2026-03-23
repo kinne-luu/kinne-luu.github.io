@@ -190,7 +190,7 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .music-box-new.hidden { 
     transform: translate3d(0, 0, -300px) scale(0.6); 
     opacity: 1; 
-    filter: blur(4px); 
+    filter: blur(px); 
     pointer-events: none; 
 }
 
@@ -225,7 +225,7 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 
 body::after { content: ""; display: block; position: absolute; top: 1700px; left: 0; width: 100%; height: 80px; background: transparent; z-index: -10; }
 
-/* --- RESPONSIVE MOBILE --- */
+/* --- RESPONSIVE MOBILE TỐI ƯU: HIỂN THỊ 1 BÀI --- */
 @media (max-width: 1024px) {
     .main-wrapper { height: 1800px; }
     
@@ -252,23 +252,91 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     .blur-games-box { width: 90%; height: auto; padding-bottom: 20px; top: 1450px; left: 50%; transform: translate(-50%, -50%); }
     .game-card { width: 90%; }
     
+    /* --- GIAO DIỆN MUSIC MOBILE: 1 BÀI HÁT + NÚT BẤM --- */
     .music-playlist-container {
-        position: fixed; top: auto; bottom: 20px; left: 50%;
-        transform: translateX(-50%); width: 95%; height: 100px;
-        flex-direction: row; perspective: none;
+        position: fixed !important; 
+        top: auto !important; 
+        bottom: 20px !important; 
+        left: 50% !important; 
+        width: 92vw !important; 
+        height: 90px !important;
+        transform: translateX(-50%) !important; 
+        z-index: 9999 !important;
+        display: flex !important; 
+        flex-direction: row !important; /* [Bài hát] nằm cạnh [2 Nút] */
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 15px !important;
     }
-    .nav-btn { display: none; }
+
+    /* Đóng băng hoàn toàn thanh cuộn, chỉ dùng để chứa 1 bài */
     .carousel-viewport {
-        display: flex; flex-direction: row; width: 100%; height: 90px;
-        gap: 10px; overflow-x: auto; scrollbar-width: none;
-        perspective: none; transform-style: flat;
+        display: block !important; 
+        position: relative !important;
+        width: 75vw !important; 
+        height: 85px !important;
+        overflow: visible !important; 
+        padding: 0 !important; 
+        perspective: none !important; 
+        transform-style: flat !important;
     }
-    .music-box-new {
-        position: relative; flex: 0 0 85%; height: 80px; left: auto;
-        transform: none !important; opacity: 1 !important; visibility: visible !important;
+
+    .carousel-viewport::after { display: none !important; }
+
+    /* Định dạng chung cho 4 thẻ nhạc */
+    .carousel-viewport .music-box-new {
+        position: absolute !important; 
+        width: 100% !important; 
+        max-width: 100% !important;
+        height: 100% !important; 
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        background: rgba(255, 255, 255, 0.15) !important; 
+        filter: none !important; /* Xóa mờ */
+        transition: opacity 0.4s ease !important; /* Hiệu ứng chuyển bài mượt */
+        border-radius: 25px !important;
     }
-    .track-artist { display: none; }
-    .track-name { font-size: 14px; max-width: 160px; }
+
+    /* CHỈ HIỂN THỊ DUY NHẤT BÀI ĐANG HÁT */
+    .carousel-viewport .music-box-new.active {
+        opacity: 1 !important; 
+        visibility: visible !important;
+        pointer-events: auto !important;
+        z-index: 10 !important;
+        transform: none !important; 
+    }
+
+    /* GIẤU HOÀN TOÀN CÁC BÀI CÒN LẠI */
+    .carousel-viewport .music-box-new.prev-card,
+    .carousel-viewport .music-box-new.next-card,
+    .carousel-viewport .music-box-new.hidden {
+        opacity: 0 !important; 
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: none !important; 
+        z-index: 0 !important;
+    }
+
+    /* Bật lại 2 nút mũi tên lên/xuống bên phải */
+    .carousel-controls { 
+        display: flex !important; 
+        flex-direction: column !important; /* Nút xếp dọc */
+        gap: 12px !important;
+        z-index: 20 !important;
+    }
+
+    .nav-btn {
+        display: block !important;
+        font-size: 22px !important;
+        color: rgba(255,255,255,0.7) !important;
+        padding: 5px !important;
+    }
+    .nav-btn:active { color: #fff !important; transform: scale(1.1) !important; }
+
+    /* Dọn dẹp Text cho gọn */
+    .track-artist { display: none !important; }
+    .track-name { font-size: 14px !important; max-width: 150px !important; }
     
     #drawerBox { display: none; }
     body::after { content: ""; display: block; height: 100px; width: 100%; }
