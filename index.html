@@ -14,19 +14,17 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="welcome-overlay">
-    <div class="welcome-card">
-        <h2>Welcome!</h2>
-        <p>Chúc cậu một ngày tốt lành!</p>
-        <button class="welcome-btn" onclick="closeWelcome()">Close :Đ</button>
+    <div id="welcome-overlay">
+        <div class="welcome-card">
+            <h2>Welcome!</h2>
+            <p>Chúc cậu một ngày tốt lành!</p>
+            <button class="welcome-btn" onclick="closeWelcome()">Close :Đ</button>
+        </div>
     </div>
-</div>
-
 
     <div id="youtube-audio-player" style="display: none;"></div>
 
@@ -149,37 +147,94 @@
             </div>
         </div>
 
-        <div class="music-box-new">
-            <div class="player-header">
-                <div class="album-art"><img src="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/image%20pack/MahiruMusicCover.png" alt="Album Art"></div>
-                <div class="track-info">
-                    <h3 class="track-name">Motto Miteite Kudasai</h3>
-                    <p class="track-artist">Mahiru Shiina</p>
+<div class="music-playlist-container">
+            <div class="carousel-viewport">
+                <div class="music-box-new" data-index="0">
+                    <div class="player-header">
+                        <div class="album-art"><img src="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/image%20pack/MahiruMusicCover.png" alt="Album Art"></div>
+                        <div class="track-info">
+                            <h3 class="track-name">Motto Miteite Kudasai</h3>
+                            <p class="track-artist">Mahiru Shiina</p>
+                        </div>
+                    </div>
+                    <div class="control-area">
+                        <div class="play-btn-circle" onclick="toggleMusic('YNaFdsEIvew', this)">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="music-box-new" data-index="1">
+                    <div class="player-header">
+                        <div class="album-art"><img src="https://img.youtube.com/vi/LGZDEcQ1bJs/hqdefault.jpg" alt="Album Art"></div>
+                        <div class="track-info">
+                            <h3 class="track-name">Ortus</h3>
+                            <p class="track-artist">Zero Aimiya</p>
+                        </div>
+                    </div>
+                    <div class="control-area">
+                        <div class="play-btn-circle" onclick="toggleMusic('LGZDEcQ1bJs', this)">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="music-box-new" data-index="2">
+                    <div class="player-header">
+                        <div class="album-art"><img src="https://img.youtube.com/vi/23RSyCzXDZU/hqdefault.jpg" alt="Album Art"></div>
+                        <div class="track-info">
+                            <h3 class="track-name">星の鼓動 (Hoshi no Kodou)</h3>
+                            <p class="track-artist">Kohana Lam</p>
+                        </div>
+                    </div>
+                    <div class="control-area">
+                        <div class="play-btn-circle" onclick="toggleMusic('23RSyCzXDZU', this)">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="music-box-new" data-index="3">
+                    <div class="player-header">
+                        <div class="album-art"><img src="https://img.youtube.com/vi/kUdjS5J4Qv4/hqdefault.jpg" alt="Album Art"></div>
+                        <div class="track-info">
+                            <h3 class="track-name">魔法の絵日記</h3>
+                            <p class="track-artist">Shiroha Naruse</p>
+                        </div>
+                    </div>
+                    <div class="control-area">
+                        <div class="play-btn-circle" onclick="toggleMusic('kUdjS5J4Qv4', this)">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="control-area">
-                <div class="play-btn-circle" onclick="toggleMusic()">
-                    <i class="fa-solid fa-play" id="play-icon"></i>
-                </div>
+
+            <div class="carousel-controls">
+            <div class="carousel-controls">
+                <button class="nav-btn prev" onclick="moveCarousel(-1)"><i class="fas fa-chevron-up"></i></button>
+                <button class="nav-btn next" onclick="moveCarousel(1)"><i class="fas fa-chevron-down"></i></button>
+            </div>
+        </div>  
             </div>
         </div>
-    </div> 
 
-    <div id="drawerBox">
-        <div id="drawerContent"><img id="draggableImg" src="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/image%20pack/mahihi.png"></div>
-        <div id="drawerHandle"></div>
-    </div>
-
-    <div class="portfolio-modal-overlay" id="portfolioModal">
-        <div class="portfolio-modal-content">
-            <span class="close-pf-modal" onclick="closePortfolio()">×</span>
-            <h2 id="modal-pf-title">Portfolio</h2>
-            <div class="modal-pf-grid" id="modal-grid"></div>
+        <div id="drawerBox">
+            <div id="drawerContent"><img id="draggableImg" src="https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/image%20pack/mahihi.png"></div>
+            <div id="drawerHandle"></div>
         </div>
+
+        <div class="portfolio-modal-overlay" id="portfolioModal">
+            <div class="portfolio-modal-content">
+                <span class="close-pf-modal" onclick="closePortfolio()">×</span>
+                <h2 id="modal-pf-title">Portfolio</h2>
+                <div class="modal-pf-grid" id="modal-grid"></div>
+            </div>
+        </div>
+
+        <div id="lightbox"><img id="lightbox-img" src=""></div>
     </div>
-
-    <div id="lightbox"><img id="lightbox-img" src=""></div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>

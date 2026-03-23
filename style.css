@@ -1,90 +1,37 @@
 /* --- GLOBAL STYLES --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { width: 100%; height: 100%; overflow-y: auto; }
-body { 
-    width: 100%; min-height: 100%; 
-    font-family: 'Nunito', sans-serif; 
-    overflow-x: hidden; background-color: #000; 
-    user-select: none; 
-    -webkit-user-select: none; 
-}
-
-/* --- WELCOME POP-UP STYLES --- */
-#welcome-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(24, 15, 23, 0.625);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 999999; transition: 0.5s;
-}
-
-.welcome-card {
-    width: 300px; padding: 30px;
-    background: rgba(253, 142, 255, 0.301);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
-    backdrop-filter: blur(20px) saturate(160%);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-    text-align: center; color: #fff;
-}
-
-#welcome-title { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 24px; margin-bottom: 15px; color: #fff9a2; }
-#welcome-text { font-family: 'Nunito', sans-serif; font-size: 15px; margin-bottom: 25px; line-height: 1.4; opacity: 0.9; }
-
-.welcome-btn {
-    /* ... các thuộc tính cũ của cậu giữ nguyên ... */
-    padding: 10px 20px;
-    border-radius: 12px;
-    border: none;
-    background: #fff;
-    color: #000;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s;
-    
-    /* THÊM DÒNG NÀY ĐỂ ĐẨY NÚT XUỐNG XÍU */
-    margin-top: 15px; /* Cậu có thể tăng giảm số 15px này tùy ý nhé */
-}   
-
-.welcome-btn:hover { background: #fff; color: #000; transform: scale(1.05); }
-
-/* Scrollbar */
+body { width: 100%; min-height: 100%; font-family: 'Nunito', sans-serif; overflow-x: hidden; background-color: #000; user-select: none; -webkit-user-select: none; }
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background-color: transparent; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; transition: background-color 0.3s; }
 body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.6); }
 
-
+/* --- BACKGROUND --- */
 .video-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -100; pointer-events: none; }
-
-@media (max-width: 768px) {
-  .video-background { top: -10vh; left: -10vw; width: 120vw; height: 120vh; }
-}
+@media (max-width: 768px) { .video-background { top: -10vh; left: -10vw; width: 120vw; height: 120vh; } }
 .main-wrapper { position: relative; width: 100%; max-width: 850px; height: 1900px; margin: 0 auto; }
 
-/* --- PROFILE CARD STYLES --- */
+/* --- WELCOME POP-UP --- */
+#welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(24, 15, 23, 0.625); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 999999; transition: 0.5s; }
+.welcome-card { width: 300px; padding: 30px; background: rgba(253, 142, 255, 0.301); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; backdrop-filter: blur(20px) saturate(160%); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); text-align: center; color: #fff; }
+#welcome-title { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 24px; margin-bottom: 15px; color: #fff9a2; }
+#welcome-text { font-family: 'Nunito', sans-serif; font-size: 15px; margin-bottom: 25px; line-height: 1.4; opacity: 0.9; }
+.welcome-btn { padding: 10px 20px; border-radius: 12px; border: none; background: #fff; color: #000; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 15px; }
+.welcome-btn:hover { background: #fff; color: #000; transform: scale(1.05); }
+
+/* --- PROFILE BOX --- */
 .blur-box { position: absolute; top: 10%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 280px; z-index: 0; }
 .inner-3d-card { width: 100%; height: 100%; border-radius: 40px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); overflow: hidden; }
 .layer-cover { position: absolute; top: 15px; left: 15px; right: 15px; height: 150px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); overflow: hidden; }
 .layer-cover img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Bỏ khoảng trống, thêm viền hồng nhạt và đổ bóng nhẹ nhàng */
 .layer-avatar { position: absolute; top: 115px; left: 45px; width: 130px; height: 130px; border-radius: 50%; border: 4px solid rgba(255, 182, 193, 0.9); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); z-index: 10; overflow: hidden; transition: 0.3s; }
 .layer-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .layer-avatar:hover { transform: scale(1.05); border-color: #ff9ebd; }
-
 .layer-info { position: absolute; top: 180px; left: 200px; }
 .name-glitch { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 40px; font-weight: 800; color: white; margin: 0; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2); position: relative; }
 
-/* Responsive cho Mobile */
-@media (max-width: 50px) {
-  .blur-box { width: 95vw; height: auto; min-height: 450px; }
-  .layer-avatar { left: 50%; transform: translateX(-50%); top: 100px; }
-  .layer-avatar:hover { transform: translateX(-50%) scale(1.05); }
-  .layer-info { position: relative; top: 240px; left: 0; text-align: center; width: 100%; }
-}
-
-/* Status */
+/* --- DISCORD STATUS --- */
 .status-badge { display: flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-top: 5px; background: rgba(0, 0, 0, 0.2); padding: 4px 12px; border-radius: 20px; width: fit-content; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #747f8d; transition: all 0.3s ease; }
 .status-dot.online { background: #06c755; box-shadow: 0 0 10px #06c755; animation: pulse 2s infinite; }
@@ -92,38 +39,39 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .status-dot.dnd { background: #f04747; box-shadow: 0 0 10px #f04747; animation: pulse 2s infinite; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 @keyframes moon-pulse { from { filter: drop-shadow(0 0 1px rgba(255, 255, 200, 0.4)); } to { filter: drop-shadow(0 0 5px rgba(255, 255, 220, 1)); } }
-@keyframes glitch-anim { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
-/* Other Boxes */
+/* --- INTRO BOX --- */
 .blur-name-box-2 { position: absolute; top: 23%; left: 38.2%; transform: translate(-50%, -50%); width: 400px; height: 170px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
 .me { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 5%; left: 6%; font-weight: 700; }
 .me-2 { font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); font-size: 15px; position: absolute; top: 28%; left: 6%; width: 90%; font-weight: 600; line-height: 1.4; }
 
+/* --- SOCIAL BOX (Đã khôi phục hiệu ứng hover, ẩn QR, thu nhỏ Logo) --- */
 .blur-social-box { position: absolute; top: 23%; left: 74.4%; transform: translate(-50%, -50%); width: 185px; height: 170px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
 .my-social { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 255, 255); font-size: 18px; position: absolute; top: 7%; left: 24%; font-weight: 700; pointer-events: none; }
 .social-btn { position: absolute; width: 45px; height: 45px; border-radius: 15px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; align-items: center; font-size: 25px; color: white; text-decoration: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-.social-btn img { width: 24px; height: 24px; filter: invert(1); }
+.social-btn img { width: 24px; height: 24px; filter: invert(1); } /* FIX LOGO TO */
 .social-btn:hover { transform: translateY(-5px) scale(1.1); border-color: rgba(255, 255, 255, 0.5); color: white; z-index: 100; }
-
 .fb-pos { top: 28%; left: 7%; } .ig-pos { top: 28%; left: 39%; } .x-pos { top: 28%; left: 70%; } .ani-pos { top: 60%; left: 7%; }
 .line-wrapper { position: absolute; top: 60%; left: 39%; width: 45px; height: 45px; } 
 .discord-wrapper { position: absolute; top: 60%; left: 70%; width: 45px; height: 45px; cursor: pointer; }
-.fb-color:hover { background: #1877F2; } .ig-color:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-.x-color:hover { background: #000; } .ani-color:hover { background: #02A9FF; } .line-color:hover { background: #06C755; } .dc-color:hover { background: #5865F2; }
+
+/* Các màu khi di chuột vào icon */
+.fb-color:hover { background: #1877F2; } 
+.ig-color:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.x-color:hover { background: #000; } 
+.ani-color:hover { background: #02A9FF; } 
+.line-color:hover { background: #06C755; } 
+.dc-color:hover { background: #5865F2; }
+
+/* FIX QR VÀ TOOLTIP */
 .qr-tooltip-dark { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) scale(0.5); background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px; border-radius: 12px; opacity: 0; pointer-events: none; transition: 0.3s ease; z-index: 999; }
 .qr-tooltip-dark img { width: 100px; height: 100px; display: block; border-radius: 4px; }
 .line-wrapper:hover .qr-tooltip-dark { opacity: 1; transform: translateX(-50%) scale(1); }
 .discord-tooltip { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(10px); background: rgba(0, 0, 0, 0.85); color: white; padding: 5px 8px; border-radius: 6px; font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s ease; }
 .discord-wrapper:hover .discord-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* --- CŨ: PORTFOLIO BOX --- */
-.blur-portfolio-box { 
-    position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%); 
-    width: 600px; height: 350px; border-radius: 40px; 
-    background: transparent; backdrop-filter: blur(20px) saturate(140%); 
-    border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
-    display: flex; flex-direction: column; padding: 20px 25px; overflow: hidden; 
-}
+/* --- PORTFOLIO BOX --- */
+.blur-portfolio-box { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 350px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; padding: 20px 25px; overflow: hidden; }
 .what-can-i-do { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 26px; font-weight: 700; margin-bottom: 2px; }
 .what-can-i-do-2 { font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); font-size: 14px; font-weight: 600; margin-bottom: 12px; }
 .portfolio-sections-container { display: flex; gap: 15px; flex: 1; overflow: hidden; }
@@ -137,21 +85,10 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .section-hover-overlay span { color: #ffeb3b; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
 .portfolio-section:hover .section-hover-overlay { opacity: 1; }
 
-/* --- MỚI: PORTFOLIO MODAL FULLSCREEN --- */
-.portfolio-modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-    z-index: 99999; display: flex; justify-content: center; align-items: center;
-    visibility: hidden; opacity: 0; transition: all 0.3s ease-in-out;
-}
+/* --- PORTFOLIO MODAL --- */
+.portfolio-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: all 0.3s ease-in-out; }
 .portfolio-modal-overlay.active { visibility: visible; opacity: 1; }
-.portfolio-modal-content {
-    width: 75vw; max-width: 1000px; height: 75vh;
-    background: rgba(30, 30, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 30px; padding: 30px; position: relative;
-    display: flex; flex-direction: column;
-    transform: scale(0.8); transition: transform 0.3s ease-in-out;
-}
+.portfolio-modal-content { width: 75vw; max-width: 1000px; height: 75vh; background: rgba(30, 30, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; padding: 30px; position: relative; display: flex; flex-direction: column; transform: scale(0.8); transition: transform 0.3s ease-in-out; }
 .portfolio-modal-overlay.active .portfolio-modal-content { transform: scale(1); }
 .close-pf-modal { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 35px; font-weight: bold; cursor: pointer; transition: 0.2s; z-index: 10; }
 .close-pf-modal:hover { color: #ffeb3b; transform: scale(1.2); }
@@ -162,7 +99,13 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .pf-img-full { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; cursor: zoom-in; transition: transform 0.3s; }
 .pf-img-full:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
 
-/* --- GAMES BOX --- */
+/* --- LIGHTBOX --- */
+#lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 100000; }
+#lightbox-img { max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); transition: transform 0.3s ease; transform: scale(0.9); }
+#lightbox.active { visibility: visible; opacity: 1; }
+#lightbox.active #lightbox-img { transform: scale(1); }
+
+/* --- GAMES BOX (Đã khôi phục icon và khoảng cách chữ) --- */
 .blur-games-box { position: absolute; top: 60%; left: 31.3%; transform: translate(-50%, -50%); width: 280px; height: 440px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; }
 .my-games { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; font-weight: 700; margin: 15px 0 15px 20px; }
 .games-container { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
@@ -176,20 +119,101 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .copy-icon { font-size: 14px; color: #ffffffcc; cursor: pointer; transition: all 0.2s ease; }
 .copy-icon:hover { color: #b388ff; transform: scale(1.2); }
 
-/* --- MUSIC PLAYER --- */
-.music-box-new { position: absolute; top: 50.8%; left: 67.5%; transform: translate(-50%, -50%); width: 300px; height: 90px; border-radius: 30px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(18px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); z-index: 20; overflow: hidden; display: flex; flex-direction: row; align-items: center; padding: 15px; gap: 15px; }
-.player-header { display: flex; align-items: center; gap: 12px; flex-grow: 1; }
-.album-art { width: 60px; height: 60px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); flex-shrink: 0; }
+/* --- 3D MUSIC CAROUSEL SYSTEM (ĐÃ FIX KHUNG CONTAINER BẢO VỆ) --- */
+/* --- 3D MUSIC CAROUSEL SYSTEM --- */
+.music-playlist-container {
+    position: absolute;
+    top: 54.8%; /* Dịch lên trên so với mức 60% cũ */
+    left: 70.5%;
+    transform: translate(-50%, -50%);
+    width: 480px; /* Tăng chiều rộng để đủ chỗ cho 2 mũi tên 2 bên */
+    display: flex;
+    flex-direction: row; /* Xếp hàng ngang để nút nằm 2 bên */
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    z-index: 20;
+    perspective: 1200px;
+}
+
+.carousel-viewport {
+    height: 350px;
+    width: 320px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+}
+
+/* Các thuộc tính .music-box-new và animation 3D giữ nguyên như file cũ của cậu */
+.music-box-new {
+    position: absolute;
+    width: 300px;
+    height: 90px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    gap: 15px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    left: 10px;
+}
+
+/* Các trạng thái Carousel 3D có thêm Blur */
+.music-box-new.active { 
+    transform: translate3d(0, 0, 0) scale(1); 
+    opacity: 1; 
+    filter: blur(0px); /* Thẻ giữa rõ nét */
+    z-index: 10; 
+    pointer-events: auto; 
+}
+.music-box-new.prev-card { 
+    transform: translate3d(0, -100px, -150px) scale(0.85); 
+    opacity: 1; /* Tăng độ sáng lên một chút để bù lại độ nhòe */
+    filter: blur(3.6px); /* Làm nhòe thẻ bên trên */
+    z-index: 5; 
+    pointer-events: none; 
+}
+.music-box-new.next-card { 
+    transform: translate3d(0, 100px, -150px) scale(0.85); 
+    opacity: 1; 
+    filter: blur(3.6px); /* Làm nhòe thẻ bên dưới */
+    z-index: 5; 
+    pointer-events: none; 
+}
+.music-box-new.hidden { 
+    transform: translate3d(0, 0, -300px) scale(0.6); 
+    opacity: 1; 
+    filter: blur(4px); 
+    pointer-events: none; 
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 24px;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 30;
+}
+.nav-btn:hover { color: #fff; transform: scale(1.2); }
+
+.player-header { display: flex; align-items: center; gap: 12px; flex-grow: 1; overflow: hidden; }
+.album-art { width: 60px; height: 60px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
 .album-art img { width: 100%; height: 100%; object-fit: cover; }
-.track-info { display: flex; flex-direction: column; justify-content: center; overflow: hidden; max-width: 130px; }
-.track-name { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 14px; color: #fff; margin: 0 0 2px 0; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-.track-artist { font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 11px; color: rgba(255, 255, 255, 0.7); margin: 0; }
-.control-area { display: flex; align-items: center; justify-content: center; }
-.play-btn-circle { width: 45px; height: 45px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; }
-.play-btn-circle:hover { background: rgba(255, 255, 255, 0.9); transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
-.play-btn-circle i { color: #fff; font-size: 16px; margin-left: 3px; }
+.track-info { display: flex; flex-direction: column; overflow: hidden; }
+.track-name { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 14px; color: #fff; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.track-artist { font-family: 'Nunito', sans-serif; font-size: 11px; color: rgba(255,255,255,0.6); }
+.play-btn-circle { width: 45px; height: 45px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; pointer-events: auto; }
+.play-btn-circle:hover { background: #fff; }
 .play-btn-circle:hover i { color: #000; }
-.fa-pause { margin-left: 0 !important; }
 
 /* --- DRAWER --- */
 #drawerBox { position: fixed; top: 40%; left: -170px; width: 200px; height: 200px; display: flex; align-items: center; z-index: 2000; }
@@ -199,24 +223,21 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 #draggableImg { position: absolute; width: 120px; user-select: none; -webkit-user-drag: none; top: 50%; left: 50%; transform: translate(-50%, -50%); cursor: grab; z-index: 9999; pointer-events: auto; }
 #draggableImg:active { cursor: grabbing; }
 
-/* --- LIGHTBOX (ZOOM ẢNH) --- */
-#lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 100000; }
-#lightbox-img { max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); transition: transform 0.3s ease; transform: scale(0.9); }
-#lightbox.active { visibility: visible; opacity: 1; }
-#lightbox.active #lightbox-img { transform: scale(1); }
-
 body::after { content: ""; display: block; position: absolute; top: 1700px; left: 0; width: 100%; height: 80px; background: transparent; z-index: -10; }
 
-/* --- MEDIA QUERIES --- */
+/* --- RESPONSIVE MOBILE --- */
 @media (max-width: 1024px) {
     .main-wrapper { height: 1800px; }
+    
     .blur-box { width: 90%; height: 340px; top: 190px; left: 50%; transform: translate(-50%, -50%); }
     .layer-avatar { left: 32.5%; transform: translateX(-50%); top: 100px; }
     .layer-avatar:hover { transform: translateX(-50%); }
     .layer-info { top: 240px; left: 0; width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    
     .blur-name-box-2 { width: 90%; height: auto; min-height: 230px; padding-bottom: 30px; top: 500px; left: 50%; transform: translate(-50%, -50%); }
     .me { font-size: 26px; top: 10px; left: 20px; padding: 5px 20px; border-radius: 30px; margin-bottom: 10px; display: inline-block; background: rgba(255, 67, 155, 0.5); }
     .me-2 { top: 69px; left: 25px; width: 85%; font-size: 15px; line-height: 1.5; }
+    
     .blur-social-box { width: 90%; height: 100px; top: 677px; left: 50%; transform: translate(-50%, -50%); display: flex; justify-content: space-evenly; align-items: center; }
     .my-social { display: none; }
     .fb-pos, .ig-pos, .x-pos, .ani-pos, .line-wrapper, .discord-wrapper { position: relative; top: auto; left: auto; margin: 0; }
@@ -230,9 +251,25 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     
     .blur-games-box { width: 90%; height: auto; padding-bottom: 20px; top: 1450px; left: 50%; transform: translate(-50%, -50%); }
     .game-card { width: 90%; }
-    .music-box-new { position: fixed; top: auto; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; height: 80px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 33px; z-index: 9999; }
+    
+    .music-playlist-container {
+        position: fixed; top: auto; bottom: 20px; left: 50%;
+        transform: translateX(-50%); width: 95%; height: 100px;
+        flex-direction: row; perspective: none;
+    }
+    .nav-btn { display: none; }
+    .carousel-viewport {
+        display: flex; flex-direction: row; width: 100%; height: 90px;
+        gap: 10px; overflow-x: auto; scrollbar-width: none;
+        perspective: none; transform-style: flat;
+    }
+    .music-box-new {
+        position: relative; flex: 0 0 85%; height: 80px; left: auto;
+        transform: none !important; opacity: 1 !important; visibility: visible !important;
+    }
     .track-artist { display: none; }
     .track-name { font-size: 14px; max-width: 160px; }
+    
     #drawerBox { display: none; }
     body::after { content: ""; display: block; height: 100px; width: 100%; }
 }

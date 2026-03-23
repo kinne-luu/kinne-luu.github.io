@@ -4,8 +4,7 @@ function createPetal() {
     petal.classList.add('sakura');
     petal.style.left = Math.random() * 100 + 'vw';
     const size = Math.random() * 10 + 5; 
-    petal.style.width = size + 'px';
-    petal.style.height = size + 'px';
+    petal.style.width = size + 'px'; petal.style.height = size + 'px';
     const duration = Math.random() * 3 + 4; 
     petal.style.animationDuration = duration + 's';
     petal.style.animationDelay = Math.random() * 2 + 's';
@@ -14,21 +13,16 @@ function createPetal() {
 }
 setInterval(createPetal, 300);
 
-
-
-
-// --- DYNAMIC COPY FUNCTION ---
+// --- DYNAMIC COPY & DISCORD ---
 function copyDynamicText(iconElement) {
     const wrapper = iconElement.closest('.game-uid-wrapper');
-    const textElement = wrapper.querySelector('.copy-text');
-    const text = textElement.innerText.trim();
+    const text = wrapper.querySelector('.copy-text').innerText.trim();
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => {
         iconElement.style.color = '#5ec8ff';
         setTimeout(() => iconElement.style.color = '#ffffffcc', 800);
     });
 }
-
 function copyDiscordUsername() {
     const username = "kienmanhluu";
     navigator.clipboard.writeText(username).then(() => {
@@ -39,26 +33,18 @@ function copyDiscordUsername() {
             tooltip.textContent = "Click to Copy ID";
             tooltip.style.backgroundColor = "rgba(0, 0, 0, 0.85)";
         }, 1500);
-    }).catch(err => console.error("Copy failed", err));
-}
-
-// --- LIGHTBOX PORTFOLIO (ZOOM CẬN CẢNH) ---
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightbox-img");
-if (lightbox) {
-    lightbox.addEventListener("click", (e) => {
-        if (e.target === lightbox) { lightbox.classList.remove("active"); }
     });
 }
 
-// --- YOUTUBE MUSIC PLAYER & MOBILE AUTOPLAY ---
+// --- YOUTUBE PLAYER & 3D CAROUSEL ---
 let ytPlayer;
 let isYtPlaying = false;
-let isMusicUnlocked = false; // Theo dõi tương tác đầu tiên
-const playIcon = document.getElementById('play-icon');
-const videoID = "YNaFdsEIvew"; 
+let isMusicUnlocked = false; 
+let currentVideoID = "YNaFdsEIvew"; 
+let currentActiveBtn = null; 
+let musicCurrentIndex = 0;
+const musicCards = document.querySelectorAll('.music-box-new');
 
-// Tải API YouTube
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 const firstScriptTag = document.getElementsByTagName('script')[0];
@@ -66,207 +52,149 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 function onYouTubeIframeAPIReady() {
     ytPlayer = new YT.Player('youtube-audio-player', {
-        height: '0', width: '0', 
-        videoId: videoID,
-        playerVars: { 
-            'autoplay': 0, 'controls': 0, 'showinfo': 0, 'rel': 0, 
-            'loop': 1, 'playlist': videoID 
-        },
+        height: '0', width: '0', videoId: currentVideoID,
+        playerVars: { 'autoplay': 0, 'controls': 0, 'showinfo': 0, 'rel': 0, 'playsinline': 1 },
         events: {
-            'onReady': (event) => { ytPlayer.setVolume(50); },
+            'onReady': (event) => { 
+                ytPlayer.setVolume(50); 
+                currentActiveBtn = document.querySelector('.play-btn-circle');
+            },
             'onStateChange': onPlayerStateChange
         }
     });
 }
-
 function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-        isYtPlaying = true;
-        if (playIcon) { playIcon.classList.replace('fa-play', 'fa-pause'); }
-    } else {
-        isYtPlaying = false;
-        if (playIcon) { playIcon.classList.replace('fa-pause', 'fa-play'); }
+    if (event.data === 0) ytPlayer.playVideo(); 
+    if (event.data == 1) { isYtPlaying = true; updateAllIcons(); } 
+    else if (event.data == 2 || event.data == 0) { isYtPlaying = false; updateAllIcons(); }
+}
+function updateAllIcons() {
+    document.querySelectorAll('.play-btn-circle i').forEach(icon => { icon.className = 'fa-solid fa-play'; });
+    if (isYtPlaying && currentActiveBtn) {
+        const activeIcon = currentActiveBtn.querySelector('i');
+        if (activeIcon) activeIcon.className = 'fa-solid fa-pause';
     }
 }
-
-// Hàm Play/Pause thủ công
-function toggleMusic() {
-    if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
-    isMusicUnlocked = true; // Đánh dấu đã tương tác
-    isYtPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
-}
-
-// Hàm kích hoạt nhạc khi chạm màn hình lần đầu (Fix Mobile)
-function unlockAudio() {
-    if (isMusicUnlocked || !ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
-    
-    ytPlayer.playVideo();
+function toggleMusic(videoId, element) {
+    if (!ytPlayer || typeof ytPlayer.loadVideoById !== 'function') return;
     isMusicUnlocked = true;
-    
-    // Xóa các event này sau khi nhạc đã chạy
-    document.removeEventListener('touchstart', unlockAudio);
-    document.removeEventListener('click', unlockAudio);
-}
-document.addEventListener('touchstart', unlockAudio, { passive: true });
-document.addEventListener('click', unlockAudio);
-
-// --- SCROLL BAR HIDE/SHOW ---
-let isScrolling;
-window.addEventListener('scroll', () => {
-    document.body.classList.add('is-scrolling');
-    window.clearTimeout(isScrolling);
-    isScrolling = setTimeout(() => {
-        document.body.classList.remove('is-scrolling');
-    }, 1000); 
-});
-
-// --- DISCORD STATUS API ---
-const discordUserID = "838041121090830366"; 
-const statusDot = document.getElementById("discord-status-dot");
-const statusText = document.getElementById("discord-status-text");
-
-async function fetchDiscordStatus() {
-    try {
-        const response = await fetch(`https://api.lanyard.rest/v1/users/${discordUserID}`);
-        const data = await response.json();
-        if (data.success) {
-            const status = data.data.discord_status; 
-            statusDot.className = "status-dot " + status;
-            statusText.innerText = status.charAt(0).toUpperCase() + status.slice(1);
-        }
-    } catch (error) {
-        if (statusDot) statusDot.className = "status-dot offline";
-        if (statusText) statusText.innerText = "Offline";
+    if (currentVideoID === videoId) {
+        isYtPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
+    } else {
+        currentVideoID = videoId;
+        currentActiveBtn = element;
+        ytPlayer.loadVideoById(videoId);
+        musicCurrentIndex = Array.from(musicCards).findIndex(card => card.contains(element));
+        updateMusicCarousel();
     }
 }
-fetchDiscordStatus();
-setInterval(fetchDiscordStatus, 5000);
-
-// --- LENIS SMOOTH SCROLL ---
-if (typeof Lenis !== 'undefined') {
-    window.lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-        smoothWheel: true,     
-        smoothTouch: false,    
-        syncTouch: false       
-    });
-    function raf(time) { window.lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-}
-
-// --- PHYSICS DRAWER ---
-const drawer = document.getElementById("drawerBox");
-const content = document.getElementById("drawerContent");
-const handle = document.getElementById("drawerHandle");
-let isDrawerOpen = false;
-if (handle && drawer && content) {
-    drawer.classList.add("drawer-smooth");
-    handle.addEventListener("click", () => {
-        isDrawerOpen = !isDrawerOpen;
-        drawer.style.left = isDrawerOpen ? "0px" : "-170px";
-        content.style.opacity = isDrawerOpen ? "1" : "0.3";
+function updateMusicCarousel() {
+    musicCards.forEach((card, i) => {
+        card.classList.remove('active', 'prev-card', 'next-card', 'hidden');
+        if (i === musicCurrentIndex) card.classList.add('active');
+        else if (i === (musicCurrentIndex - 1 + musicCards.length) % musicCards.length) card.classList.add('prev-card');
+        else if (i === (musicCurrentIndex + 1) % musicCards.length) card.classList.add('next-card');
+        else card.classList.add('hidden');
     });
 }
+function moveCarousel(step) {
+    musicCurrentIndex = (musicCurrentIndex + step + musicCards.length) % musicCards.length;
+    updateMusicCarousel();
+}
+document.addEventListener('DOMContentLoaded', updateMusicCarousel);
 
-// --- MAHIRU PHYSICS ---
+// --- WELCOME & PHYSICS ---
+function closeWelcome() {
+    const overlay = document.getElementById('welcome-overlay');
+    overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none';
+    if (window.ytPlayer) { ytPlayer.playVideo(); isMusicUnlocked = true; }
+    setTimeout(() => { overlay.style.display = 'none'; }, 500);
+}
 const mahiruImg = document.getElementById("draggableImg");
 const GRAVITY = 0.6; const BOUNCE = 0.7; const FRICTION = 0.96;
 let isDragging = false; let isThrown = false;
 let pos = { x: 0, y: 0 }; let vel = { x: 0, y: 0 };
 let rot = 0; let rotVel = 0; let dragOffset = { x: 0, y: 0 };
-let lastMouse = { x: 0, y: 0 }; let physicsFrame;
-
 if (mahiruImg) {
     const getX = (e) => e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
     const getY = (e) => e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
     function startDrag(e) {
         isDragging = true; isThrown = false;
-        const cx = getX(e); const cy = getY(e);
         const rect = mahiruImg.getBoundingClientRect();
         if (mahiruImg.parentElement !== document.body) document.body.appendChild(mahiruImg);
         mahiruImg.style.position = "fixed";
-        pos.x = rect.left; pos.y = rect.top;
-        dragOffset.x = cx - rect.left; dragOffset.y = cy - rect.top;
-        vel = { x: 0, y: 0 }; lastMouse = { x: cx, y: cy };
-        cancelAnimationFrame(physicsFrame);
+        pos = { x: rect.left, y: rect.top };
+        dragOffset = { x: getX(e) - rect.left, y: getY(e) - rect.top };
+        vel = { x: 0, y: 0 };
     }
     function drag(e) {
         if (!isDragging) return;
         const cx = getX(e); const cy = getY(e);
+        const lastX = pos.x; const lastY = pos.y;
         pos.x = cx - dragOffset.x; pos.y = cy - dragOffset.y;
-        vel.x = cx - lastMouse.x; vel.y = cy - lastMouse.y;
+        vel = { x: pos.x - lastX, y: pos.y - lastY };
         mahiruImg.style.left = pos.x + "px"; mahiruImg.style.top = pos.y + "px";
-        lastMouse = { x: cx, y: cy };
     }
     function endDrag() { if (!isDragging) return; isDragging = false; isThrown = true; rotVel = vel.x * 1.2; updatePhysics(); }
-
-    mahiruImg.addEventListener("mousedown", startDrag);
-    mahiruImg.addEventListener("touchstart", startDrag, { passive: false });
-    document.addEventListener("mousemove", drag);
-    document.addEventListener("touchmove", drag, { passive: false });
-    document.addEventListener("mouseup", endDrag);
-    document.addEventListener("touchend", endDrag);
-
+    mahiruImg.addEventListener("mousedown", startDrag); mahiruImg.addEventListener("touchstart", startDrag);
+    document.addEventListener("mousemove", drag); document.addEventListener("touchmove", drag);
+    document.addEventListener("mouseup", endDrag); document.addEventListener("touchend", endDrag);
     function updatePhysics() {
         if (!isDragging && isThrown) {
             vel.y += GRAVITY; pos.x += vel.x; pos.y += vel.y;
             const floor = window.innerHeight - mahiruImg.offsetHeight;
             const rightWall = window.innerWidth - mahiruImg.offsetWidth;
-            if (pos.y >= floor) { pos.y = floor; vel.y *= -BOUNCE; if (Math.abs(vel.y) < 1.2) vel.y = 0; }
-            if (pos.x <= 0 || pos.x >= rightWall) { pos.x = pos.x <= 0 ? 0 : rightWall; vel.x *= -0.8; rotVel *= -0.5; }
+            if (pos.y >= floor) { pos.y = floor; vel.y *= -BOUNCE; }
+            if (pos.x <= 0 || pos.x >= rightWall) { pos.x = pos.x <= 0 ? 0 : rightWall; vel.x *= -0.8; }
             vel.x *= (pos.y >= floor) ? FRICTION : 0.99;
             rot += (pos.y >= floor && Math.abs(vel.x) > 0.1) ? (vel.x * 2.5) : rotVel;
             mahiruImg.style.left = pos.x + "px"; mahiruImg.style.top = pos.y + "px";
             mahiruImg.style.transform = `rotate(${rot}deg)`;
-            if (Math.abs(vel.x) > 0.1 || Math.abs(vel.y) > 0.1 || pos.y < floor) physicsFrame = requestAnimationFrame(updatePhysics);
+            if (Math.abs(vel.x) > 0.1 || Math.abs(vel.y) > 0.1 || pos.y < floor) requestAnimationFrame(updatePhysics);
         }
     }
 }
 
+// --- OTHERS: DISCORD, LENIS, PORTFOLIO ---
+const discordUserID = "838041121090830366";
+async function fetchDiscordStatus() {
+    try {
+        const response = await fetch(`https://api.lanyard.rest/v1/users/${discordUserID}`);
+        const data = await response.json();
+        if (data.success) {
+            const status = data.data.discord_status;
+            document.getElementById("discord-status-dot").className = "status-dot " + status;
+            document.getElementById("discord-status-text").innerText = status.charAt(0).toUpperCase() + status.slice(1);
+        }
+    } catch (e) {}
+}
+fetchDiscordStatus(); setInterval(fetchDiscordStatus, 5000);
 
-
-
-
-// --- WELCOME POP-UP LOGIC ---
-function closeWelcome() {
-    const overlay = document.getElementById('welcome-overlay');
-    if (!overlay) return; // Phòng trường hợp không tìm thấy ID
-
-    // 1. Làm mờ và khóa tương tác ngay lập tức
-    overlay.style.opacity = '0';
-    overlay.style.pointerEvents = 'none';
-    
-    // 2. Kích hoạt nhạc YouTube
-    if (window.ytPlayer && typeof ytPlayer.playVideo === 'function') {
-        ytPlayer.playVideo();
-        isMusicUnlocked = true;
-    }
-    
-    // 3. Xóa hoàn toàn khỏi màn hình sau khi hiệu ứng mờ kết thúc
-    setTimeout(() => {
-        overlay.style.display = 'none';
-    }, 500);
+if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ duration: 1.2 });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
 }
 
-
-// --- PORTFOLIO MODAL LOGIC ---
 const pfFullData = {
-    '3d': ["https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/20250709_004547.jpg","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/20250709_004559.jpg","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/IMG_20250617_190900.jpg","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/New%20Project%2065%20%5B7F642B5%5D.png","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/New%20Project%2043%20%5B4C9E502%5D.png"],
+    '3d': ["https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/20250709_004547.jpg","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/20250709_004559.jpg","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/IMG_20250617_190900.jpg"],
     'drawing': ["https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/Drawing/Untitled71_0009-26-14_20260309210516.png","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/Drawing/Untitled68_0002-46-51_20260302173559.jpg"]
 };
 function toggleSection(type) {
-    const modal = document.getElementById("portfolioModal");
     const grid = document.getElementById("modal-grid");
     document.getElementById("modal-pf-title").innerText = type === '3d' ? "3D Backgrounds" : "Drawings";
-    grid.innerHTML = ''; 
+    grid.innerHTML = '';
     pfFullData[type].forEach(src => {
         const img = document.createElement('img'); img.src = src; img.className = "pf-img-full";
-        img.onclick = (e) => { e.stopPropagation(); lightboxImg.src = src; lightbox.classList.add("active"); };
+        img.onclick = () => { document.getElementById("lightbox-img").src = src; document.getElementById("lightbox").classList.add("active"); };
         grid.appendChild(img);
     });
-    modal.classList.add("active"); document.body.style.overflow = 'hidden';
+    document.getElementById("portfolioModal").classList.add("active");
 }
-function closePortfolio() { document.getElementById("portfolioModal").classList.remove("active"); document.body.style.overflow = 'auto'; }
-document.getElementById("portfolioModal").addEventListener("click", function(e) { if (e.target === this) closePortfolio(); });
+function closePortfolio() { document.getElementById("portfolioModal").classList.remove("active"); }
+function unlockAudio() {
+    if (isMusicUnlocked || !ytPlayer) return;
+    ytPlayer.playVideo(); isMusicUnlocked = true;
+    document.removeEventListener('click', unlockAudio);
+}
+document.addEventListener('click', unlockAudio);
