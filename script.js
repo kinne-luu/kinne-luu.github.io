@@ -1,4 +1,16 @@
-// --- SAKURA EFFECT ---
+/* =====================================================================
+   --- CONFIGURATION ---
+   ===================================================================== */
+const CSV_DATA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRkvgPaXzkSoqowVTFxOrxb843bOA4-NKr2OIAKcSbBOTZlREMB4JnkUBJJd2DjWs6rjaTCjff9JFzJ/pub?gid=204827592&single=true&output=csv";
+const CSV_SETTING_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRkvgPaXzkSoqowVTFxOrxb843bOA4-NKr2OIAKcSbBOTZlREMB4JnkUBJJd2DjWs6rjaTCjff9JFzJ/pub?gid=769885246&single=true&output=csv";
+const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEra84HjALgZ3L1exZV-CbPblskFQlr1MX4f2nuQxdVj-uLNyPDxzLMddNVcK5ECsF/exec";
+const SYNC_PASSWORD_REQUIRED = "2006"; 
+
+let pfFullData = {};
+
+/* =====================================================================
+   --- SAKURA EFFECT ---
+   ===================================================================== */
 function createPetal() {
     const petal = document.createElement('div');
     petal.classList.add('sakura');
@@ -7,87 +19,142 @@ function createPetal() {
     petal.style.width = size + 'px'; petal.style.height = size + 'px';
     const duration = Math.random() * 3 + 4; 
     petal.style.animationDuration = duration + 's';
-    petal.style.animationDelay = Math.random() * 2 + 's';
     document.body.appendChild(petal);
     setTimeout(() => { petal.remove(); }, duration * 1000 + 2000);
 }
 setInterval(createPetal, 300);
 
-// --- DYNAMIC COPY & DISCORD ---
-function copyDynamicText(iconElement) {
-    const wrapper = iconElement.closest('.game-uid-wrapper');
-    const text = wrapper.querySelector('.copy-text').innerText.trim();
-    if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-        iconElement.style.color = '#5ec8ff';
-        setTimeout(() => iconElement.style.color = '#ffffffcc', 800);
-    });
+/* =====================================================================
+   --- DYNAMIC PORTFOLIO LOADER ---
+   ===================================================================== */
+async function loadPortfolioData() {
+    const container = document.getElementById('portfolio-container');
+    if (!container) return;
+    try {
+        const response = await fetch(CSV_DATA_URL + '&t=' + new Date().getTime());
+        const text = await response.text();
+        pfFullData = {};
+        const rows = text.split('\n').map(row => row.split(','));
+        for (let i = 1; i < rows.length; i++) {
+            if (rows[i].length >= 2) {
+                let type = rows[i][0] ? rows[i][0].replace(/['"]/g, '').trim().toLowerCase() : '';
+                let link = rows[i][1] ? rows[i][1].replace(/['"]/g, '').trim() : '';
+                if (type && link && link.startsWith('http')) {
+                    if (!pfFullData[type]) pfFullData[type] = [];
+                    pfFullData[type].push(link);
+                }
+            }
+        }
+        if (Object.keys(pfFullData).length > 0) renderPortfolio();
+    } catch (e) { console.error("Load Data Error"); }
 }
-function copyDiscordUsername() {
-    const username = "kienmanhluu";
-    navigator.clipboard.writeText(username).then(() => {
-        const tooltip = document.getElementById("discord-tooltip");
-        tooltip.textContent = "Copied!";
-        tooltip.style.backgroundColor = "#06c755";
-        setTimeout(() => {
-            tooltip.textContent = "Click to Copy ID";
-            tooltip.style.backgroundColor = "rgba(0, 0, 0, 0.85)";
-        }, 1500);
+
+function renderPortfolio() {
+    const container = document.getElementById('portfolio-container');
+    container.innerHTML = ''; 
+    Object.keys(pfFullData).forEach(type => {
+        const images = pfFullData[type];
+        const section = document.createElement('div');
+        section.className = 'portfolio-section';
+        section.onclick = () => openPortfolioDetail(type);
+        let previewHTML = images.slice(0, 2).map(src => `<img src="${src}" class="pf-img-prev" loading="lazy">`).join('');
+        section.innerHTML = `<div class="section-content-wrapper"><h3 class="section-title">${type.toUpperCase()}</h3><div class="section-preview-scroll">${previewHTML}</div><div class="section-hover-overlay"><span>Click to view</span></div></div>`;
+        container.appendChild(section);
     });
 }
 
-// --- YOUTUBE PLAYER & 3D CAROUSEL ---
-let ytPlayer;
-let isYtPlaying = false;
-let isMusicUnlocked = false; 
-let currentVideoID = "YNaFdsEIvew"; 
-let currentActiveBtn = null; 
-let musicCurrentIndex = 0;
+function openPortfolioDetail(type) {
+    const grid = document.getElementById("modal-grid");
+    document.getElementById("modal-pf-title").innerText = type.toUpperCase();
+    grid.innerHTML = pfFullData[type].map(src => `<img src="${src}" class="pf-img-full" onclick="showLightbox('${src}')">`).join('');
+    document.getElementById("portfolioModal").classList.add("active");
+}
+function showLightbox(src) { document.getElementById("lightbox-img").src = src; document.getElementById("lightbox").classList.add("active"); }
+function closePortfolio() { document.getElementById("portfolioModal").classList.remove("active"); }
+
+/* =====================================================================
+   --- SETTINGS MODAL ---
+   ===================================================================== */
+function openSettingsModal() {
+    document.getElementById('settingsModal').classList.add('active');
+    document.getElementById('sync-password').value = "";
+    document.getElementById('settings-unlock-zone').style.display = "block";
+    document.getElementById('settings-admin-zone').style.display = "none";
+}
+function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('active'); }
+
+async function checkSettingsPass() {
+    const pass = document.getElementById('sync-password').value;
+    if (pass === SYNC_PASSWORD_REQUIRED) {
+        document.getElementById('settings-unlock-zone').style.display = "none";
+        document.getElementById('settings-admin-zone').style.display = "block";
+        await loadExistingSettings();
+    }
+}
+
+async function loadExistingSettings() {
+    const container = document.getElementById('link-inputs-container');
+    container.innerHTML = ''; 
+    try {
+        const response = await fetch(CSV_SETTING_URL + '&t=' + new Date().getTime());
+        const text = await response.text();
+        const rows = text.split('\n').map(row => row.split(','));
+        for (let i = 1; i < rows.length; i++) {
+            if (rows[i].length >= 2) addLinkRow(rows[i][0].replace(/['"]/g, ''), rows[i][1].replace(/['"]/g, ''));
+        }
+    } catch (e) { addLinkRow(); }
+}
+
+function addLinkRow(type = "", url = "") {
+    const div = document.createElement('div');
+    div.className = 'link-row';
+    div.innerHTML = `<input type="text" placeholder="Type" class="setting-input-type" value="${type}"><input type="text" placeholder="URL" class="setting-input-url" value="${url}"><button onclick="this.parentElement.remove()" class="remove-row-btn">&times;</button>`;
+    document.getElementById('link-inputs-container').appendChild(div);
+}
+
+async function performSync() {
+    const passInput = document.getElementById('sync-password').value;
+    const driveLinks = Array.from(document.querySelectorAll('.link-row')).map(row => ({
+        type: row.querySelector('.setting-input-type').value.trim().toLowerCase(),
+        url: row.querySelector('.setting-input-url').value.trim()
+    })).filter(item => item.type && item.url);
+    try {
+        await fetch(APP_SCRIPT_URL, { method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify({ password: passInput, driveLinks: driveLinks }) });
+        location.reload();
+    } catch (e) { alert("Error!"); }
+}
+
+/* =====================================================================
+   --- YOUTUBE & MUSIC CAROUSEL ---
+   ===================================================================== */
+let ytPlayer, isYtPlaying = false, currentVideoID = "YNaFdsEIvew", musicCurrentIndex = 0;
 const musicCards = document.querySelectorAll('.music-box-new');
 
 const tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
-const firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+document.head.appendChild(tag);
 
 function onYouTubeIframeAPIReady() {
     ytPlayer = new YT.Player('youtube-audio-player', {
         height: '0', width: '0', videoId: currentVideoID,
-        playerVars: { 'autoplay': 0, 'controls': 0, 'showinfo': 0, 'rel': 0, 'playsinline': 1 },
-        events: {
-            'onReady': (event) => { 
-                ytPlayer.setVolume(50); 
-                currentActiveBtn = document.querySelector('.play-btn-circle');
-            },
-            'onStateChange': onPlayerStateChange
-        }
+        playerVars: { 'autoplay': 0, 'controls': 0, 'playsinline': 1, 'loop': 1, 'playlist': currentVideoID },
+        events: { 'onStateChange': (e) => { isYtPlaying = (e.data == 1); updateMusicIcons(); } }
     });
 }
-function onPlayerStateChange(event) {
-    if (event.data === 0) ytPlayer.playVideo(); 
-    if (event.data == 1) { isYtPlaying = true; updateAllIcons(); } 
-    else if (event.data == 2 || event.data == 0) { isYtPlaying = false; updateAllIcons(); }
-}
-function updateAllIcons() {
-    document.querySelectorAll('.play-btn-circle i').forEach(icon => { icon.className = 'fa-solid fa-play'; });
-    if (isYtPlaying && currentActiveBtn) {
-        const activeIcon = currentActiveBtn.querySelector('i');
-        if (activeIcon) activeIcon.className = 'fa-solid fa-pause';
+
+function updateMusicIcons() {
+    document.querySelectorAll('.play-btn-circle i').forEach(i => i.className = 'fa-solid fa-play');
+    if (isYtPlaying) {
+        const activeCard = musicCards[musicCurrentIndex];
+        if (activeCard) activeCard.querySelector('i').className = 'fa-solid fa-pause';
     }
 }
+
 function toggleMusic(videoId, element) {
-    if (!ytPlayer || typeof ytPlayer.loadVideoById !== 'function') return;
-    isMusicUnlocked = true;
-    if (currentVideoID === videoId) {
-        isYtPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo();
-    } else {
-        currentVideoID = videoId;
-        currentActiveBtn = element;
-        ytPlayer.loadVideoById(videoId);
-        musicCurrentIndex = Array.from(musicCards).findIndex(card => card.contains(element));
-        updateMusicCarousel();
-    }
+    if (currentVideoID === videoId) { isYtPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo(); } 
+    else { currentVideoID = videoId; ytPlayer.loadVideoById(videoId); musicCurrentIndex = Array.from(musicCards).findIndex(c => c.contains(element)); updateMusicCarousel(); }
 }
+
 function updateMusicCarousel() {
     musicCards.forEach((card, i) => {
         card.classList.remove('active', 'prev-card', 'next-card', 'hidden');
@@ -96,105 +163,66 @@ function updateMusicCarousel() {
         else if (i === (musicCurrentIndex + 1) % musicCards.length) card.classList.add('next-card');
         else card.classList.add('hidden');
     });
+    updateMusicIcons();
 }
-function moveCarousel(step) {
-    musicCurrentIndex = (musicCurrentIndex + step + musicCards.length) % musicCards.length;
-    updateMusicCarousel();
-}
-document.addEventListener('DOMContentLoaded', updateMusicCarousel);
+function moveCarousel(step) { musicCurrentIndex = (musicCurrentIndex + step + musicCards.length) % musicCards.length; updateMusicCarousel(); }
 
-// --- WELCOME & PHYSICS ---
-function closeWelcome() {
-    const overlay = document.getElementById('welcome-overlay');
-    overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none';
-    if (window.ytPlayer) { ytPlayer.playVideo(); isMusicUnlocked = true; }
-    setTimeout(() => { overlay.style.display = 'none'; }, 500);
-}
-const mahiruImg = document.getElementById("draggableImg");
-const GRAVITY = 0.6; const BOUNCE = 0.7; const FRICTION = 0.96;
-let isDragging = false; let isThrown = false;
-let pos = { x: 0, y: 0 }; let vel = { x: 0, y: 0 };
-let rot = 0; let rotVel = 0; let dragOffset = { x: 0, y: 0 };
-if (mahiruImg) {
-    const getX = (e) => e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-    const getY = (e) => e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-    function startDrag(e) {
-        isDragging = true; isThrown = false;
-        const rect = mahiruImg.getBoundingClientRect();
-        if (mahiruImg.parentElement !== document.body) document.body.appendChild(mahiruImg);
-        mahiruImg.style.position = "fixed";
-        pos = { x: rect.left, y: rect.top };
-        dragOffset = { x: getX(e) - rect.left, y: getY(e) - rect.top };
-        vel = { x: 0, y: 0 };
-    }
-    function drag(e) {
+/* =====================================================================
+   --- DRAGGABLE PHYSICS (EASTER EGG) ---
+   ===================================================================== */
+function initPhysics() {
+    const img = document.getElementById("draggableImg");
+    if (!img) return;
+    let isDragging = false, pos = {x:0, y:0}, vel = {x:0, y:0}, dragOff = {x:0, y:0}, rot = 0;
+    
+    img.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        const r = img.getBoundingClientRect();
+        dragOff = { x: e.clientX - r.left, y: e.clientY - r.top };
+        img.style.transition = "none";
+    });
+
+    document.addEventListener("mousemove", (e) => {
         if (!isDragging) return;
-        const cx = getX(e); const cy = getY(e);
-        const lastX = pos.x; const lastY = pos.y;
-        pos.x = cx - dragOffset.x; pos.y = cy - dragOffset.y;
-        vel = { x: pos.x - lastX, y: pos.y - lastY };
-        mahiruImg.style.left = pos.x + "px"; mahiruImg.style.top = pos.y + "px";
-    }
-    function endDrag() { if (!isDragging) return; isDragging = false; isThrown = true; rotVel = vel.x * 1.2; updatePhysics(); }
-    mahiruImg.addEventListener("mousedown", startDrag); mahiruImg.addEventListener("touchstart", startDrag);
-    document.addEventListener("mousemove", drag); document.addEventListener("touchmove", drag);
-    document.addEventListener("mouseup", endDrag); document.addEventListener("touchend", endDrag);
-    function updatePhysics() {
-        if (!isDragging && isThrown) {
-            vel.y += GRAVITY; pos.x += vel.x; pos.y += vel.y;
-            const floor = window.innerHeight - mahiruImg.offsetHeight;
-            const rightWall = window.innerWidth - mahiruImg.offsetWidth;
-            if (pos.y >= floor) { pos.y = floor; vel.y *= -BOUNCE; }
-            if (pos.x <= 0 || pos.x >= rightWall) { pos.x = pos.x <= 0 ? 0 : rightWall; vel.x *= -0.8; }
-            vel.x *= (pos.y >= floor) ? FRICTION : 0.99;
-            rot += (pos.y >= floor && Math.abs(vel.x) > 0.1) ? (vel.x * 2.5) : rotVel;
-            mahiruImg.style.left = pos.x + "px"; mahiruImg.style.top = pos.y + "px";
-            mahiruImg.style.transform = `rotate(${rot}deg)`;
-            if (Math.abs(vel.x) > 0.1 || Math.abs(vel.y) > 0.1 || pos.y < floor) requestAnimationFrame(updatePhysics);
-        }
-    }
+        let lx = pos.x, ly = pos.y;
+        pos.x = e.clientX - dragOff.x; pos.y = e.clientY - dragOff.y;
+        vel = { x: pos.x - lx, y: pos.y - ly };
+        img.style.left = pos.x + "px"; img.style.top = pos.y + "px";
+    });
+
+    document.addEventListener("mouseup", () => {
+        if (!isDragging) return;
+        isDragging = false; 
+        const run = () => {
+            if (isDragging) return;
+            vel.y += 0.6; pos.x += vel.x; pos.y += vel.y;
+            const f = window.innerHeight - img.offsetHeight, rw = window.innerWidth - img.offsetWidth;
+            if (pos.y >= f) { pos.y = f; vel.y *= -0.7; vel.x *= 0.96; }
+            if (pos.x <= 0 || pos.x >= rw) { pos.x = pos.x <= 0 ? 0 : rw; vel.x *= -0.8; }
+            rot += vel.x * 2;
+            img.style.left = pos.x + "px"; img.style.top = pos.y + "px";
+            img.style.transform = `rotate(${rot}deg)`;
+            if (Math.abs(vel.x) > 0.1 || Math.abs(vel.y) > 0.1 || pos.y < f) requestAnimationFrame(run);
+        };
+        run();
+    });
 }
 
-// --- OTHERS: DISCORD, LENIS, PORTFOLIO ---
-const discordUserID = "838041121090830366";
-async function fetchDiscordStatus() {
-    try {
-        const response = await fetch(`https://api.lanyard.rest/v1/users/${discordUserID}`);
-        const data = await response.json();
-        if (data.success) {
-            const status = data.data.discord_status;
-            document.getElementById("discord-status-dot").className = "status-dot " + status;
-            document.getElementById("discord-status-text").innerText = status.charAt(0).toUpperCase() + status.slice(1);
-        }
-    } catch (e) {}
-}
-fetchDiscordStatus(); setInterval(fetchDiscordStatus, 5000);
-
-if (typeof Lenis !== 'undefined') {
-    const lenis = new Lenis({ duration: 1.2 });
+/* =====================================================================
+   --- INITIALIZE ---
+   ===================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    updateMusicCarousel(); 
+    initPhysics(); // Đảm bảo hàm này được gọi
+    loadPortfolioData();
+    
+    // Lenis Smooth Scroll
+    const lenis = new Lenis({ duration: 1.2, smooth: true });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
-}
+});
 
-const pfFullData = {
-    '3d': ["https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/20250709_004547.jpg","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/20250709_004559.jpg","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/alime%20background%20file/IMG_20250617_190900.jpg"],
-    'drawing': ["https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/Drawing/Untitled71_0009-26-14_20260309210516.png","https://raw.githubusercontent.com/kinne-luu/kinne-luu.github.io/refs/heads/main/Drawing/Untitled68_0002-46-51_20260302173559.jpg"]
-};
-function toggleSection(type) {
-    const grid = document.getElementById("modal-grid");
-    document.getElementById("modal-pf-title").innerText = type === '3d' ? "3D Backgrounds" : "Drawings";
-    grid.innerHTML = '';
-    pfFullData[type].forEach(src => {
-        const img = document.createElement('img'); img.src = src; img.className = "pf-img-full";
-        img.onclick = () => { document.getElementById("lightbox-img").src = src; document.getElementById("lightbox").classList.add("active"); };
-        grid.appendChild(img);
-    });
-    document.getElementById("portfolioModal").classList.add("active");
-}
-function closePortfolio() { document.getElementById("portfolioModal").classList.remove("active"); }
-function unlockAudio() {
-    if (isMusicUnlocked || !ytPlayer) return;
-    ytPlayer.playVideo(); isMusicUnlocked = true;
-    document.removeEventListener('click', unlockAudio);
-}
-document.addEventListener('click', unlockAudio);
+function copyDynamicText(i) { navigator.clipboard.writeText(i.closest('.game-uid-wrapper').querySelector('.copy-text').innerText); i.style.color = "#5ec8ff"; setTimeout(() => i.style.color = "", 800); }
+function copyDiscordUsername() { navigator.clipboard.writeText("kienmanhluu"); alert("Copied Discord!"); }
+function closeWelcome() { document.getElementById('welcome-overlay').style.display = 'none'; if(ytPlayer) ytPlayer.playVideo(); }
+document.getElementById('lightbox').onclick = function() { this.classList.remove('active'); };

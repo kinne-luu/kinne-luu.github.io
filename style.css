@@ -45,11 +45,11 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .me { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 5%; left: 6%; font-weight: 700; }
 .me-2 { font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); font-size: 15px; position: absolute; top: 28%; left: 6%; width: 90%; font-weight: 600; line-height: 1.4; }
 
-/* --- SOCIAL BOX (Đã khôi phục hiệu ứng hover, ẩn QR, thu nhỏ Logo) --- */
+/* --- SOCIAL BOX --- */
 .blur-social-box { position: absolute; top: 23%; left: 74.4%; transform: translate(-50%, -50%); width: 185px; height: 170px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
 .my-social { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 255, 255); font-size: 18px; position: absolute; top: 7%; left: 24%; font-weight: 700; pointer-events: none; }
 .social-btn { position: absolute; width: 45px; height: 45px; border-radius: 15px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; align-items: center; font-size: 25px; color: white; text-decoration: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-.social-btn img { width: 24px; height: 24px; filter: invert(1); } /* FIX LOGO TO */
+.social-btn img { width: 24px; height: 24px; filter: invert(1); } 
 .social-btn:hover { transform: translateY(-5px) scale(1.1); border-color: rgba(255, 255, 255, 0.5); color: white; z-index: 100; }
 .fb-pos { top: 28%; left: 7%; } .ig-pos { top: 28%; left: 39%; } .x-pos { top: 28%; left: 70%; } .ani-pos { top: 60%; left: 7%; }
 .line-wrapper { position: absolute; top: 60%; left: 39%; width: 45px; height: 45px; } 
@@ -63,7 +63,7 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .line-color:hover { background: #06C755; } 
 .dc-color:hover { background: #5865F2; }
 
-/* FIX QR VÀ TOOLTIP */
+/* QR VÀ TOOLTIP */
 .qr-tooltip-dark { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) scale(0.5); background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px; border-radius: 12px; opacity: 0; pointer-events: none; transition: 0.3s ease; z-index: 999; }
 .qr-tooltip-dark img { width: 100px; height: 100px; display: block; border-radius: 4px; }
 .line-wrapper:hover .qr-tooltip-dark { opacity: 1; transform: translateX(-50%) scale(1); }
@@ -71,19 +71,155 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .discord-wrapper:hover .discord-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* --- PORTFOLIO BOX --- */
-.blur-portfolio-box { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 350px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; padding: 20px 25px; overflow: hidden; }
-.what-can-i-do { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 26px; font-weight: 700; margin-bottom: 2px; }
-.what-can-i-do-2 { font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); font-size: 14px; font-weight: 600; margin-bottom: 12px; }
-.portfolio-sections-container { display: flex; gap: 15px; flex: 1; overflow: hidden; }
-.portfolio-section { flex: 1; position: relative; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 18px; background: rgba(0, 0, 0, 0.15); overflow: hidden; cursor: pointer; display: flex; flex-direction: column; transition: all 0.3s ease; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); }
-.portfolio-section:hover { border-color: rgba(255, 255, 255, 0.5); }
-.section-title { font-family: 'M PLUS Rounded 1c', sans-serif; color: #fff; font-size: 15px; text-align: center; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin: 0 15px; z-index: 2; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-.section-preview-scroll { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: none; }
-.section-preview-scroll::-webkit-scrollbar { display: none; }
-.pf-img-prev { width: 100%; height: 75px; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
-.section-hover-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; z-index: 10; }
-.section-hover-overlay span { color: #ffeb3b; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-.portfolio-section:hover .section-hover-overlay { opacity: 1; }
+.blur-portfolio-box { 
+    position: absolute; 
+    top: 38%; left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 600px; height: 350px; 
+    border-radius: 40px; 
+    background: transparent; 
+    backdrop-filter: blur(20px) saturate(140%); 
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
+    display: flex; 
+    flex-direction: column; 
+    padding: 20px 25px; 
+    overflow: hidden; 
+}
+
+.what-can-i-do { 
+    font-family: 'M PLUS Rounded 1c', sans-serif; 
+    color: rgb(255, 249, 162); 
+    font-size: 26px; 
+    font-weight: 700; 
+    margin-bottom: 2px; 
+}
+
+.what-can-i-do-2 { 
+    font-family: 'Nunito', sans-serif; 
+    color: rgb(255, 255, 255); 
+    font-size: 14px; 
+    font-weight: 600; 
+    margin-bottom: 12px; 
+}
+
+/* ÉP DÙNG GRID 2 Ô/HÀNG & CUỘN DỌC */
+.portfolio-sections-container { 
+    display: grid !important; 
+    grid-template-columns: repeat(2, 1fr) !important; 
+    gap: 15px; 
+    flex: 1; 
+    overflow-y: auto !important; 
+    overflow-x: hidden !important; 
+    padding-right: 8px; 
+    padding-bottom: 10px;
+    align-content: start; 
+}
+
+.portfolio-sections-container::-webkit-scrollbar { width: 6px; }
+.portfolio-sections-container::-webkit-scrollbar-thumb { 
+    background: rgba(255, 255, 255, 0.3); 
+    border-radius: 10px; 
+}
+
+.portfolio-section { 
+    width: 100%; 
+    min-height: 110px; 
+    position: relative; 
+    border: 1px solid rgba(255, 255, 255, 0.15); 
+    border-radius: 18px; 
+    background: rgba(255, 255, 255, 0.05); 
+    overflow: hidden; 
+    cursor: pointer; 
+    display: flex; 
+    flex-direction: column; 
+    transition: all 0.3s ease; 
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+.portfolio-section:hover { 
+    border-color: rgba(255, 255, 255, 0.6); 
+    transform: scale(1.02); 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.section-title { 
+    font-family: 'M PLUS Rounded 1c', sans-serif; 
+    color: #fff; 
+    font-size: 14px; 
+    text-transform: uppercase;
+    font-weight: 800;
+    text-align: center; 
+    padding: 8px 0; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    margin: 0 15px; 
+    z-index: 2; 
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+}
+
+.section-preview-scroll { 
+    flex: 1; 
+    padding: 10px; 
+    display: flex; 
+    flex-direction: row; 
+    gap: 8px; 
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+}
+
+.pf-img-prev { 
+    width: calc(50% - 4px); 
+    height: 65px; 
+    border-radius: 8px; 
+    object-fit: cover; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+/* LỚP PHỦ FROSTED GLASS XỊN */
+.section-hover-overlay { 
+    position: absolute; 
+    top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(255, 255, 255, 0.15); 
+    backdrop-filter: blur(15px) saturate(160%); 
+    -webkit-backdrop-filter: blur(15px) saturate(160%);
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    opacity: 0; 
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    z-index: 10; 
+    border-radius: inherit; 
+}
+
+.section-hover-overlay span { 
+    color: #fff; 
+    font-family: 'Nunito', sans-serif; 
+    font-weight: 800; 
+    font-size: 13px; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3); 
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.5); 
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 30px;
+    transform: translateY(10px); 
+    transition: transform 0.4s ease;
+}
+
+.portfolio-section:hover .section-hover-overlay { 
+    opacity: 1; 
+}
+
+.portfolio-section:hover .section-hover-overlay span {
+    transform: translateY(0); 
+}
+
+@media (max-width: 1024px) {
+    .portfolio-sections-container { grid-template-columns: 1fr !important; } 
+}
 
 /* --- PORTFOLIO MODAL --- */
 .portfolio-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: all 0.3s ease-in-out; }
@@ -105,7 +241,7 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 #lightbox.active { visibility: visible; opacity: 1; }
 #lightbox.active #lightbox-img { transform: scale(1); }
 
-/* --- GAMES BOX (Đã khôi phục icon và khoảng cách chữ) --- */
+/* --- GAMES BOX --- */
 .blur-games-box { position: absolute; top: 60%; left: 31.3%; transform: translate(-50%, -50%); width: 280px; height: 440px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; }
 .my-games { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; font-weight: 700; margin: 15px 0 15px 20px; }
 .games-container { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
@@ -119,23 +255,21 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .copy-icon { font-size: 14px; color: #ffffffcc; cursor: pointer; transition: all 0.2s ease; }
 .copy-icon:hover { color: #b388ff; transform: scale(1.2); }
 
-/* --- 3D MUSIC CAROUSEL SYSTEM (ĐÃ FIX KHUNG CONTAINER BẢO VỆ) --- */
 /* --- 3D MUSIC CAROUSEL SYSTEM --- */
 .music-playlist-container {
     position: absolute;
-    top: 54.8%; /* Dịch lên trên so với mức 60% cũ */
+    top: 54.8%; 
     left: 70.5%;
     transform: translate(-50%, -50%);
-    width: 480px; /* Tăng chiều rộng để đủ chỗ cho 2 mũi tên 2 bên */
+    width: 480px; 
     display: flex;
-    flex-direction: row; /* Xếp hàng ngang để nút nằm 2 bên */
+    flex-direction: row; 
     align-items: center;
     justify-content: center;
     gap: 15px;
     z-index: 20;
     perspective: 1200px;
 }
-
 .carousel-viewport {
     height: 350px;
     width: 320px;
@@ -145,8 +279,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     justify-content: center;
     transform-style: preserve-3d;
 }
-
-/* Các thuộc tính .music-box-new và animation 3D giữ nguyên như file cũ của cậu */
 .music-box-new {
     position: absolute;
     width: 300px;
@@ -164,47 +296,13 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     cursor: pointer;
     left: 10px;
 }
+.music-box-new.active { transform: translate3d(0, 0, 0) scale(1); opacity: 1; filter: blur(0px); z-index: 10; pointer-events: auto; }
+.music-box-new.prev-card { transform: translate3d(0, -100px, -150px) scale(0.85); opacity: 1; filter: blur(3.6px); z-index: 5; pointer-events: none; }
+.music-box-new.next-card { transform: translate3d(0, 100px, -150px) scale(0.85); opacity: 1; filter: blur(3.6px); z-index: 5; pointer-events: none; }
+.music-box-new.hidden { transform: translate3d(0, 0, -300px) scale(0.6); opacity: 1; pointer-events: none; }
 
-/* Các trạng thái Carousel 3D có thêm Blur */
-.music-box-new.active { 
-    transform: translate3d(0, 0, 0) scale(1); 
-    opacity: 1; 
-    filter: blur(0px); /* Thẻ giữa rõ nét */
-    z-index: 10; 
-    pointer-events: auto; 
-}
-.music-box-new.prev-card { 
-    transform: translate3d(0, -100px, -150px) scale(0.85); 
-    opacity: 1; /* Tăng độ sáng lên một chút để bù lại độ nhòe */
-    filter: blur(3.6px); /* Làm nhòe thẻ bên trên */
-    z-index: 5; 
-    pointer-events: none; 
-}
-.music-box-new.next-card { 
-    transform: translate3d(0, 100px, -150px) scale(0.85); 
-    opacity: 1; 
-    filter: blur(3.6px); /* Làm nhòe thẻ bên dưới */
-    z-index: 5; 
-    pointer-events: none; 
-}
-.music-box-new.hidden { 
-    transform: translate3d(0, 0, -300px) scale(0.6); 
-    opacity: 1; 
-    filter: blur(px); 
-    pointer-events: none; 
-}
-
-.nav-btn {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 24px;
-    cursor: pointer;
-    transition: 0.3s;
-    z-index: 30;
-}
+.nav-btn { background: none; border: none; color: rgba(255, 255, 255, 0.5); font-size: 24px; cursor: pointer; transition: 0.3s; z-index: 30; }
 .nav-btn:hover { color: #fff; transform: scale(1.2); }
-
 .player-header { display: flex; align-items: center; gap: 12px; flex-grow: 1; overflow: hidden; }
 .album-art { width: 60px; height: 60px; border-radius: 12px; overflow: hidden; flex-shrink: 0; }
 .album-art img { width: 100%; height: 100%; object-fit: cover; }
@@ -225,7 +323,7 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 
 body::after { content: ""; display: block; position: absolute; top: 1700px; left: 0; width: 100%; height: 80px; background: transparent; z-index: -10; }
 
-/* --- RESPONSIVE MOBILE TỐI ƯU: HIỂN THỊ 1 BÀI --- */
+/* --- RESPONSIVE MOBILE TỐI ƯU --- */
 @media (max-width: 1024px) {
     .main-wrapper { height: 1800px; }
     
@@ -252,92 +350,292 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     .blur-games-box { width: 90%; height: auto; padding-bottom: 20px; top: 1450px; left: 50%; transform: translate(-50%, -50%); }
     .game-card { width: 90%; }
     
-    /* --- GIAO DIỆN MUSIC MOBILE: 1 BÀI HÁT + NÚT BẤM --- */
+    /* GIAO DIỆN MUSIC MOBILE */
     .music-playlist-container {
-        position: fixed !important; 
-        top: auto !important; 
-        bottom: 20px !important; 
-        left: 50% !important; 
-        width: 92vw !important; 
-        height: 90px !important;
-        transform: translateX(-50%) !important; 
-        z-index: 9999 !important;
-        display: flex !important; 
-        flex-direction: row !important; /* [Bài hát] nằm cạnh [2 Nút] */
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 15px !important;
+        position: fixed !important; top: auto !important; bottom: 20px !important; 
+        left: 50% !important; width: 92vw !important; height: 90px !important;
+        transform: translateX(-50%) !important; z-index: 9999 !important;
+        display: flex !important; flex-direction: row !important; 
+        align-items: center !important; justify-content: center !important; gap: 15px !important;
     }
-
-    /* Đóng băng hoàn toàn thanh cuộn, chỉ dùng để chứa 1 bài */
     .carousel-viewport {
-        display: block !important; 
-        position: relative !important;
-        width: 75vw !important; 
-        height: 85px !important;
-        overflow: visible !important; 
-        padding: 0 !important; 
-        perspective: none !important; 
-        transform-style: flat !important;
+        display: block !important; position: relative !important; width: 75vw !important; 
+        height: 85px !important; overflow: visible !important; padding: 0 !important; 
+        perspective: none !important; transform-style: flat !important;
     }
-
     .carousel-viewport::after { display: none !important; }
-
-    /* Định dạng chung cho 4 thẻ nhạc */
     .carousel-viewport .music-box-new {
-        position: absolute !important; 
-        width: 100% !important; 
-        max-width: 100% !important;
-        height: 100% !important; 
-        left: 0 !important;
-        top: 0 !important;
-        margin: 0 !important;
-        background: rgba(255, 255, 255, 0.15) !important; 
-        filter: none !important; /* Xóa mờ */
-        transition: opacity 0.4s ease !important; /* Hiệu ứng chuyển bài mượt */
-        border-radius: 25px !important;
+        position: absolute !important; width: 100% !important; max-width: 100% !important;
+        height: 100% !important; left: 0 !important; top: 0 !important; margin: 0 !important;
+        background: rgba(255, 255, 255, 0.15) !important; filter: none !important; 
+        transition: opacity 0.4s ease !important; border-radius: 25px !important;
     }
-
-    /* CHỈ HIỂN THỊ DUY NHẤT BÀI ĐANG HÁT */
-    .carousel-viewport .music-box-new.active {
-        opacity: 1 !important; 
-        visibility: visible !important;
-        pointer-events: auto !important;
-        z-index: 10 !important;
-        transform: none !important; 
-    }
-
-    /* GIẤU HOÀN TOÀN CÁC BÀI CÒN LẠI */
+    .carousel-viewport .music-box-new.active { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; z-index: 10 !important; transform: none !important; }
     .carousel-viewport .music-box-new.prev-card,
     .carousel-viewport .music-box-new.next-card,
-    .carousel-viewport .music-box-new.hidden {
-        opacity: 0 !important; 
-        visibility: hidden !important;
-        pointer-events: none !important;
-        transform: none !important; 
-        z-index: 0 !important;
-    }
-
-    /* Bật lại 2 nút mũi tên lên/xuống bên phải */
-    .carousel-controls { 
-        display: flex !important; 
-        flex-direction: column !important; /* Nút xếp dọc */
-        gap: 12px !important;
-        z-index: 20 !important;
-    }
-
-    .nav-btn {
-        display: block !important;
-        font-size: 22px !important;
-        color: rgba(255,255,255,0.7) !important;
-        padding: 5px !important;
-    }
+    .carousel-viewport .music-box-new.hidden { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; transform: none !important; z-index: 0 !important; }
+    .carousel-controls { display: flex !important; flex-direction: column !important; gap: 12px !important; z-index: 20 !important; }
+    .nav-btn { display: block !important; font-size: 22px !important; color: rgba(255,255,255,0.7) !important; padding: 5px !important; }
     .nav-btn:active { color: #fff !important; transform: scale(1.1) !important; }
-
-    /* Dọn dẹp Text cho gọn */
     .track-artist { display: none !important; }
     .track-name { font-size: 14px !important; max-width: 150px !important; }
     
     #drawerBox { display: none; }
     body::after { content: ""; display: block; height: 100px; width: 100%; }
 }
+
+/* ===============================================================
+   --- SETTINGS MODAL (GLASSMORPHISM SÁNG MÀU) ---
+   =============================================================== */
+.settings-modal {
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Làm tối nền nhẹ để nổi bật box sáng */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 99999;
+    align-items: center; 
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+}
+
+.settings-modal.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.settings-content {
+    background: rgba(255, 255, 255, 0.15); /* Glassmorphism sáng màu */
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    padding: 30px; 
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.4); 
+    width: 90%; 
+    max-width: 450px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    color: white;
+    position: relative;
+}
+
+.settings-title {
+    color: #fff; 
+    margin-top: 0; 
+    font-size: 1.6rem; 
+    margin-bottom: 20px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* --- INPUT STYLES --- */
+.settings-input, .setting-input-type, .setting-input-url {
+    width: 100%; 
+    padding: 12px; 
+    margin-bottom: 15px; 
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    background: rgba(255, 255, 255, 0.1); 
+    color: #fff; 
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.settings-input::placeholder { color: rgba(255, 255, 255, 0.6); }
+
+.settings-input:focus, .setting-input-type:focus, .setting-input-url:focus { 
+    border-color: rgba(255, 255, 255, 0.8); 
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* --- ADMIN ZONE (ẨN/HIỆN) --- */
+#settings-admin-zone {
+    animation: slideUp 0.4s ease;
+}
+
+.link-inputs-container {
+    max-height: 250px; 
+    overflow-y: auto; 
+    margin-bottom: 15px;
+    padding-right: 5px;
+}
+
+/* Scrollbar cho container nhập liệu */
+.link-inputs-container::-webkit-scrollbar { width: 5px; }
+.link-inputs-container::-webkit-scrollbar-thumb { 
+    background: rgba(255, 255, 255, 0.3); 
+    border-radius: 10px; 
+}
+
+.link-row {
+    display: flex; 
+    gap: 8px; 
+    margin-bottom: 10px; 
+    align-items: center;
+}
+
+.setting-input-type { width: 100px; margin-bottom: 0; }
+.setting-input-url { flex: 1; margin-bottom: 0; }
+
+.remove-row-btn {
+    background: rgba(255, 77, 77, 0.2); 
+    border: none; 
+    color: #ff4d4d;
+    cursor: pointer; 
+    font-size: 18px; 
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+.remove-row-btn:hover { background: rgba(255, 77, 77, 0.5); color: #fff; }
+
+.add-row-btn {
+    background: rgba(255, 255, 255, 0.08); 
+    color: rgba(255, 255, 255, 0.8); 
+    border: 1px dashed rgba(255, 255, 255, 0.4);
+    width: 100%; 
+    padding: 12px; 
+    cursor: pointer; 
+    margin-bottom: 20px;
+    border-radius: 12px; 
+    transition: 0.3s;
+}
+.add-row-btn:hover { 
+    color: #fff; 
+    border-color: #fff; 
+    background: rgba(255, 255, 255, 0.15); 
+}
+
+/* --- FOOTER & ACTIONS --- */
+.settings-footer {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+}
+
+.sync-status-msg {
+    font-size: 13px; 
+    color: #fff; 
+    font-weight: 600; 
+    flex: 1; 
+    padding-right: 10px; 
+    line-height: 1.2;
+}
+
+.settings-actions { display: flex; gap: 10px; }
+
+.cancel-btn, .sync-btn {
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+}
+
+.cancel-btn { 
+    background: rgba(255, 255, 255, 0.1); 
+    color: #fff; 
+}
+.cancel-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+.sync-btn { 
+    background: #fff; 
+    color: #333; 
+}
+.sync-btn:hover { 
+    background: #ffeb3b; 
+    transform: translateY(-2px); 
+    box-shadow: 0 5px 15px rgba(255, 235, 59, 0.3);
+}
+
+/* ===============================================================
+   --- NÚT SETTING FLOAT ---
+   =============================================================== */
+#floating-settings-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 99990;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#floating-settings-btn:hover {
+    transform: scale(1.1) rotate(45deg);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: #fff;
+}
+
+/* ===============================================================
+   --- PORTFOLIO SCROLLING (TỐI ƯU CUỘN NGANG) ---
+   =============================================================== */
+.portfolio-sections-container { 
+    display: flex; 
+    gap: 15px; 
+    flex: 1; 
+    overflow-x: auto; 
+    overflow-y: hidden;
+    padding-bottom: 10px; 
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+/* Tùy chỉnh thanh cuộn Portfolio */
+.portfolio-sections-container::-webkit-scrollbar { height: 6px; }
+.portfolio-sections-container::-webkit-scrollbar-track { background: transparent; }
+.portfolio-sections-container::-webkit-scrollbar-thumb { 
+    background: rgba(255, 255, 255, 0.3); 
+    border-radius: 10px; 
+}
+
+.portfolio-section { 
+    flex: 0 0 200px; /* Độ rộng cố định để kích hoạt cuộn khi đông item */
+    position: relative; 
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    border-radius: 20px; 
+    background: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(10px);
+    overflow: hidden; 
+    cursor: pointer; 
+    display: flex; 
+    flex-direction: column; 
+    transition: all 0.3s ease; 
+}
+
+.portfolio-section:hover { 
+    border-color: rgba(255, 255, 255, 0.6); 
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 1024px) {
+    .portfolio-section { flex: 0 0 170px; }
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
