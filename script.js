@@ -213,10 +213,14 @@ function initPhysics() {
    ===================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
     updateMusicCarousel(); 
-    initPhysics(); // Đảm bảo hàm này được gọi
+    initPhysics(); 
     loadPortfolioData();
     
-    // Lenis Smooth Scroll
+    // Kích hoạt Discord Status
+    fetchDiscordStatus();
+    setInterval(fetchDiscordStatus, 10000); // Cập nhật mỗi 10 giây
+    
+    // Khởi tạo Lenis Smooth Scroll
     const lenis = new Lenis({ duration: 1.2, smooth: true });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
@@ -226,3 +230,28 @@ function copyDynamicText(i) { navigator.clipboard.writeText(i.closest('.game-uid
 function copyDiscordUsername() { navigator.clipboard.writeText("kienmanhluu"); alert("Copied Discord!"); }
 function closeWelcome() { document.getElementById('welcome-overlay').style.display = 'none'; if(ytPlayer) ytPlayer.playVideo(); }
 document.getElementById('lightbox').onclick = function() { this.classList.remove('active'); };
+
+/* =====================================================================
+   --- DISCORD LANYARD STATUS ---
+   ===================================================================== */
+async function fetchDiscordStatus() {
+    try {
+        // ID Discord của cậu: 838041121090830366
+        const res = await fetch(`https://api.lanyard.rest/v1/users/838041121090830366`);
+        const data = await res.json();
+        if (data.success) {
+            const status = data.data.discord_status; // online, idle, dnd, hoặc offline
+            const dot = document.getElementById("discord-status-dot");
+            const text = document.getElementById("discord-status-text");
+
+            if (dot && text) {
+                // Cập nhật class cho chấm tròn (để nhận CSS animation pulse/moon)
+                dot.className = "status-dot " + status;
+                // Cập nhật chữ hiển thị
+                text.innerText = status.charAt(0).toUpperCase() + status.slice(1);
+            }
+        }
+    } catch (e) {
+        console.error("Lanyard Error:", e);
+    }
+}
