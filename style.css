@@ -146,16 +146,17 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 
 .section-title { 
     font-family: 'M PLUS Rounded 1c', sans-serif; 
-    color: #fff; 
-    font-size: 14px; 
+    color: rgba(255,255,255,0.95); 
+    font-size: 13px; 
     text-transform: uppercase;
     font-weight: 800;
+    letter-spacing: 1.5px;
     text-align: center; 
-    padding: 8px 0; 
+    padding: 9px 0; 
     border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-    margin: 0 15px; 
+    margin: 0 12px; 
     z-index: 2; 
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6); 
 }
 
 .section-preview-scroll { 
@@ -171,24 +172,25 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 
 .pf-img-prev { 
     width: calc(50% - 4px); 
-    height: 65px; 
-    border-radius: 8px; 
+    height: 68px; 
+    border-radius: 10px; 
     object-fit: cover; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
 }
 
 /* LỚP PHỦ FROSTED GLASS XỊN */
 .section-hover-overlay { 
     position: absolute; 
     top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(255, 255, 255, 0.15); 
-    backdrop-filter: blur(15px) saturate(160%); 
-    -webkit-backdrop-filter: blur(15px) saturate(160%);
+    background: rgba(20, 12, 28, 0.45); 
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
     display: flex; 
     justify-content: center; 
     align-items: center; 
     opacity: 0; 
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1); 
     z-index: 10; 
     border-radius: inherit; 
 }
@@ -197,16 +199,17 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     color: #fff; 
     font-family: 'Nunito', sans-serif; 
     font-weight: 800; 
-    font-size: 13px; 
+    font-size: 12px; 
     text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3); 
-    padding: 10px 20px;
-    background: rgba(0, 0, 0, 0.5); 
-    border: 1px solid rgba(255,255,255,0.3);
+    letter-spacing: 1.5px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.4); 
+    padding: 8px 18px;
+    background: rgba(255, 255, 255, 0.18); 
+    border: 1px solid rgba(255,255,255,0.4);
     border-radius: 30px;
-    transform: translateY(10px); 
-    transition: transform 0.4s ease;
+    transform: translateY(8px) scale(0.95); 
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    opacity: 0;
 }
 
 .portfolio-section:hover .section-hover-overlay { 
@@ -214,7 +217,8 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 }
 
 .portfolio-section:hover .section-hover-overlay span {
-    transform: translateY(0); 
+    transform: translateY(0) scale(1); 
+    opacity: 1;
 }
 
 @media (max-width: 1024px) {
@@ -566,9 +570,65 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     box-shadow: 0 5px 15px rgba(255, 235, 59, 0.3);
 }
 
-/* ===============================================================
-   --- NÚT SETTING FLOAT ---
-   =============================================================== */
+/* --- PORTFOLIO LOADING ANIMATION --- */
+.pf-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 120px;
+}
+.pf-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    border-top-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- LAZY IMG FADE IN --- */
+.lazy-img {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background: rgba(255,255,255,0.05);
+}
+.lazy-img.loaded { opacity: 1; }
+
+/* --- ACCESS BUTTON --- */
+.access-btn {
+    width: 100%;
+    padding: 11px;
+    margin-top: 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.access-btn:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+}
+
+
 #floating-settings-btn {
     position: fixed;
     bottom: 25px;
@@ -622,21 +682,21 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
 .portfolio-section { 
     flex: 0 0 200px; /* Độ rộng cố định để kích hoạt cuộn khi đông item */
     position: relative; 
-    border: 1px solid rgba(255, 255, 255, 0.2); 
+    border: 1px solid rgba(255, 255, 255, 0.15); 
     border-radius: 20px; 
-    background: rgba(255, 255, 255, 0.05); 
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.04); 
     overflow: hidden; 
     cursor: pointer; 
     display: flex; 
     flex-direction: column; 
-    transition: all 0.3s ease; 
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .portfolio-section:hover { 
-    border-color: rgba(255, 255, 255, 0.6); 
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5); 
+    transform: translateY(-6px) scale(1.02);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
 }
 
 @media (max-width: 1024px) {

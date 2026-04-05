@@ -1,7 +1,4 @@
-const CSV_DATA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRkvgPaXzkSoqowVTFxOrxb843bOA4-NKr2OIAKcSbBOTZlREMB4JnkUBJJd2DjWs6rjaTCjff9JFzJ/pub?gid=204827592&single=true&output=csv";
-const CSV_SETTING_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRkvgPaXzkSoqowVTFxOrxb843bOA4-NKr2OIAKcSbBOTZlREMB4JnkUBJJd2DjWs6rjaTCjff9JFzJ/pub?gid=769885246&single=true&output=csv";
 const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEra84HjALgZ3L1exZV-CbPblskFQlr1MX4f2nuQxdVj-uLNyPDxzLMddNVcK5ECsF/exec";
-const SYNC_PASSWORD_REQUIRED = "2006";
 
 let pfFullData = {};
 
@@ -19,26 +16,38 @@ function createPetal() {
 }
 setInterval(createPetal, 300);
 
+// Load data trực tiếp từ Apps Script API
 async function loadPortfolioData() {
     const container = document.getElementById('portfolio-container');
     if (!container) return;
     try {
-        const response = await fetch(CSV_DATA_URL + '&t=' + new Date().getTime());
-        const text = await response.text();
-        pfFullData = {};
-        const rows = text.split('\n').map(row => row.split(','));
-        for (let i = 1; i < rows.length; i++) {
-            if (rows[i].length >= 2) {
-                let type = rows[i][0] ? rows[i][0].replace(/['"]/g, '').trim().toLowerCase() : '';
-                let link = rows[i][1] ? rows[i][1].replace(/['"]/g, '').trim() : '';
-                if (type && link && link.startsWith('http')) {
-                    if (!pfFullData[type]) pfFullData[type] = [];
-                    pfFullData[type].push(link);
+        const response = await fetch(APP_SCRIPT_URL);
+        const data = await response.json();
+        
+        pfFullData = data.portfolio || {};
+        
+        if (Object.keys(pfFullData).length > 0) renderPortfolio();
+        else container.innerHTML = '<div style="color:white; text-align:center; width:100%">Chưa có dữ liệu</div>';
+    } catch (e) { 
+        console.error("Load Data Error", e); 
+        container.innerHTML = '<div style="color:red; text-align:center; width:100%">Lỗi tải dữ liệu</div>';
+    }
+}
+
+function initLazyLoad() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                    observer.unobserve(img);
                 }
             }
-        }
-        if (Object.keys(pfFullData).length > 0) renderPortfolio();
-    } catch (e) { console.error("Load Data Error"); }
+        });
+    }, { rootMargin: '100px' });
+    document.querySelectorAll('.lazy-img').forEach(img => observer.observe(img));
 }
 
 function renderPortfolio() {
@@ -49,17 +58,19 @@ function renderPortfolio() {
         const section = document.createElement('div');
         section.className = 'portfolio-section';
         section.onclick = () => openPortfolioDetail(type);
-        let previewHTML = images.slice(0, 2).map(src => `<img src="${src}" class="pf-img-prev" loading="lazy">`).join('');
+        let previewHTML = images.slice(0, 2).map(src => `<img data-src="${src}" src="" class="pf-img-prev lazy-img" loading="lazy">`).join('');
         section.innerHTML = `<div class="section-content-wrapper"><h3 class="section-title">${type.toUpperCase()}</h3><div class="section-preview-scroll">${previewHTML}</div><div class="section-hover-overlay"><span>Click to view</span></div></div>`;
         container.appendChild(section);
     });
+    initLazyLoad();
 }
 
 function openPortfolioDetail(type) {
     const grid = document.getElementById("modal-grid");
     document.getElementById("modal-pf-title").innerText = type.toUpperCase();
-    grid.innerHTML = pfFullData[type].map(src => `<img src="${src}" class="pf-img-full" onclick="showLightbox('${src}')">`).join('');
+    grid.innerHTML = pfFullData[type].map(src => `<img data-src="${src}" src="" class="pf-img-full lazy-img" onclick="showLightbox('${src}')">`).join('');
     document.getElementById("portfolioModal").classList.add("active");
+    initLazyLoad();
 }
 function showLightbox(src) { document.getElementById("lightbox-img").src = src; document.getElementById("lightbox").classList.add("active"); }
 function closePortfolio() { document.getElementById("portfolioModal").classList.remove("active"); }
@@ -69,29 +80,45 @@ function openSettingsModal() {
     document.getElementById('sync-password').value = "";
     document.getElementById('settings-unlock-zone').style.display = "block";
     document.getElementById('settings-admin-zone').style.display = "none";
+    document.getElementById('sync-status-msg').innerText = "";
 }
 function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('active'); }
 
+// Gửi password lên server để check, đúng mới lấy data setting về
 async function checkSettingsPass() {
     const pass = document.getElementById('sync-password').value;
-    if (pass === SYNC_PASSWORD_REQUIRED) {
-        document.getElementById('settings-unlock-zone').style.display = "none";
-        document.getElementById('settings-admin-zone').style.display = "block";
-        await loadExistingSettings();
-    }
-}
+    const statusMsg = document.getElementById('sync-status-msg');
+    
+    if (!pass) return;
+    statusMsg.innerText = "Đang kiểm tra...";
 
-async function loadExistingSettings() {
-    const container = document.getElementById('link-inputs-container');
-    container.innerHTML = '';
     try {
-        const response = await fetch(CSV_SETTING_URL + '&t=' + new Date().getTime());
-        const text = await response.text();
-        const rows = text.split('\n').map(row => row.split(','));
-        for (let i = 1; i < rows.length; i++) {
-            if (rows[i].length >= 2) addLinkRow(rows[i][0].replace(/['"]/g, ''), rows[i][1].replace(/['"]/g, ''));
+        const response = await fetch(APP_SCRIPT_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'text/plain;charset=utf-8'},
+            body: JSON.stringify({ action: 'login', password: pass })
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            statusMsg.innerText = "Đã mở khóa!";
+            document.getElementById('settings-unlock-zone').style.display = "none";
+            document.getElementById('settings-admin-zone').style.display = "block";
+
+            // Render form điền link
+            const container = document.getElementById('link-inputs-container');
+            container.innerHTML = '';
+            if (result.settings && result.settings.length > 0) {
+                result.settings.forEach(s => addLinkRow(s.type, s.url));
+            } else {
+                addLinkRow();
+            }
+        } else {
+            statusMsg.innerText = result.message;
         }
-    } catch (e) { addLinkRow(); }
+    } catch(e) {
+        statusMsg.innerText = "Lỗi kết nối server!";
+    }
 }
 
 function addLinkRow(type = "", url = "") {
@@ -101,16 +128,34 @@ function addLinkRow(type = "", url = "") {
     document.getElementById('link-inputs-container').appendChild(div);
 }
 
+// Push data update kèm theo password
 async function performSync() {
     const passInput = document.getElementById('sync-password').value;
+    const statusMsg = document.getElementById('sync-status-msg');
     const driveLinks = Array.from(document.querySelectorAll('.link-row')).map(row => ({
         type: row.querySelector('.setting-input-type').value.trim().toLowerCase(),
         url: row.querySelector('.setting-input-url').value.trim()
     })).filter(item => item.type && item.url);
+
+    statusMsg.innerText = "Đang cập nhật hệ thống...";
+
     try {
-        await fetch(APP_SCRIPT_URL, { method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify({ password: passInput, driveLinks: driveLinks }) });
-        location.reload();
-    } catch (e) { alert("Error!"); }
+        const response = await fetch(APP_SCRIPT_URL, { 
+            method: 'POST', 
+            headers: {'Content-Type': 'text/plain;charset=utf-8'}, 
+            body: JSON.stringify({ action: 'update', password: passInput, driveLinks: driveLinks }) 
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            statusMsg.innerText = "Thành công!";
+            setTimeout(() => location.reload(), 500);
+        } else {
+            statusMsg.innerText = result.message;
+        }
+    } catch (e) { 
+        statusMsg.innerText = "Lỗi rùi nha!";
+    }
 }
 
 let ytPlayer, isYtPlaying = false, currentVideoID = "YNaFdsEIvew", musicCurrentIndex = 0;
@@ -231,8 +276,6 @@ function initPhysics() {
     document.addEventListener('mouseup', endDrag);
     document.addEventListener('touchend', endDrag);
 }
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
     updateMusicCarousel();

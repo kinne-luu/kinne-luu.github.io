@@ -78,8 +78,9 @@
             <p class="what-can-i-do-2">Feel free to explore :Đ</p>
             
             <div class="portfolio-sections-container" id="portfolio-container">
-                <div style="color: rgba(255,255,255,0.7); width: 100%; text-align: center; align-self: center;">
-                    Đang tải dữ liệu từ server...
+                <div class="pf-loading">
+                    <div class="pf-spinner"></div>
+                    <span>Loading...</span>
                 </div>
             </div>
         </div>
@@ -216,8 +217,9 @@
             <h2 class="settings-title">Kinne Setting</h2>
             
             <div id="settings-unlock-zone">
-                <input type="password" id="sync-password" class="settings-input" placeholder="Password" oninput="checkSettingsPass()">
+                <input type="password" id="sync-password" class="settings-input" placeholder="Password" onkeydown="if(event.key==='Enter') checkSettingsPass()">
                 <p style="font-size: 11px; opacity: 0.7; margin-top: 5px;">Ara, chỗ này không được đụng vào đâu nha~</p>
+                <button class="access-btn" onclick="checkSettingsPass()"><i class="fa-solid fa-key"></i> Access</button>
             </div>
 
             <div id="settings-admin-zone" style="display: none;">
