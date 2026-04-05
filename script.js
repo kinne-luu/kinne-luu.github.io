@@ -202,6 +202,12 @@ function initPhysics() {
     const img = document.getElementById("draggableImg");
     if (!img) return;
 
+    // --- THÊM Ở ĐÂY: Ẩn gấu và dừng logic vật lý trên màn hình nhỏ (Mobile/Tablet) ---
+    if (window.innerWidth <= 1024) {
+        img.style.display = 'none';
+        return;
+    }
+
     let isDragging = false;
     let pos = { x: 20, y: window.innerHeight * 0.38 };
     let vel = { x: 0, y: 0 };
@@ -272,7 +278,12 @@ function initPhysics() {
     img.addEventListener('mousedown', (e) => { startDrag(e.clientX, e.clientY); e.preventDefault(); });
     img.addEventListener('touchstart', (e) => { startDrag(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }, { passive: false });
     document.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
-    document.addEventListener('touchmove', (e) => { moveDrag(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+    document.addEventListener('touchmove', (e) => { 
+        if (isDragging) {
+            moveDrag(e.touches[0].clientX, e.touches[0].clientY); 
+            e.preventDefault(); 
+        }
+    }, { passive: false });
     document.addEventListener('mouseup', endDrag);
     document.addEventListener('touchend', endDrag);
 }
@@ -305,6 +316,17 @@ document.addEventListener('DOMContentLoaded', () => {
         modalGrid.addEventListener('wheel', (e) => {
             e.stopPropagation(); // Chỉ cuộn danh sách ảnh, không cuộn nền web bên dưới
         }, { passive: true });
+
+        const lineBtn = document.querySelector('.line-wrapper');
+    if (lineBtn) {
+        lineBtn.addEventListener('click', () => {
+            if (window.innerWidth <= 1024) {
+                const qrImgSrc = lineBtn.querySelector('.qr-tooltip-dark img').src;
+                showLightbox(qrImgSrc);
+            }
+        });
+    }
+    
     }
 });
 
