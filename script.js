@@ -288,6 +288,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const lenis = new Lenis({ duration: 1.2, smooth: true });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
+
+    // --- FIX: CHUYỂN CUỘN DỌC THÀNH NGANG & CHẶN LENIS ---
+    const pfContainer = document.getElementById('portfolio-container');
+    if (pfContainer) {
+        pfContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();       // Chặn trình duyệt cuộn dọc mặc định
+            e.stopPropagation();      // Chặn Lenis cuộn toàn bộ trang web
+            pfContainer.scrollLeft += e.deltaY; // Lấy lực cuộn dọc cộng vào cuộn ngang
+        }, { passive: false });
+    }
+
+    // --- FIX: CHẶN CUỘN TRANG KHI XEM MODAL CHI TIẾT ẢNH ---
+    const modalGrid = document.getElementById('modal-grid');
+    if (modalGrid) {
+        modalGrid.addEventListener('wheel', (e) => {
+            e.stopPropagation(); // Chỉ cuộn danh sách ảnh, không cuộn nền web bên dưới
+        }, { passive: true });
+    }
 });
 
 function copyDynamicText(i) { navigator.clipboard.writeText(i.closest('.game-uid-wrapper').querySelector('.copy-text').innerText); i.style.color = "#5ec8ff"; setTimeout(() => i.style.color = "", 800); }
