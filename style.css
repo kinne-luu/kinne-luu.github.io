@@ -313,12 +313,19 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .play-btn-circle:hover { background: #fff; }
 .play-btn-circle:hover i { color: #000; }
 
-/* --- DRAWER --- */
-#drawerBox { position: fixed; top: 40%; left: -170px; width: 200px; height: 200px; display: flex; align-items: center; z-index: 2000; }
-.drawer-smooth { transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-#drawerContent { width: 170px; height: 180px; border-radius: 20px; backdrop-filter: blur(20px) saturate(140%); background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); opacity: 0.3; transition: opacity 0.4s ease; overflow: visible; position: relative; pointer-events: none; }
-#drawerHandle { width: 30px; height: 80px; border-radius: 0 12px 12px 0; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-left: none; cursor: pointer; position: absolute; right: 0; box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1); z-index: 2001; }
-#draggableImg { position: absolute; width: 120px; user-select: none; -webkit-user-drag: none; top: 50%; left: 50%; transform: translate(-50%, -50%); cursor: grab; z-index: 9999; pointer-events: auto; }
+/* --- DRAGGABLE BEAR --- */
+#draggableImg {
+    position: fixed;
+    left: 20px;
+    top: 38%;
+    width: 120px;
+    z-index: 9999;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: auto;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+}
 #draggableImg:active { cursor: grabbing; }
 
 body::after { content: ""; display: block; position: absolute; top: 1700px; left: 0; width: 100%; height: 80px; background: transparent; z-index: -10; }
@@ -380,7 +387,7 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     .track-artist { display: none !important; }
     .track-name { font-size: 14px !important; max-width: 150px !important; }
     
-    #drawerBox { display: none; }
+
     body::after { content: ""; display: block; height: 100px; width: 100%; }
 }
 

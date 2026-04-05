@@ -1,32 +1,24 @@
-/* =====================================================================
-   --- CONFIGURATION ---
-   ===================================================================== */
 const CSV_DATA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRkvgPaXzkSoqowVTFxOrxb843bOA4-NKr2OIAKcSbBOTZlREMB4JnkUBJJd2DjWs6rjaTCjff9JFzJ/pub?gid=204827592&single=true&output=csv";
 const CSV_SETTING_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRkvgPaXzkSoqowVTFxOrxb843bOA4-NKr2OIAKcSbBOTZlREMB4JnkUBJJd2DjWs6rjaTCjff9JFzJ/pub?gid=769885246&single=true&output=csv";
 const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEra84HjALgZ3L1exZV-CbPblskFQlr1MX4f2nuQxdVj-uLNyPDxzLMddNVcK5ECsF/exec";
-const SYNC_PASSWORD_REQUIRED = "2006"; 
+const SYNC_PASSWORD_REQUIRED = "2006";
 
 let pfFullData = {};
 
-/* =====================================================================
-   --- SAKURA EFFECT ---
-   ===================================================================== */
 function createPetal() {
     const petal = document.createElement('div');
     petal.classList.add('sakura');
     petal.style.left = Math.random() * 100 + 'vw';
-    const size = Math.random() * 10 + 5; 
-    petal.style.width = size + 'px'; petal.style.height = size + 'px';
-    const duration = Math.random() * 3 + 4; 
+    const size = Math.random() * 10 + 5;
+    petal.style.width = size + 'px';
+    petal.style.height = size + 'px';
+    const duration = Math.random() * 3 + 4;
     petal.style.animationDuration = duration + 's';
     document.body.appendChild(petal);
     setTimeout(() => { petal.remove(); }, duration * 1000 + 2000);
 }
 setInterval(createPetal, 300);
 
-/* =====================================================================
-   --- DYNAMIC PORTFOLIO LOADER ---
-   ===================================================================== */
 async function loadPortfolioData() {
     const container = document.getElementById('portfolio-container');
     if (!container) return;
@@ -51,7 +43,7 @@ async function loadPortfolioData() {
 
 function renderPortfolio() {
     const container = document.getElementById('portfolio-container');
-    container.innerHTML = ''; 
+    container.innerHTML = '';
     Object.keys(pfFullData).forEach(type => {
         const images = pfFullData[type];
         const section = document.createElement('div');
@@ -72,9 +64,6 @@ function openPortfolioDetail(type) {
 function showLightbox(src) { document.getElementById("lightbox-img").src = src; document.getElementById("lightbox").classList.add("active"); }
 function closePortfolio() { document.getElementById("portfolioModal").classList.remove("active"); }
 
-/* =====================================================================
-   --- SETTINGS MODAL ---
-   ===================================================================== */
 function openSettingsModal() {
     document.getElementById('settingsModal').classList.add('active');
     document.getElementById('sync-password').value = "";
@@ -94,7 +83,7 @@ async function checkSettingsPass() {
 
 async function loadExistingSettings() {
     const container = document.getElementById('link-inputs-container');
-    container.innerHTML = ''; 
+    container.innerHTML = '';
     try {
         const response = await fetch(CSV_SETTING_URL + '&t=' + new Date().getTime());
         const text = await response.text();
@@ -124,9 +113,6 @@ async function performSync() {
     } catch (e) { alert("Error!"); }
 }
 
-/* =====================================================================
-   --- YOUTUBE & MUSIC CAROUSEL ---
-   ===================================================================== */
 let ytPlayer, isYtPlaying = false, currentVideoID = "YNaFdsEIvew", musicCurrentIndex = 0;
 const musicCards = document.querySelectorAll('.music-box-new');
 
@@ -151,7 +137,7 @@ function updateMusicIcons() {
 }
 
 function toggleMusic(videoId, element) {
-    if (currentVideoID === videoId) { isYtPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo(); } 
+    if (currentVideoID === videoId) { isYtPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo(); }
     else { currentVideoID = videoId; ytPlayer.loadVideoById(videoId); musicCurrentIndex = Array.from(musicCards).findIndex(c => c.contains(element)); updateMusicCarousel(); }
 }
 
@@ -167,60 +153,95 @@ function updateMusicCarousel() {
 }
 function moveCarousel(step) { musicCurrentIndex = (musicCurrentIndex + step + musicCards.length) % musicCards.length; updateMusicCarousel(); }
 
-/* =====================================================================
-   --- DRAGGABLE PHYSICS (EASTER EGG) ---
-   ===================================================================== */
 function initPhysics() {
     const img = document.getElementById("draggableImg");
     if (!img) return;
-    let isDragging = false, pos = {x:0, y:0}, vel = {x:0, y:0}, dragOff = {x:0, y:0}, rot = 0;
-    
-    img.addEventListener("mousedown", (e) => {
+
+    let isDragging = false;
+    let pos = { x: 20, y: window.innerHeight * 0.38 };
+    let vel = { x: 0, y: 0 };
+    let dragOff = { x: 0, y: 0 };
+    let rot = 0;
+    let animFrame = null;
+
+    requestAnimationFrame(() => {
+        const r = img.getBoundingClientRect();
+        pos = { x: r.left, y: r.top };
+    });
+
+    function startDrag(clientX, clientY) {
         isDragging = true;
         const r = img.getBoundingClientRect();
-        dragOff = { x: e.clientX - r.left, y: e.clientY - r.top };
-        img.style.transition = "none";
-    });
+        pos = { x: r.left, y: r.top };
+        dragOff = { x: clientX - r.left, y: clientY - r.top };
+        vel = { x: 0, y: 0 };
+        img.style.cursor = 'grabbing';
+        if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    }
 
-    document.addEventListener("mousemove", (e) => {
+    function moveDrag(clientX, clientY) {
         if (!isDragging) return;
-        let lx = pos.x, ly = pos.y;
-        pos.x = e.clientX - dragOff.x; pos.y = e.clientY - dragOff.y;
-        vel = { x: pos.x - lx, y: pos.y - ly };
-        img.style.left = pos.x + "px"; img.style.top = pos.y + "px";
-    });
+        const nx = clientX - dragOff.x;
+        const ny = clientY - dragOff.y;
+        vel.x = nx - pos.x;
+        vel.y = ny - pos.y;
+        pos = { x: nx, y: ny };
+        img.style.left = pos.x + 'px';
+        img.style.top = pos.y + 'px';
+    }
 
-    document.addEventListener("mouseup", () => {
+    function endDrag() {
         if (!isDragging) return;
-        isDragging = false; 
+        isDragging = false;
+        img.style.cursor = 'grab';
+
         const run = () => {
             if (isDragging) return;
-            vel.y += 0.6; pos.x += vel.x; pos.y += vel.y;
-            const f = window.innerHeight - img.offsetHeight, rw = window.innerWidth - img.offsetWidth;
-            if (pos.y >= f) { pos.y = f; vel.y *= -0.7; vel.x *= 0.96; }
-            if (pos.x <= 0 || pos.x >= rw) { pos.x = pos.x <= 0 ? 0 : rw; vel.x *= -0.8; }
-            rot += vel.x * 2;
-            img.style.left = pos.x + "px"; img.style.top = pos.y + "px";
-            img.style.transform = `rotate(${rot}deg)`;
-            if (Math.abs(vel.x) > 0.1 || Math.abs(vel.y) > 0.1 || pos.y < f) requestAnimationFrame(run);
+            const floor = window.innerHeight - img.offsetHeight;
+            const wallR = window.innerWidth - img.offsetWidth;
+
+            vel.y += 0.55;
+            vel.x *= 0.995;
+            pos.x += vel.x;
+            pos.y += vel.y;
+
+            if (pos.y >= floor) { pos.y = floor; vel.y *= -0.65; vel.x *= 0.92; if (Math.abs(vel.y) < 0.8) vel.y = 0; }
+            if (pos.y < 0) { pos.y = 0; vel.y *= -0.5; }
+            if (pos.x <= 0) { pos.x = 0; vel.x *= -0.75; }
+            if (pos.x >= wallR) { pos.x = wallR; vel.x *= -0.75; }
+
+            rot += vel.x * 1.5;
+            img.style.left = pos.x + 'px';
+            img.style.top = pos.y + 'px';
+            img.style.transform = 'rotate(' + rot + 'deg)';
+
+            if (Math.abs(vel.x) > 0.1 || Math.abs(vel.y) > 0.1 || pos.y < floor) {
+                animFrame = requestAnimationFrame(run);
+            } else {
+                animFrame = null;
+            }
         };
-        run();
-    });
+        animFrame = requestAnimationFrame(run);
+    }
+
+    img.addEventListener('mousedown', (e) => { startDrag(e.clientX, e.clientY); e.preventDefault(); });
+    img.addEventListener('touchstart', (e) => { startDrag(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+    document.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
+    document.addEventListener('touchmove', (e) => { moveDrag(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+    document.addEventListener('mouseup', endDrag);
+    document.addEventListener('touchend', endDrag);
 }
 
-/* =====================================================================
-   --- INITIALIZE ---
-   ===================================================================== */
+
+
 document.addEventListener('DOMContentLoaded', () => {
-    updateMusicCarousel(); 
-    initPhysics(); 
+    updateMusicCarousel();
+    initPhysics();
     loadPortfolioData();
-    
-    // Kích hoạt Discord Status
+
     fetchDiscordStatus();
-    setInterval(fetchDiscordStatus, 10000); // Cập nhật mỗi 10 giây
-    
-    // Khởi tạo Lenis Smooth Scroll
+    setInterval(fetchDiscordStatus, 10000);
+
     const lenis = new Lenis({ duration: 1.2, smooth: true });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
@@ -228,26 +249,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function copyDynamicText(i) { navigator.clipboard.writeText(i.closest('.game-uid-wrapper').querySelector('.copy-text').innerText); i.style.color = "#5ec8ff"; setTimeout(() => i.style.color = "", 800); }
 function copyDiscordUsername() { navigator.clipboard.writeText("kienmanhluu"); alert("Copied Discord!"); }
-function closeWelcome() { document.getElementById('welcome-overlay').style.display = 'none'; if(ytPlayer) ytPlayer.playVideo(); }
-document.getElementById('lightbox').onclick = function() { this.classList.remove('active'); };
+function closeWelcome() { document.getElementById('welcome-overlay').style.display = 'none'; if (ytPlayer) ytPlayer.playVideo(); }
+document.getElementById('lightbox').onclick = function () { this.classList.remove('active'); };
 
-/* =====================================================================
-   --- DISCORD LANYARD STATUS ---
-   ===================================================================== */
 async function fetchDiscordStatus() {
     try {
-        // ID Discord của cậu: 838041121090830366
         const res = await fetch(`https://api.lanyard.rest/v1/users/838041121090830366`);
         const data = await res.json();
         if (data.success) {
-            const status = data.data.discord_status; // online, idle, dnd, hoặc offline
+            const status = data.data.discord_status;
             const dot = document.getElementById("discord-status-dot");
             const text = document.getElementById("discord-status-text");
-
             if (dot && text) {
-                // Cập nhật class cho chấm tròn (để nhận CSS animation pulse/moon)
                 dot.className = "status-dot " + status;
-                // Cập nhật chữ hiển thị
                 text.innerText = status.charAt(0).toUpperCase() + status.slice(1);
             }
         }
