@@ -105,7 +105,6 @@ async function checkSettingsPass() {
             document.getElementById('settings-unlock-zone').style.display = "none";
             document.getElementById('settings-admin-zone').style.display = "block";
 
-            // Render form điền link
             const container = document.getElementById('link-inputs-container');
             container.innerHTML = '';
             if (result.settings && result.settings.length > 0) {
@@ -304,9 +303,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const pfContainer = document.getElementById('portfolio-container');
     if (pfContainer) {
         pfContainer.addEventListener('wheel', (e) => {
-            e.preventDefault();       // Chặn trình duyệt cuộn dọc mặc định
-            e.stopPropagation();      // Chặn Lenis cuộn toàn bộ trang web
-            pfContainer.scrollLeft += e.deltaY; // Lấy lực cuộn dọc cộng vào cuộn ngang
+            e.preventDefault();       
+            e.stopPropagation();      
+            pfContainer.scrollLeft += e.deltaY; 
         }, { passive: false });
     }
 
@@ -314,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalGrid = document.getElementById('modal-grid');
     if (modalGrid) {
         modalGrid.addEventListener('wheel', (e) => {
-            e.stopPropagation(); // Chỉ cuộn danh sách ảnh, không cuộn nền web bên dưới
+            e.stopPropagation(); 
         }, { passive: true });
 
         const lineBtn = document.querySelector('.line-wrapper');

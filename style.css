@@ -1,4 +1,3 @@
-/* --- GLOBAL STYLES --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { width: 100%; height: 100%; overflow-y: auto; }
 body { width: 100%; min-height: 100%; font-family: 'Nunito', sans-serif; overflow-x: hidden; background-color: #000; user-select: none; -webkit-user-select: none; }
@@ -7,9 +6,8 @@ body { width: 100%; min-height: 100%; font-family: 'Nunito', sans-serif; overflo
 ::-webkit-scrollbar-thumb { background-color: transparent; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; transition: background-color 0.3s; }
 body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.6); }
 
-/* --- BACKGROUND --- */
 .video-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -100; pointer-events: none; }
-/* --- RESPONSIVE MOBILE TỐI ƯU --- */
+
 @media (max-width: 1024px) {
     .video-background { top: 0; left: 0; width: 100vw; height: 100vh; }
     .qr-tooltip-dark, .discord-tooltip {
@@ -23,10 +21,9 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
         flex-direction: column; 
         align-items: center; 
         gap: 25px; 
-        padding: 80px 0 150px 0; /* Chừa không gian cho trình phát nhạc ở dưới */
+        padding: 80px 0 150px 0; 
     }
     
-    /* Gỡ bỏ position absolute để layout tự do co giãn */
     .blur-box, .blur-name-box-2, .blur-social-box, .blur-portfolio-box, .blur-games-box {
         position: relative !important;
         top: auto !important;
@@ -35,79 +32,61 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
         width: 90% !important;
     }
     
-    /* Box 1: Profile */
     .blur-box { height: 350px; }
     .layer-avatar { left: 50%; transform: translateX(-50%); top: 100px; }
     .layer-avatar:hover { transform: translateX(-50%) scale(1.05); }
     .layer-info { top: 240px; left: 0; width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; }
     .name-glitch { font-size: 32px; }
     
-    /* Box 2: Giới thiệu */
     .blur-name-box-2 { height: auto; min-height: 200px; padding-bottom: 25px; display: flex; flex-direction: column; align-items: center; }
     .me { font-size: 24px; position: relative; top: 15px; left: auto; padding: 5px 20px; border-radius: 30px; margin-bottom: 15px; background: rgba(255, 67, 155, 0.5); }
     .me-2 { position: relative; top: auto; left: auto; width: 90%; font-size: 16px; line-height: 1.6; text-align: center; }
     
-/* Box 3: Social */
     .blur-social-box { 
         width: 90% !important; 
         height: auto; 
         padding: 15px 10px; 
         display: flex; 
-        justify-content: center; /* Căn giữa các icon */
+        justify-content: center; 
         align-items: center;
-        flex-wrap: nowrap; /* Giữ tất cả trên 1 hàng, nếu muốn rớt dòng thì đổi thành wrap */
-        gap: 12px; /* Khoảng cách giữa các icon */
+        flex-wrap: nowrap; 
+        gap: 12px; 
     }
 
-/* Box 3: Social - Chế độ cuộn ngang */
     .blur-social-box { 
         width: 90% !important; 
         height: 85px !important; 
         padding: 0 15px !important; 
         display: flex !important; 
         align-items: center !important;
-        flex-wrap: nowrap !important; /* Bắt buộc nằm trên 1 hàng để cuộn */
-        
-        /* KÍCH HOẠT CUỘN NGANG */
+        flex-wrap: nowrap !important; 
         overflow-x: auto !important; 
         overflow-y: hidden !important;
-        -webkit-overflow-scrolling: touch; /* Giúp cuộn mượt trên iPhone */
-        
-        /* Khoảng cách giữa các icon */
+        -webkit-overflow-scrolling: touch; 
         gap: 15px !important; 
-        
-        /* Căn chỉnh vị trí xuất hiện ban đầu */
         justify-content: flex-start !important; 
     }
 
-    /* Ẩn thanh cuộn cho đẹp (tùy chọn) */
     .blur-social-box::-webkit-scrollbar {
         display: none;
     }
 
     .my-social { display: none; }
 
-    /* Chỉnh kích thước icon */
     .fb-pos, .ig-pos, .x-pos, .ani-pos, .line-wrapper, .discord-wrapper { 
         position: relative !important; 
         top: auto !important; 
         left: auto !important; 
         margin: 0 !important;
-        
-        /* Kích thước khung icon */
         width: 50px !important;  
         height: 50px !important; 
-        
-        /* Giữ nguyên kích thước, không cho phép trình duyệt bóp nhỏ icon lại */
         flex: 0 0 50px !important; 
-        
         transform: scale(0.9) !important;
         display: flex;
         justify-content: center;
         align-items: center;
     }
     
-    /* Box 4: Portfolio */
     .blur-portfolio-box { height: auto; padding: 20px; }
     .what-can-i-do { margin-bottom: 5px; font-size: 26px; padding: 0; text-align: center; }
     .what-can-i-do-2 { padding-top: 0; text-align: center; font-size: 15px; margin-bottom: 15px; }
@@ -116,7 +95,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     .portfolio-modal-content { width: 90vw; height: 80vh; }
     .modal-pf-grid { grid-template-columns: repeat(2, 1fr); }
     
-    /* Box 5: Games */
     .blur-games-box { height: auto; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; }
     .my-games { margin: 15px 0; font-size: 26px; text-align: center; width: 100%; }
     .games-container { gap: 12px; }
@@ -124,7 +102,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     .game-username { font-size: 18px; }
     .game-uid { font-size: 15px; }
     
-    /* GIAO DIỆN MUSIC MOBILE */
     .music-playlist-container {
         position: fixed !important; top: auto !important; bottom: 20px !important; 
         left: 50% !important; width: 92vw !important; height: 90px !important;
@@ -157,29 +134,20 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     body::after { display: none; }
 }
 
-/* --- ĐIỀU CHỈNH VỊ TRÍ NÚT SETTING TRÊN MOBILE --- */
-    #floating-settings-btn {
-        /* 1. Chọn góc hiển thị: 
-           Nếu muốn ở dưới: dùng 'bottom', ở trên: dùng 'top'
-           Nếu muốn ở phải: dùng 'right', ở trái: dùng 'left' */
-        bottom: 25px !important; 
-        right: 14px !important; 
-        top: auto !important;   /* Để là auto nếu dùng bottom */
-        left: auto !important;  /* Để là auto nếu dùng right */
-
-        /* 2. Chỉnh kích thước nút nếu thấy to/nhỏ quá */
-        width: 45px !important;
-        height: 45px !important;
-        font-size: 20px !important;
-
-        /* 3. Độ ưu tiên hiển thị (để không bị các box khác đè lên) */
-        z-index: 100000 !important;
-    }
+#floating-settings-btn {
+    bottom: 25px !important; 
+    right: 14px !important; 
+    top: auto !important;   
+    left: auto !important;  
+    width: 45px !important;
+    height: 45px !important;
+    font-size: 20px !important;
+    z-index: 100000 !important;
+}
 
 
 .main-wrapper { position: relative; width: 100%; max-width: 850px; height: 1900px; margin: 0 auto; }
 
-/* --- WELCOME POP-UP --- */
 #welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(24, 15, 23, 0.625); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 999999; transition: 0.5s; }
 .welcome-card { width: 300px; padding: 30px; background: rgba(253, 142, 255, 0.301); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; backdrop-filter: blur(20px) saturate(160%); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); text-align: center; color: #fff; }
 #welcome-title { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 24px; margin-bottom: 15px; color: #fff9a2; }
@@ -187,7 +155,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .welcome-btn { padding: 10px 20px; border-radius: 12px; border: none; background: #fff; color: #000; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 15px; }
 .welcome-btn:hover { background: #fff; color: #000; transform: scale(1.05); }
 
-/* --- PROFILE BOX --- */
 .blur-box { position: absolute; top: 10%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 280px; z-index: 0; }
 .inner-3d-card { width: 100%; height: 100%; border-radius: 40px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); overflow: hidden; }
 .layer-cover { position: absolute; top: 15px; left: 15px; right: 15px; height: 150px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); overflow: hidden; }
@@ -198,7 +165,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .layer-info { position: absolute; top: 180px; left: 200px; }
 .name-glitch { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 40px; font-weight: 800; color: white; margin: 0; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2); position: relative; }
 
-/* --- DISCORD STATUS --- */
 .status-badge { display: flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-top: 5px; background: rgba(0, 0, 0, 0.2); padding: 4px 12px; border-radius: 20px; width: fit-content; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #747f8d; transition: all 0.3s ease; }
 .status-dot.online { background: #06c755; box-shadow: 0 0 10px #06c755; animation: pulse 2s infinite; }
@@ -207,12 +173,10 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 @keyframes moon-pulse { from { filter: drop-shadow(0 0 1px rgba(255, 255, 200, 0.4)); } to { filter: drop-shadow(0 0 5px rgba(255, 255, 220, 1)); } }
 
-/* --- INTRO BOX --- */
 .blur-name-box-2 { position: absolute; top: 23%; left: 38.2%; transform: translate(-50%, -50%); width: 400px; height: 170px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
 .me { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; position: absolute; top: 5%; left: 6%; font-weight: 700; }
 .me-2 { font-family: 'Nunito', sans-serif; color: rgb(255, 255, 255); font-size: 15px; position: absolute; top: 28%; left: 6%; width: 90%; font-weight: 600; line-height: 1.4; }
 
-/* --- SOCIAL BOX --- */
 .blur-social-box { position: absolute; top: 23%; left: 74.4%; transform: translate(-50%, -50%); width: 185px; height: 170px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); }
 .my-social { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 255, 255); font-size: 18px; position: absolute; top: 7%; left: 24%; font-weight: 700; pointer-events: none; }
 .social-btn { position: absolute; width: 45px; height: 45px; border-radius: 15px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: center; align-items: center; font-size: 25px; color: white; text-decoration: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
@@ -222,7 +186,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .line-wrapper { position: absolute; top: 60%; left: 39%; width: 45px; height: 45px; } 
 .discord-wrapper { position: absolute; top: 60%; left: 70%; width: 45px; height: 45px; cursor: pointer; }
 
-/* Các màu khi di chuột vào icon */
 .fb-color:hover { background: #1877F2; } 
 .ig-color:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 .x-color:hover { background: #000; } 
@@ -230,14 +193,12 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .line-color:hover { background: #06C755; } 
 .dc-color:hover { background: #5865F2; }
 
-/* QR VÀ TOOLTIP */
 .qr-tooltip-dark { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) scale(0.5); background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px; border-radius: 12px; opacity: 0; pointer-events: none; transition: 0.3s ease; z-index: 999; }
 .qr-tooltip-dark img { width: 100px; height: 100px; display: block; border-radius: 4px; }
 .line-wrapper:hover .qr-tooltip-dark { opacity: 1; transform: translateX(-50%) scale(1); }
 .discord-tooltip { position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%) translateY(10px); background: rgba(0, 0, 0, 0.85); color: white; padding: 5px 8px; border-radius: 6px; font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s ease; }
 .discord-wrapper:hover .discord-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* --- PORTFOLIO BOX --- */
 .blur-portfolio-box { 
     position: absolute; 
     top: 38%; left: 50%; 
@@ -271,7 +232,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     margin-bottom: 12px; 
 }
 
-/* ÉP DÙNG GRID 2 Ô/HÀNG & CUỘN DỌC */
 .portfolio-sections-container { 
     display: grid !important; 
     grid-template-columns: repeat(2, 1fr) !important; 
@@ -346,7 +306,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     transition: transform 0.3s ease;
 }
 
-/* LỚP PHỦ FROSTED GLASS XỊN */
 .section-hover-overlay { 
     position: absolute; 
     top: 0; left: 0; width: 100%; height: 100%; 
@@ -392,7 +351,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
     .portfolio-sections-container { grid-template-columns: 1fr !important; } 
 }
 
-/* --- PORTFOLIO MODAL --- */
 .portfolio-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: all 0.3s ease-in-out; }
 .portfolio-modal-overlay.active { visibility: visible; opacity: 1; }
 .portfolio-modal-content { width: 75vw; max-width: 1000px; height: 75vh; background: rgba(30, 30, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; padding: 30px; position: relative; display: flex; flex-direction: column; transform: scale(0.8); transition: transform 0.3s ease-in-out; }
@@ -406,13 +364,11 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .pf-img-full { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; cursor: zoom-in; transition: transform 0.3s; }
 .pf-img-full:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
 
-/* --- LIGHTBOX --- */
 #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 100000; }
 #lightbox-img { max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); transition: transform 0.3s ease; transform: scale(0.9); }
 #lightbox.active { visibility: visible; opacity: 1; }
 #lightbox.active #lightbox-img { transform: scale(1); }
 
-/* --- GAMES BOX --- */
 .blur-games-box { position: absolute; top: 60%; left: 31.3%; transform: translate(-50%, -50%); width: 280px; height: 440px; border-radius: 40px; background: transparent; backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; }
 .my-games { font-family: 'M PLUS Rounded 1c', sans-serif; color: rgb(255, 249, 162); font-size: 28px; font-weight: 700; margin: 15px 0 15px 20px; }
 .games-container { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
@@ -426,7 +382,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .copy-icon { font-size: 14px; color: #ffffffcc; cursor: pointer; transition: all 0.2s ease; }
 .copy-icon:hover { color: #b388ff; transform: scale(1.2); }
 
-/* --- 3D MUSIC CAROUSEL SYSTEM --- */
 .music-playlist-container {
     position: absolute;
     top: 54.8%; 
@@ -484,7 +439,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 .play-btn-circle:hover { background: #fff; }
 .play-btn-circle:hover i { color: #000; }
 
-/* --- DRAGGABLE BEAR --- */
 #draggableImg {
     position: fixed;
     left: 20px;
@@ -501,7 +455,6 @@ body.is-scrolling ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 2
 
 body::after { content: ""; display: block; position: absolute; top: 1700px; left: 0; width: 100%; height: 80px; background: transparent; z-index: -10; }
 
-/* --- RESPONSIVE MOBILE TỐI ƯU --- */
 @media (max-width: 1024px) {
     .main-wrapper { height: 1800px; }
     
@@ -528,7 +481,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     .blur-games-box { width: 90%; height: auto; padding-bottom: 20px; top: 1450px; left: 50%; transform: translate(-50%, -50%); }
     .game-card { width: 90%; }
     
-    /* GIAO DIỆN MUSIC MOBILE */
     .music-playlist-container {
         position: fixed !important; top: auto !important; bottom: 20px !important; 
         left: 50% !important; width: 92vw !important; height: 90px !important;
@@ -558,13 +510,9 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     .track-artist { display: none !important; }
     .track-name { font-size: 14px !important; max-width: 150px !important; }
     
-
     body::after { content: ""; display: block; height: 100px; width: 100%; }
 }
 
-/* ===============================================================
-   --- SETTINGS MODAL (GLASSMORPHISM SÁNG MÀU) ---
-   =============================================================== */
 .settings-modal {
     display: none; 
     position: fixed; 
@@ -572,7 +520,7 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     left: 0; 
     width: 100%; 
     height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Làm tối nền nhẹ để nổi bật box sáng */
+    background: rgba(0, 0, 0, 0.7); 
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 99999;
@@ -587,7 +535,7 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
 }
 
 .settings-content {
-    background: rgba(255, 255, 255, 0.15); /* Glassmorphism sáng màu */
+    background: rgba(255, 255, 255, 0.15); 
     backdrop-filter: blur(25px) saturate(180%);
     -webkit-backdrop-filter: blur(25px) saturate(180%);
     padding: 30px; 
@@ -609,7 +557,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     text-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-/* --- INPUT STYLES --- */
 .settings-input, .setting-input-type, .setting-input-url {
     width: 100%; 
     padding: 12px; 
@@ -630,7 +577,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
-/* --- ADMIN ZONE (ẨN/HIỆN) --- */
 #settings-admin-zone {
     animation: slideUp 0.4s ease;
 }
@@ -642,7 +588,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     padding-right: 5px;
 }
 
-/* Scrollbar cho container nhập liệu */
 .link-inputs-container::-webkit-scrollbar { width: 5px; }
 .link-inputs-container::-webkit-scrollbar-thumb { 
     background: rgba(255, 255, 255, 0.3); 
@@ -692,7 +637,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     background: rgba(255, 255, 255, 0.15); 
 }
 
-/* --- FOOTER & ACTIONS --- */
 .settings-footer {
     display: flex; 
     justify-content: space-between; 
@@ -737,7 +681,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     box-shadow: 0 5px 15px rgba(255, 235, 59, 0.3);
 }
 
-/* --- PORTFOLIO LOADING ANIMATION --- */
 .pf-loading {
     display: flex;
     flex-direction: column;
@@ -761,7 +704,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* --- LAZY IMG FADE IN --- */
 .lazy-img {
     opacity: 0;
     transition: opacity 0.5s ease;
@@ -769,7 +711,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
 }
 .lazy-img.loaded { opacity: 1; }
 
-/* --- ACCESS BUTTON --- */
 .access-btn {
     width: 100%;
     padding: 11px;
@@ -794,7 +735,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255,255,255,0.1);
 }
-
 
 #floating-settings-btn {
     position: fixed;
@@ -823,9 +763,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     border-color: #fff;
 }
 
-/* ===============================================================
-   --- PORTFOLIO SCROLLING (TỐI ƯU CUỘN NGANG) ---
-   =============================================================== */
 .portfolio-sections-container { 
     display: flex; 
     gap: 15px; 
@@ -838,7 +775,6 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
-/* Tùy chỉnh thanh cuộn Portfolio */
 .portfolio-sections-container::-webkit-scrollbar { height: 6px; }
 .portfolio-sections-container::-webkit-scrollbar-track { background: transparent; }
 .portfolio-sections-container::-webkit-scrollbar-thumb { 
@@ -847,7 +783,7 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
 }
 
 .portfolio-section { 
-    flex: 0 0 200px; /* Độ rộng cố định để kích hoạt cuộn khi đông item */
+    flex: 0 0 200px; 
     position: relative; 
     border: 1px solid rgba(255, 255, 255, 0.15); 
     border-radius: 20px; 
@@ -870,6 +806,5 @@ body::after { content: ""; display: block; position: absolute; top: 1700px; left
     .portfolio-section { flex: 0 0 170px; }
 }
 
-/* Animations */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
