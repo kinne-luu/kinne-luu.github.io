@@ -16,7 +16,6 @@ function createPetal() {
 }
 setInterval(createPetal, 300);
 
-// Load data trực tiếp từ Apps Script API
 async function loadPortfolioData() {
     const container = document.getElementById('portfolio-container');
     if (!container) return;
@@ -84,9 +83,10 @@ function openSettingsModal() {
 }
 function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('active'); }
 
-// Gửi password lên server để check, đúng mới lấy data setting về
+
 async function checkSettingsPass() {
-    const pass = document.getElementById('sync-password').value;
+    const passInput = document.getElementById('sync-password');
+    const pass = passInput.value;
     const statusMsg = document.getElementById('sync-status-msg');
     
     if (!pass) return;
@@ -99,6 +99,9 @@ async function checkSettingsPass() {
             body: JSON.stringify({ action: 'login', password: pass })
         });
         const result = await response.json();
+
+
+        passInput.value = ""; 
 
         if (result.success) {
             statusMsg.innerText = "Đã mở khóa!";
@@ -117,6 +120,7 @@ async function checkSettingsPass() {
         }
     } catch(e) {
         statusMsg.innerText = "Lỗi kết nối server!";
+        passInput.value = ""; 
     }
 }
 
@@ -127,10 +131,17 @@ function addLinkRow(type = "", url = "") {
     document.getElementById('link-inputs-container').appendChild(div);
 }
 
-// Push data update kèm theo password
+
 async function performSync() {
-    const passInput = document.getElementById('sync-password').value;
+    const passInputElement = document.getElementById('sync-password');
+    const passInput = passInputElement.value;
     const statusMsg = document.getElementById('sync-status-msg');
+
+    if (!passInput) {
+        statusMsg.innerText = "Vui lòng nhập lại mật khẩu để xác nhận cập nhật!";
+        return;
+    }
+
     const driveLinks = Array.from(document.querySelectorAll('.link-row')).map(row => ({
         type: row.querySelector('.setting-input-type').value.trim().toLowerCase(),
         url: row.querySelector('.setting-input-url').value.trim()
@@ -146,6 +157,9 @@ async function performSync() {
         });
         const result = await response.json();
         
+
+        passInputElement.value = "";
+
         if (result.success) {
             statusMsg.innerText = "Thành công!";
             setTimeout(() => location.reload(), 500);
@@ -154,6 +168,7 @@ async function performSync() {
         }
     } catch (e) { 
         statusMsg.innerText = "Lỗi rùi nha!";
+        passInputElement.value = "";
     }
 }
 
@@ -201,7 +216,6 @@ function initPhysics() {
     const img = document.getElementById("draggableImg");
     if (!img) return;
 
-    // --- THÊM Ở ĐÂY: Ẩn gấu và dừng logic vật lý trên màn hình nhỏ (Mobile/Tablet) ---
     if (window.innerWidth <= 1024) {
         img.style.display = 'none';
         return;
@@ -299,7 +313,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
 
-    // --- FIX: CHUYỂN CUỘN DỌC THÀNH NGANG & CHẶN LENIS ---
     const pfContainer = document.getElementById('portfolio-container');
     if (pfContainer) {
         pfContainer.addEventListener('wheel', (e) => {
@@ -309,7 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: false });
     }
 
-    // --- FIX: CHẶN CUỘN TRANG KHI XEM MODAL CHI TIẾT ẢNH ---
     const modalGrid = document.getElementById('modal-grid');
     if (modalGrid) {
         modalGrid.addEventListener('wheel', (e) => {
